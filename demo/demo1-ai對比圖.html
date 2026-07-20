@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo 1 — 馬鞍山鐵礦場 AI 蛻變對比圖</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 32px; }
+  body {
+    font-family: "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background: #0a0a0f; color: #e0e0e0; line-height: 2.0;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1a0d0d, #0d1a0d);
+    padding: 2.5rem 1.5rem; text-align: center;
+    border-bottom: 2px solid #c08040;
+  }
+  .hero h1 { font-size: 1.6rem; color: #e0c8a0; }
+  .hero .subtitle { font-size: 0.75rem; color: #a08060; margin-top: 0.3rem; }
+  .container { max-width: 880px; margin: 0 auto; padding: 1.5rem 1rem; }
+  section { margin-bottom: 2rem; }
+  h2 { font-size: 1.1rem; color: #c08040; border-left: 4px solid #c08040; padding-left: 0.5rem; margin-bottom: 0.8rem; }
+  p { margin-bottom: 0.5rem; font-size: 0.65rem; }
+
+  .compare-card {
+    background: #10101a; border: 1px solid #2a2a3a; border-radius: 14px;
+    padding: 1rem; margin: 1.2rem 0;
+  }
+  .compare-card .location { font-size: 0.85rem; color: #e0c888; font-weight: 600; margin-bottom: 0.5rem; }
+  .compare-card .sdg-tag {
+    display: inline-block; background: #1a2a1a; color: #80c080;
+    padding: 0.1rem 0.4rem; border-radius: 10px; font-size: 0.45rem; margin-bottom: 0.5rem;
+  }
+
+  .image-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 0.5rem 0;
+  }
+  .image-box {
+    background: #0c0c14; border-radius: 10px; overflow: hidden;
+    border: 1px solid #1e1e2e;
+  }
+  .image-box .label {
+    background: #1a1a2a; padding: 0.2rem 0.5rem;
+    font-size: 0.55rem; color: #888; text-align: center;
+  }
+  .image-box .img-placeholder {
+    height: 200px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.5rem; color: #555;
+  }
+  .image-box .img-placeholder .big-icon { font-size: 2.5rem; opacity: 0.3; }
+  .image-box .caption {
+    padding: 0.3rem 0.5rem; font-size: 0.5rem; color: #777; text-align: center;
+    border-top: 1px solid #1a1a2a;
+  }
+  .image-box.past { border-left: 3px solid #c06060; }
+  .image-box.present { border-left: 3px solid #60c080; }
+
+  .info-box {
+    background: #0e0e18; border: 1px solid #1e1e2e; border-radius: 8px;
+    padding: 0.6rem 0.8rem; margin: 0.8rem 0;
+  }
+  .info-box .label { font-size: 0.55rem; color: #c08040; font-weight: 600; }
+  .info-box p { font-size: 0.6rem; margin: 0.2rem 0 0; }
+
+  .prompt-table { width: 100%; border-collapse: collapse; font-size: 0.58rem; margin: 0.8rem 0; }
+  .prompt-table th, .prompt-table td { border: 1px solid #1e1e2a; padding: 0.3rem 0.5rem; text-align: left; }
+  .prompt-table th { background: #12121e; color: #c08040; }
+  .prompt-table td { background: #0c0c14; font-size: 0.5rem; color: #aaa; }
+
+  footer { text-align: center; padding: 1.5rem; color: #444; font-size: 0.45rem; border-top: 1px solid #12121a; }
+
+  @media (max-width: 600px) {
+    html { font-size: 26px; }
+    .image-pair { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🎨 Demo 1 — AI 蛻變對比圖</h1>
+  <div class="subtitle">馬鞍山鐵礦場 (SDGs × AI) 生態與地質導賞計劃</div>
+</div>
+
+<div class="container">
+
+<section>
+  <h2>概念說明</h2>
+  <p>以 FLUX 2 (FAL.ai) 生成「同一地點，過去 vs 現在」嘅 AI 對比圖，展示馬鞍山鐵礦場由工業開採到自然修復嘅蛻變過程。每組對比圖均附 SDGs 連結，可直接用於計劃書、展板、社交媒體及工作坊。</p>
+  <div class="info-box">
+    <div class="label">⚠️ 目前狀態：FAL.ai 餘額用盡，AI 圖像待生成</div>
+    <p>以下已設計好 3 個場景嘅 prompts，每個包含「過去（黑白歷史風格）」同「現在（彩色生態風格）」各一張。Top up 後可即時生成並嵌入。</p>
+  </div>
+</section>
+
+<!-- === SCENE 1 === -->
+<section>
+  <div class="compare-card">
+    <div class="location">📍 場景 1：240ML 礦洞口</div>
+    <div class="sdg-tag">SDG 11 文化遺產</div>
+
+    <div class="image-pair">
+      <div class="image-box past">
+        <div class="label">⏪ 過去 · 1960s 礦場運作時期</div>
+        <div class="img-placeholder">
+          <div style="text-align:center;">
+            <div class="big-icon">🖼️</div>
+            <div style="margin-top:0.3rem;">AI 圖像待生成</div>
+          </div>
+        </div>
+        <div class="caption">240ML 礦洞口，礦工進出、礦車運輸場景</div>
+      </div>
+      <div class="image-box present">
+        <div class="label">⏩ 現在 · 2026 年自然修復</div>
+        <div class="img-placeholder">
+          <div style="text-align:center;">
+            <div class="big-icon">🌿</div>
+            <div style="margin-top:0.3rem;">AI 圖像待生成</div>
+          </div>
+        </div>
+        <div class="caption">同一洞口，被植被覆蓋，二級歷史建築</div>
+      </div>
+    </div>
+
+    <table class="prompt-table">
+      <tr><th>版本</th><th>AI Prompt</th></tr>
+      <tr>
+        <td>📷 過去</td>
+        <td>"Historical black and white photograph of Ma On Shan Iron Mine, Hong Kong, 1960s. 240ML mine entrance, large tunnel in rocky mountainside. Chinese miners with hard hats, mining carts on railway tracks exiting the cave. Dusty industrial scene, documentary style, grainy film texture."</td>
+      </tr>
+      <tr>
+        <td>🌳 現在</td>
+        <td>"Ma On Shan Iron Mine 240ML entrance today, Hong Kong. The massive tunnel opening partially covered with green moss and vines. Ferns growing on the rocky walls above the entrance. Sunlight filtering through trees. A heritage site sign nearby. Peaceful natural atmosphere, ultra realistic photo, bright daylight."</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- === SCENE 2 === -->
+<section>
+  <div class="compare-card">
+    <div class="location">📍 場景 2：礦山全景 — 馬鞍山頂</div>
+    <div class="sdg-tag">SDG 15 陸地生態</div>
+
+    <div class="image-pair">
+      <div class="image-box past">
+        <div class="label">⏪ 過去 · 1950s 露天開採時期</div>
+        <div class="img-placeholder">
+          <div style="text-align:center;">
+            <div class="big-icon">⛰️</div>
+            <div style="margin-top:0.3rem;">AI 圖像待生成</div>
+          </div>
+        </div>
+        <div class="caption">山頭被大規模開挖，裸露岩石，塵土飛揚</div>
+      </div>
+      <div class="image-box present">
+        <div class="label">⏩ 現在 · 2026 年森林覆蓋</div>
+        <div class="img-placeholder">
+          <div style="text-align:center;">
+            <div class="big-icon">🌳</div>
+            <div style="margin-top:0.3rem;">AI 圖像待生成</div>
+          </div>
+        </div>
+        <div class="caption">同一山頭，50 年自然修復後變成茂密森林</div>
+      </div>
+    </div>
+
+    <table class="prompt-table">
+      <tr><th>版本</th><th>AI Prompt</th></tr>
+      <tr>
+        <td>📷 過去</td>
+        <td>"Aerial black and white photo of Ma On Shan, Hong Kong, 1950s. Massive open-pit iron mine scarring the hillside. Exposed dark brown and red rock, terraced mining levels, small railway tracks. No vegetation. Dusty industrial landscape. Documentary historical photography style."</td>
+      </tr>
+      <tr>
+        <td>🌳 現在</td>
+        <td>"Aerial view of Ma On Shan peak, Hong Kong, today. Lush green forest covering the entire mountain. Dense subtropical canopy with patches of native trees. The old mine area completely hidden under vegetation. Blue sky. Ultra realistic drone photography, vibrant colors, sunlight."</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- === SCENE 3 === -->
+<section>
+  <div class="compare-card">
+    <div class="location">📍 場景 3：選礦廠建築</div>
+    <div class="sdg-tag">SDG 11 + SDG 4</div>
+
+    <div class="image-pair">
+      <div class="image-box past">
+        <div class="label">⏪ 過去 · 1960s 選礦廠運作</div>
+        <div class="img-placeholder">
+          <div style="text-align:center;">
+            <div class="big-icon">🏭</div>
+            <div style="margin-top:0.3rem;">AI 圖像待生成</div>
+          </div>
+        </div>
+        <div class="caption">選礦廠機器運轉，工人忙碌，礦石堆積</div>
+      </div>
+      <div class="image-box present">
+        <div class="label">⏩ 現在 · 三級歷史建築</div>
+        <div class="img-placeholder">
+          <div style="text-align:center;">
+            <div class="big-icon">🏛️</div>
+            <div style="margin-top:0.3rem;">AI 圖像待生成</div>
+          </div>
+        </div>
+        <div class="caption">選礦廠外牆，被評為三級歷史建築，周邊綠化</div>
+      </div>
+    </div>
+
+    <table class="prompt-table">
+      <tr><th>版本</th><th>AI Prompt</th></tr>
+      <tr>
+        <td>📷 過去</td>
+        <td>"Historical photo of the Mineral Preparation Plant, Ma On Shan Iron Mine, Hong Kong, 1960s. Large industrial concrete building with conveyor belts and machinery. Workers in uniforms operating equipment. Piles of crushed iron ore. Dusty industrial interior. Authentic vintage documentary style."</td>
+      </tr>
+      <tr>
+        <td>🌳 現在</td>
+        <td>"The Mineral Preparation Plant of Ma On Shan Iron Mine today, Hong Kong. Grade 3 historic building exterior. Concrete walls showing age with moss patches. Surrounded by green trees and vegetation. Blue sky. Heritage preservation site. Ultra realistic architectural photography."</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="info-box">
+    <div class="label">💰 生成成本</div>
+    <p>6 張圖（3 場景 × 過去 + 現在）：每張約 $0.01 USD，共約 $0.06 USD（~HK$0.5）。Top up FAL.ai 後可一次過生成。</p>
+  </div>
+  <div class="info-box">
+    <div class="label">📌 SDGs 連結方式</div>
+    <p>每張對比圖完成後會加上 SDGs 標籤同 1-2 句解說，例如：「240ML 礦洞口從工業遺址變為綠色 heritage site → SDG 11 文化遺產 + SDG 15 生態修復」</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  馬鞍山鐵礦場 AI 蛻變對比圖 · Demo 1<br>
+  由 mvmv 設計 · 待 FAL.ai top up 後生成實際圖像
+</footer>
+
+</body>
+</html>
