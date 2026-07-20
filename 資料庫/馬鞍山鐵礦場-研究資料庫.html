@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>馬鞍山鐵礦場 — 深度研究資料庫</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 26px; }
+  body {
+    font-family: "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background: #0a0a0f; color: #e0e0e0; line-height: 1.85;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0d0d1a, #1a0d0d);
+    padding: 2.5rem 1.5rem; text-align: center;
+    border-bottom: 2px solid #c06030;
+  }
+  .hero h1 { font-size: 1.8rem; color: #e0c8a0; }
+  .hero .subtitle { font-size: 0.8rem; color: #a08060; margin-top: 0.3rem; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem; }
+  section { margin-bottom: 2.5rem; }
+  h2 { font-size: 1.2rem; color: #c08040; border-left: 4px solid #c08040; padding-left: 0.6rem; margin-bottom: 0.8rem; }
+  h3 { font-size: 0.95rem; color: #d0a060; margin: 1rem 0 0.4rem; }
+  h4 { font-size: 0.8rem; color: #a0a0c0; margin: 0.6rem 0 0.3rem; }
+  p { font-size: 0.72rem; margin-bottom: 0.5rem; }
+  ul, ol { font-size: 0.7rem; margin: 0.3rem 0 0.8rem 1.2rem; }
+  li { margin-bottom: 0.2rem; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.65rem; margin: 0.8rem 0; }
+  th, td { border: 1px solid #1e1e2a; padding: 0.35rem 0.5rem; text-align: left; }
+  th { background: #12121e; color: #c08040; }
+  td { background: #0c0c14; }
+
+  .info { background: #0e0e18; border: 1px solid #1e1e2e; border-radius: 8px; padding: 0.6rem 0.8rem; margin: 0.6rem 0; }
+  .info .label { font-size: 0.55rem; color: #c08040; font-weight: 600; }
+  .info p { font-size: 0.65rem; margin: 0.2rem 0 0; }
+  .tag {
+    display: inline-block; background: #1a1a2a; color: #888;
+    padding: 0.05rem 0.4rem; border-radius: 10px; font-size: 0.5rem; margin: 0.1rem;
+  }
+  .tag-done { background: #1a2a1a; color: #60a060; }
+  .tag-pending { background: #2a1a1a; color: #c06060; }
+  .tag-searching { background: #1a2a2a; color: #60a0c0; }
+  footer { text-align: center; padding: 2rem 1rem; color: #444; font-size: 0.5rem; border-top: 1px solid #12121a; }
+  @media (max-width: 600px) { html { font-size: 22px; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⛏️ 馬鞍山鐵礦場研究資料庫</h1>
+  <div class="subtitle">v1.0 · 2026 年 7 月 · 持續更新中</div>
+</div>
+
+<div class="container">
+
+<!-- ═══════ 1. TIMELINE ═══════ -->
+<section>
+  <h2>1. 完整歷史時間線</h2>
+
+  <table>
+    <tr><th>年份</th><th>事件</th><th>備註</th></tr>
+    <tr><td>1905</td><td>發現馬鞍山有磁鐵礦（Magnetite）</td><td>據探索館口述史料</td></tr>
+    <tr><td>1906</td><td>香港鐵礦公司（Hong Kong Iron Mining Co. Ltd）取得開採權，由 Sir Paul Chater 擁有，露天開採</td><td>Wikipedia 記載</td></tr>
+    <tr><td>1914</td><td>C.M. Weld 發表 Notes on an Iron Ore Deposit near Hong Kong</td><td>最早嘅學術記錄</td></tr>
+    <tr><td>1929</td><td>香港鐵礦公司結束營運</td><td>Wikipedia</td></tr>
+    <tr><td>1931</td><td>香港政府發出採礦牌照，華興礦務有限公司（The New Territories Iron Mining Company）接手</td><td>你提供嘅資料</td></tr>
+    <tr><td>1940-1941</td><td>華南製鐵有限公司（South China Iron Smelters Co. Ltd）營運</td><td>Wikipedia</td></tr>
+    <tr><td>1942-1945</td><td>日本佔領時期，日軍控制礦場</td><td>Wikipedia</td></tr>
+    <tr><td>1945-1948</td><td>戰後小規模復採，可能仍由華南製鐵營運</td><td>Wikipedia</td></tr>
+    <tr><td>1949</td><td>大公洋行（Mutual Trust Co. Ltd / Mutual Mining and Trade Company）接手，引入商業化大規模採礦</td><td>✅ 你確認</td></tr>
+    <tr><td>1953</td><td>大公洋行同日本礦業株式會社（Nittetsu Mining Company）合資，開始地下開採拓展</td><td>Wikipedia</td></tr>
+    <tr><td>1953</td><td>開拓 240ML 同 110ML 礦洞，轉入地下開採</td><td>Wikipedia—Mine adit</td></tr>
+    <tr><td>1957</td><td>Leung Sze Kong 完成 BA 論文 "Ma On Shan"</td><td>HKU</td></tr>
+    <tr><td>1959</td><td>全面轉入地下開採；Lai Chuen Yan 完成 BA 論文 "Ma On Shan Iron Mine"</td><td>HKU</td></tr>
+    <tr><td>1961</td><td>Davis S.G. 發表 "Mineralogy of the Ma On Shan iron mine"</td><td>學術期刊</td></tr>
+    <tr><td>1964</td><td>Nakajima Tamotsu 發表 "Geology and Ore Deposits of the Ma On Shan Mine"；Shibata Taketo 發表 "Development Plan of Ma On Shan Iron Mine"</td><td>日本學者研究</td></tr>
+    <tr><td>1976</td><td>礦場結業，400 名工人遣散</td><td>✅ 你確認</td></tr>
+    <tr><td>1979</td><td>Kwan Sai Ho 完成 CUHK M.Phil 論文 "Ecological Survey of Soil and Vegetation"</td><td>中大論文</td></tr>
+    <tr><td>1981</td><td>政府採礦牌照到期，礦場正式關閉</td><td>Wikipedia</td></tr>
+    <tr><td>2013</td><td>Hoang & Nakka 研究 CAES 壓縮空氣儲能可行性</td><td>HKUST</td></tr>
+    <tr><td>2013</td><td>Choi Wing-sang 完成 HKU MSc "Geology and ore genesis"</td><td>HKU</td></tr>
+    <tr><td>2015</td><td>鞍山探索館開館</td><td>✅ 你確認</td></tr>
+    <tr><td>2016</td><td>礦場建築獲評級：240ML/110ML 外牆 Grade 2，選礦廠 Grade 3，礦村遺址 Grade 3</td><td>古諮會</td></tr>
+    <tr><td>2017</td><td>Chan Hiu-yu 完成 HKU Thesis "The church, the mine and the people"</td><td>HKU</td></tr>
+  </table>
+</section>
+
+<!-- ═══════ 2. COMPANY TIMELINE ═══════ -->
+<section>
+  <h2>2. 營運公司演變（點線面嘅商業之線）</h2>
+
+  <table>
+    <tr><th>時期</th><th>公司</th><th>性質</th></tr>
+    <tr><td>1906-1929</td><td>香港鐵礦公司 (Hong Kong Iron Mining Co. Ltd)</td><td>英資，Sir Paul Chater 擁有</td></tr>
+    <tr><td>1931-1940</td><td>華興礦務有限公司 (The New Territories Iron Mining Company)</td><td>領有政府採礦牌照</td></tr>
+    <tr><td>1940-1941</td><td>華南製鐵有限公司 (South China Iron Smelters Co. Ltd)</td><td>戰前</td></tr>
+    <tr><td>1942-1945</td><td>日軍佔領</td><td>軍管</td></tr>
+    <tr><td>1949-1976</td><td>大公洋行 (Mutual Trust Co. Ltd / Mutual Mining and Trade Co.)</td><td>商業化大規模採礦</td></tr>
+    <tr><td>1953-1976</td><td>大公洋行 × 日本礦業株式會社 (Nittetsu Mining Company) 合資</td><td>日資技術+設備引入</td></tr>
+  </table>
+
+  <div class="info">
+    <div class="label">🔍 關鍵發現：日本連結</div>
+    <p>1953 年係轉捩點 — 大公洋行同日本 Nittetsu Mining Company 合資之後，引入日本採礦技術，開拓 240ML 同 110ML 地下礦洞，採礦量大幅提升。Shibata Taketo（1964）嘅論文直接題為「Development Plan of Ma On Shan Iron Mine, New Territories」，說明日本人參與咗礦場嘅設計規劃。Nakajima Tamotsu（1964）亦係日本學者。精鐵沙（iron ore concentrate）好大可能係經呢個合資渠道運去日本。</p>
+  </div>
+</section>
+
+<!-- ═══════ 3. JAPAN CONNECTION ═══════ -->
+<section>
+  <h2>3. 🇯🇵 日本連結 — 精鐵沙貿易</h2>
+
+  <p>雖然直接關於「精鐵沙全部賣去日本」嘅詳細貿易文件暫時未搵到網上公開版，但已有嘅線索好強：</p>
+
+  <table>
+    <tr><th>證據</th><th>來源</th><th>狀態</th></tr>
+    <tr><td>1953-1976 大公洋行同 Nittetsu Mining Company 合資</td><td>Wikipedia</td><td><span class="tag tag-done">✅ 確認</span></td></tr>
+    <tr><td>Shibata Taketo（日本人）撰寫礦場發展計劃</td><td>1964 論文</td><td><span class="tag tag-done">✅ 確認</span></td></tr>
+    <tr><td>Nakajima Tamotsu（日本人）撰寫地質+礦床論文</td><td>1964 論文</td><td><span class="tag tag-done">✅ 確認</span></td></tr>
+    <tr><td>Yang J.Y. (1952) 分析日本、中國、香港嘅鐵礦產業</td><td>Far Eastern Economic Review</td><td><span class="tag tag-done">✅ 確認</span></td></tr>
+    <tr><td>精鐵沙貿易嘅具體合同/發票/船運記錄</td><td>—</td><td><span class="tag tag-pending">❌ 未找到</span></td></tr>
+    <tr><td>日本礦業株式會社（Nittetsu）嘅公司檔案</td><td>—</td><td><span class="tag tag-pending">❌ 需日文資料庫</span></td></tr>
+  </table>
+
+  <div class="info">
+    <div class="label">💡 可以試嘅方向</div>
+    <p>1️⃣ 日本國立國會圖書館嘅礦業檔案（NDL Digital Collections）可能有 Nittetsu 嘅歷史記錄<br>
+    2️⃣ Far Eastern Economic Review 1952 年文章可能有具體貿易數據（可去 HKU 圖書館找）<br>
+    3️⃣ 探索館可能有舊礦工訪問提及「鐵沙運去日本」</p>
+  </div>
+</section>
+
+<!-- ═══════ 4. MINING OPERATIONS ═══════ -->
+<section>
+  <h2>4. 240ML 同 110ML 礦洞開發</h2>
+
+  <p>「ML」代表「Mine Level」— 礦洞水平高度（以米為單位，從海平面計）：</p>
+  <ul>
+    <li><strong>240ML</strong> = 海拔 240 米嘅礦洞入口（較高）</li>
+    <li><strong>110ML</strong> = 海拔 110 米嘅礦洞入口（較低）</li>
+  </ul>
+
+  <h3>已知開發流程（根據學術資料推斷）</h3>
+  <ol>
+    <li><strong>1953 年</strong>：日本 Nittetsu Mining Company 同大公洋行合資後，引入 underground mining 技術，開始開鑿豎井同水平巷道</li>
+    <li>240ML 同 110ML 係兩個主要嘅礦洞水平層，用嚟提取磁鐵礦（magnetite, Fe₃O₄）</li>
+    <li>採用「空場採礦法」（open stoping）或「房柱法」（room and pillar），視乎岩體穩定性</li>
+    <li>礦石由礦洞運出後，去選礦廠（Mineral Preparation Plant，Grade 3 歷史建築）進行破碎、篩選、磁選</li>
+    <li>精選後嘅鐵礦砂（精鐵沙）經礦場道路運落馬鞍山新市鎮，再經碼頭出口</li>
+    <li>到 <strong>1959 年</strong>，全面轉入地下開採，露天開採停止</li>
+  </ol>
+
+  <div class="info">
+    <div class="label">📌 重要發現</div>
+    <p>2016 年，240ML 同 110ML 礦洞嘅外牆被評為二級歷史建築。Shibata Taketo（1964）同 Nakajima Tamotsu（1964）係日本學者撰寫嘅礦場設計同地質論文，可能包含詳細嘅礦洞設計圖！</p>
+  </div>
+
+  <h3>需進一步搜尋</h3>
+  <ul>
+    <li><span class="tag tag-pending">❌</span> Shibata (1964) 論文全文（日本地質學會期刊）</li>
+    <li><span class="tag tag-pending">❌</span> 240ML/110ML 嘅實際設計圖則</li>
+    <li><span class="tag tag-pending">❌</span> 選礦流程詳細描述</li>
+    <li><span class="tag tag-pending">❌</span> 當年礦工對礦洞內部嘅口述記錄</li>
+  </ul>
+</section>
+
+<!-- ═══════ 5. UNIVERSITY THESES ═══════ -->
+<section>
+  <h2>5. 🎓 大學論文清單（已確認）</h2>
+
+  <table>
+    <tr><th>年份</th><th>作者</th><th>題目（英文/中文）</th><th>大學</th><th>範疇</th></tr>
+    <tr><td>1957</td><td>Leung Sze Kong</td><td>Ma On Shan (BA Thesis)</td><td>HKU</td><td>地理/歷史</td></tr>
+    <tr><td>1959</td><td>Lai Chuen Yan, David</td><td>Ma On Shan Iron Mine (BA Thesis)</td><td>HKU</td><td>地理/礦業</td></tr>
+    <tr><td>1979</td><td><strong>Kwan Sai Ho</strong></td><td><strong>An Ecological Survey of Soil and Vegetation Contaminated by the Iron Ore Mining at Ma On Shan</strong> (M.Phil)</td><td>🏫 <strong>CUHK (中大)</strong></td><td><strong>生態/污染 ✅ SDG 15</strong></td></tr>
+    <tr><td>2013</td><td>Choi Wing-sang, Vincent</td><td>Geology and ore genesis of the Ma On Shan iron deposit (MSc)</td><td>HKU</td><td>地質學</td></tr>
+    <tr><td>2017</td><td><strong>Chan Hiu-yu</strong></td><td><strong>The church, the mine and the people: discovering the social significance of the Yan Kwong Lutheran Church at the former iron mine village of Ma On Shan</strong></td><td><strong>HKU</strong></td><td><strong>社會學/點線面 ✅</strong></td></tr>
+  </table>
+
+  <div class="info">
+    <div class="label">🎯 最值得深入研讀嘅 2 篇</div>
+    <p><strong>1️⃣ Kwan Sai Ho (1979) — 中大</strong>：礦場結業 3 年後做嘅生態調查，記錄咗土壤同植被受鐵礦污染嘅 baseline data。50 年後嘅今日（2026），呢篇論文就係我哋對比「生態修復進度」嘅黃金基準！<br>
+    <strong>2️⃣ Chan Hiu-yu (2017) — 港大</strong>：直接用「教堂 × 礦山 × 人」嘅框架分析礦村，同我哋嘅「點線面」概念完全一致！</p>
+  </div>
+</section>
+
+<!-- ═══════ 6. PHOTOS ═══════ -->
+<section>
+  <h2>6. 📸 已知歷史相片來源</h2>
+
+  <table>
+    <tr><th>來源</th><th>內容</th><th>狀態</th></tr>
+    <tr><td>Wikipedia 條目（Ma On Shan Iron Mine）</td><td>240ML 外牆、110ML 外牆、馬鞍山公園採礦設備</td><td><span class="tag tag-done">✅ 可取</span></td></tr>
+    <tr><td>AAB 古諮會建築評級檔案</td><td>選礦廠、礦村遺址相片</td><td><span class="tag tag-done">✅ 可取</span></td></tr>
+    <tr><td>SCMP 文章 "HK's forgotten mining past" (2014)</td><td>礦場歷史相片＋礦工訪問</td><td><span class="tag tag-pending">⏳ 有 paywall</span></td></tr>
+    <tr><td>Michigan Tech / Gwulo 舊照</td><td>1950s-60s 礦場作業相</td><td><span class="tag tag-pending">⏳ 需進一步搜尋</span></td></tr>
+    <tr><td>鞍山探索館館藏</td><td>館內展品同歷史相片</td><td><span class="tag tag-pending">⏳ 需實地收集</span></td></tr>
+    <tr><td>Industrial History of HK 網站</td><td>礦場歷史相片</td><td><span class="tag tag-searching">🔍 正在搜尋</span></td></tr>
+  </table>
+</section>
+
+<!-- ═══════ 7. ALL REFERENCES ═══════ -->
+<section>
+  <h2>7. 📚 完整參考文獻清單</h2>
+
+  <h3>學術論文</h3>
+  <ol style="font-size:0.6rem;">
+    <li>Weld, C.M. (1914). "Notes on an Iron Ore Deposit near Hong Kong". Trans. AIME.</li>
+    <li>Leung, S.K. (1957). Ma On Shan. BA Thesis, HKU.</li>
+    <li>Lai, C.Y.D. (1959). Ma On Shan Iron Mine. BA Thesis, HKU.</li>
+    <li>Davis, S.G. (1961). "Mineralogy of the Ma On Shan iron mine". Economic Geology, 56(3).</li>
+    <li>Nakajima, T. (1964). "Geology and Ore Deposits of the Ma On Shan Mine, Hong Kong". Mining Geology, 14(64). — 🇯🇵</li>
+    <li>Shibata, T. (1964). "Development Plan of Ma On Shan Iron Mine, New Territories". In Davis, S.G. (ed.). — 🇯🇵</li>
+    <li>Kwan, S.H. (1979). An Ecological Survey of Soil and Vegetation Contaminated by the Iron Ore Mining at Ma On Shan. M.Phil, CUHK. 🏫</li>
+    <li>Strange, P.J. & Woods, N.W. (1991). "Geology and exploitation of the Ma On Shan magnetite deposit". Geol. Soc. HK Newsletter, 9(1).</li>
+    <li>Hoang, L. & Nakka, D. (2013). Investigating feasibility of CAES in HK. HKUST.</li>
+    <li>Choi, W.V. (2013). Geology and ore genesis of the Ma On Shan iron deposit. MSc, HKU.</li>
+    <li>Chan, H. (2017). The church, the mine and the people. Thesis, HKU. ⭐</li>
+  </ol>
+
+  <h3>書籍/文章/報告</h3>
+  <ol style="font-size:0.6rem;">
+    <li>Yang, J.Y. (1952). "Iron Ore & Industry in Japan, China and Hongkong". FEER, 14.</li>
+    <li>Kao, E. (5 May 2014). "HK's forgotten mining past emerges from the darkness". SCMP.</li>
+    <li>AAB. Historic Building Appraisal: Mineral Preparation Plant, Ma On Shan Iron Mine.</li>
+    <li>AAB. Historic Building Appraisal: Lutheran Yan Kwong Church.</li>
+    <li>AAB. List of new items for grading assessment (2016).</li>
+    <li>CEDD. Economic Geology - Minerals and Mining in HK.</li>
+  </ol>
+
+  <h3>外部網站</h3>
+  <ul style="font-size:0.6rem;">
+    <li>Wikipedia: Ma On Shan Iron Mine (English)</li>
+    <li>Industrial History of Hong Kong: Ma On Shan Iron Mine entries</li>
+    <li>Gwulo.com: Old Hong Kong photos (search: Ma On Shan)</li>
+    <li>The Evangelical Lutheran Church of HK (恩光堂相關)</li>
+  </ul>
+</section>
+
+<!-- ═══════ 8. STATUS ═══════ -->
+<section>
+  <h2>8. 📊 收集進度</h2>
+
+  <table>
+    <tr><th>項目</th><th>狀態</th><th>下一步</th></tr>
+    <tr><td>歷史時間線</td><td><span class="tag tag-done">✅ 完成</span></td><td>整理成導賞可用嘅 timeline</td></tr>
+    <tr><td>營運公司演變</td><td><span class="tag tag-done">✅ 完成</span></td><td>—</td></tr>
+    <tr><td>日本貿易連結</td><td><span class="tag tag-pending">⚠️ 部分</span></td><td>需日文資料庫（NDL）或專家協助</td></tr>
+    <tr><td>240ML/110ML 設計文件</td><td><span class="tag tag-pending">❌ 未找到</span></td><td>Shibata (1964) 全文可能有設計圖</td></tr>
+    <tr><td>大學論文摘要</td><td><span class="tag tag-done">✅ 已識別</span></td><td>需圖書館 access 下載全文</td></tr>
+    <tr><td>歷史相片</td><td><span class="tag tag-pending">⚠️ 部分</span></td><td>Wikipedia / AAB 已有，更多需探索館</td></tr>
+    <tr><td>礦工口述歷史</td><td><span class="tag tag-pending">❌ 未收集</span></td><td>你嘅問卷 + 訪問舊礦工</td></tr>
+    <tr><td>鞍山探索館資料</td><td><span class="tag tag-pending">⚠️ 部分</span></td><td>需實地記錄</td></tr>
+  </table>
+</section>
+
+</div>
+
+<footer>
+  ⛏️ 馬鞍山鐵礦場研究資料庫 · v1.0 · 由 mvmv 收集整理<br>
+  資料來源：Wikipedia, HKU/CUHK Theses, SCMP, Antiquities Advisory Board, CEDD, academic journals
+</footer>
+
+</body>
+</html>
