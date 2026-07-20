@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDGs 深度分析 — 鞍山礦山 × AI 教育計劃</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 26px; }
+  body {
+    font-family: "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    line-height: 1.85;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0d1a2e, #1a2a1a);
+    padding: 2.5rem 1.5rem; text-align: center;
+    border-bottom: 2px solid #4080c0;
+  }
+  .hero h1 { font-size: 1.8rem; color: #c0d8e8; }
+  .hero .subtitle { font-size: 0.85rem; color: #80a0b0; margin-top: 0.5rem; }
+  .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.2rem; }
+  section { margin-bottom: 3rem; }
+  h2 { font-size: 1.3rem; color: #4080c0; border-left: 4px solid #4080c0; padding-left: 0.6rem; margin-bottom: 1rem; }
+  h3 { font-size: 1rem; color: #80b0d0; margin: 1.2rem 0 0.5rem; }
+  h4 { font-size: 0.85rem; color: #a0c8a0; margin: 0.8rem 0 0.3rem; }
+  p { font-size: 0.75rem; margin-bottom: 0.6rem; }
+
+  .sdg-card {
+    background: #10101a; border: 1px solid #1a1a2e; border-radius: 12px;
+    padding: 1rem; margin: 1rem 0;
+    border-left: 4px solid #4080c0;
+  }
+  .sdg-card .header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; }
+  .sdg-card .num { font-size: 1.5rem; font-weight: 700; }
+  .sdg-card .name { font-size: 0.9rem; font-weight: 600; }
+  .sdg-card .targets { font-size: 0.65rem; color: #888; margin: 0.3rem 0; }
+  .sdg-card .connection { font-size: 0.7rem; color: #aaa; margin: 0.3rem 0; }
+  .sdg-card .ai-role { font-size: 0.65rem; color: #60a0c0; }
+
+  .sdg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1rem; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.68rem; margin: 1rem 0; }
+  th, td { border: 1px solid #1e1e2a; padding: 0.4rem 0.5rem; text-align: left; vertical-align: top; }
+  th { background: #12121e; color: #80b0d0; }
+  td { background: #0c0c14; }
+
+  .color-3 { border-left-color: #4caf50; } .color-4 { border-left-color: #c62828; }
+  .color-6 { border-left-color: #00bfa5; } .color-8 { border-left-color: #8b4513; }
+  .color-11 { border-left-color: #f9a825; } .color-12 { border-left-color: #bf8f00; }
+  .color-15 { border-left-color: #4caf50; } .color-17 { border-left-color: #1a237e; }
+
+  .matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 1rem 0; }
+  @media (max-width: 600px) { .sdg-grid, .matrix { grid-template-columns: 1fr; } html { font-size: 22px; } }
+
+  .infobox { background: #0e0e18; border: 1px solid #1e1e2e; border-radius: 8px; padding: 0.7rem 1rem; margin: 0.8rem 0; }
+  .infobox .label { font-size: 0.6rem; color: #80b0d0; font-weight: 600; }
+  .infobox p { font-size: 0.7rem; margin: 0.3rem 0 0; }
+
+  footer { text-align: center; padding: 2rem 1rem; color: #444; font-size: 0.55rem; border-top: 1px solid #12121a; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌍 SDGs 深度分析報告</h1>
+  <div class="subtitle">鞍山礦山 × AI 教育計劃 — 可持續發展目標連結矩陣</div>
+</div>
+
+<div class="container">
+
+<!-- ═══════ INTRO ═══════ -->
+<section>
+  <h2>1. 背景</h2>
+  <p>本報告為「礦山永續 · AI 覺醒」計劃之 SDGs 基礎研究，目標係：</p>
+  <ol style="font-size:0.7rem;margin-left:1.2rem;margin-bottom:0.8rem;">
+    <li><strong>梳理</strong>鞍山鐵礦場（1906-1976）、鞍山探索館（2015 開館）與 SDGs 嘅具體連結</li>
+    <li><strong>分析</strong>每個 SDG 嘅具體 target 同指標，點樣喺鞍山場景落地</li>
+    <li><strong>設計</strong>點樣用 AI 技術強化呢啲連結</li>
+    <li><strong>提供</strong>國際參考案例</li>
+  </ol>
+  <div class="infobox">
+    <div class="label">📚 參考框架</div>
+    <p>聯合國 17 個可持續發展目標（Sustainable Development Goals, SDGs），2015 年由聯合國大會通過，目標 2030 年達成。本分析聚焦與鞍山場景直接相關嘅 8 個 SDGs。</p>
+  </div>
+</section>
+
+<!-- ═══════ WHAT ARE SDGs ═══════ -->
+<section>
+  <h2>2. SDGs 基礎概念（for 導賞員參考）</h2>
+  <p>SDGs 係聯合國 2015 年提出嘅 17 個全球目標，涵蓋貧窮、教育、生態、氣候等範疇。同鞍山探索館最相關嘅可以分三層：</p>
+
+  <h3>2.1 核心相關（直接對應）</h3>
+  <table>
+    <tr><th>SDG</th><th>目標</th><th>鞍山場景</th></tr>
+    <tr><td>4️⃣</td><td>優質教育</td><td>導賞教育、戶外學習、AI 互動學習</td></tr>
+    <tr><td>1️⃣1️⃣</td><td>永續城市與社區</td><td>礦場文化遺產保存、礦村記憶</td></tr>
+    <tr><td>1️⃣5️⃣</td><td>陸地生態</td><td>礦山生態修復、生物多樣性記錄</td></tr>
+  </table>
+
+  <h3>2.2 輔助相關</h3>
+  <table>
+    <tr><th>SDG</th><th>目標</th><th>鞍山場景</th></tr>
+    <tr><td>3️⃣</td><td>健康與福祉</td><td>行山健行、礦山靜觀、身心整合</td></tr>
+    <tr><td>8️⃣</td><td>尊嚴就業</td><td>導賞員培訓、社區經濟、可持續旅遊</td></tr>
+    <tr><td>1️⃣2️⃣</td><td>負責任消費</td><td>淨山挑戰、不留痕跡、循環經濟教育</td></tr>
+  </table>
+
+  <h3>2.3 延伸相關</h3>
+  <table>
+    <tr><th>SDG</th><th>目標</th><th>鞍山場景</th></tr>
+    <tr><td>6️⃣</td><td>淨水與衛生</td><td>礦山水源、減膠樽、加水站</td></tr>
+    <tr><td>1️⃣7️⃣</td><td>夥伴關係</td><td>跨界合作、Roots &amp; Shoots 網絡</td></tr>
+  </table>
+</section>
+
+<!-- ═══════ DETAILED SDGs ═══════ -->
+<section>
+  <h2>3. 逐個 SDG 深度分析</h2>
+
+  <!-- SDG 3 -->
+  <div class="sdg-card color-3">
+    <div class="header">
+      <div class="num" style="color:#4caf50;">3️⃣</div>
+      <div class="name">良好健康與福祉<br><span style="font-size:0.6rem;font-weight:400;color:#888;">Good Health and Well-being</span></div>
+    </div>
+    <div class="targets">相關 targets：3.4 促進精神健康 · 3.9 減少環境污染導致嘅疾病 · 3.a 實施煙草控制框架</div>
+    <div class="connection">
+      <strong>鞍山連結：</strong>礦山行山本身就係運動（SDG 3.4）。結合導賞 + 大自然體驗，比純粹行山多咗文化同生態層面，達到「整全健康」。用 AI 製作嘅「礦山深呼吸」靜觀引導，可以強化身心連結。
+    </div>
+    <div class="ai-role">🤖 AI 角色：語音引導靜觀、聲景重現、行山健康數據記錄 App</div>
+  </div>
+
+  <!-- SDG 4 -->
+  <div class="sdg-card color-4">
+    <div class="header">
+      <div class="num" style="color:#c62828;">4️⃣</div>
+      <div class="name">優質教育<br><span style="font-size:0.6rem;font-weight:400;color:#888;">Quality Education</span></div>
+    </div>
+    <div class="targets">相關 targets：4.4 技術與職業技能 · 4.7 可持續發展教育 · 4.a 教育設施包容性<br>指標：4.7.1 將可持續發展教育融入課程嘅國家百分比</div>
+    <div class="connection">
+      <strong>鞍山連結：</strong>呢個係最直接嘅 SDG！鞍山探索館本身已經係一個戶外教室。加入 SDGs 框架之後，每條導賞路線都可以變成 SDG 4.7 嘅實踐 — 將可持續發展教育融入參觀體驗。香港教育局嘅「全方位學習津貼」同「公民與社會發展科」都支援呢類戶外教育活動。
+    </div>
+    <div class="ai-role">🤖 AI 角色：互動SDGs地圖、AI Chatbot 即時解答、Florence-2 生態辨識教育</div>
+  </div>
+
+  <!-- SDG 6 -->
+  <div class="sdg-card color-6">
+    <div class="header">
+      <div class="num" style="color:#00bfa5;">6️⃣</div>
+      <div class="name">淨水與衛生<br><span style="font-size:0.6rem;font-weight:400;color:#888;">Clean Water and Sanitation</span></div>
+    </div>
+    <div class="targets">相關 targets：6.3 改善水質 · 6.4 用水效率 · 6.6 保護水生態系統</div>
+    <div class="connection">
+      <strong>鞍山連結：</strong>礦山範圍有溪澗水源，係了解礦山水文嘅天然教材。免費加水站可以推廣自備水樽（SDG 6.4），減少膠樽廢物。亦可帶出礦場運作時嘅用水歷史（選礦需要大量水）。
+    </div>
+    <div class="ai-role">🤖 AI 角色：App 記錄膠樽減量、水質數據可視化</div>
+  </div>
+
+  <!-- SDG 8 -->
+  <div class="sdg-card color-8">
+    <div class="header">
+      <div class="num" style="color:#8b4513;">8️⃣</div>
+      <div class="name">尊嚴就業與經濟增長<br><span style="font-size:0.6rem;font-weight:400;color:#888;">Decent Work and Economic Growth</span></div>
+    </div>
+    <div class="targets">相關 targets：8.5 充分就業 · 8.9 可持續旅遊 · 9.1 促進本地文化旅遊</div>
+    <div class="connection">
+      <strong>鞍山連結：</strong>導賞員計劃本身創造就業機會。可持續旅遊（SDG 8.9）係核心 — 鞍山作為馬鞍山嘅文化地標，吸引本地遊客同國際旅客，帶動社區經濟。礦村舊址嘅故事亦可以變成文化旅遊產品。
+    </div>
+    <div class="ai-role">🤖 AI 角色：AI 輔助導賞員培訓、多語言翻譯系統、社交媒體推廣</div>
+  </div>
+
+  <!-- SDG 11 -->
+  <div class="sdg-card color-11">
+    <div class="header">
+      <div class="num" style="color:#f9a825;">1️⃣1️⃣</div>
+      <div class="name">可持續城市與社區<br><span style="font-size:0.6rem;font-weight:400;color:#888;">Sustainable Cities and Communities</span></div>
+    </div>
+    <div class="targets">相關 targets：11.3 包容性社區規劃 · 11.4 保護文化遺產 · 11.7 提供綠色公共空間<br>指標：11.4.1 人均用於文化遺產保護嘅支出</div>
+    <div class="connection">
+      <strong>鞍山連結：</strong>呢個係最強嘅連結之一！SDG 11.4 明確提到「保護世界文化遺產」— 鞍山鐵礦場係香港 <strong>唯一大型工業遺產</strong>，保存礦場建築、礦車軌、礦洞等就係 SDG 11.4 嘅直接實踐。礦村舊址同兩個教會（恩光堂、聖約瑟堂）亦係社區記憶嘅重要載體。
+    </div>
+    <div class="ai-role">🤖 AI 角色：舊相修復、3D 遺址掃描、口述歷史數位化檔案、AI 生成歷史想像圖</div>
+  </div>
+
+  <!-- SDG 12 -->
+  <div class="sdg-card color-12">
+    <div class="header">
+      <div class="num" style="color:#bf8f00;">1️⃣2️⃣</div>
+      <div class="name">負責任消費與生產<br><span style="font-size:0.6rem;font-weight:400;color:#888;">Responsible Consumption and Production</span></div>
+    </div>
+    <div class="targets">相關 targets：12.5 減少廢物 · 12.8 資訊與意識 · 12.b 可持續旅遊監察</div>
+    <div class="connection">
+      <strong>鞍山連結：</strong>推廣「不留痕跡」行山（Leave No Trace）、淨山挑戰（SDG 12.5）。「鐵礦的一生」AI 動畫帶出循環經濟概念：鐵礦開採 → 起樓 → 回收 → 再用 — 呢個本身就係 SDG 12 嘅最佳教材。工作坊用礦場廢棄物料做手作（礦石重生），傳達「廢物都可以有第二生命」。
+    </div>
+    <div class="ai-role">🤖 AI 角色：「鐵礦的一生」動畫、SDGs 足跡記錄 App、廢物減量數據分析</div>
+  </div>
+
+  <!-- SDG 15 -->
+  <div class="sdg-card color-15">
+    <div class="header">
+      <div class="num" style="color:#4caf50;">1️⃣5️⃣</div>
+      <div class="name">陸地生態<br><span style="font-size:0.6rem;font-weight:400;color:#888;">Life on Land</span></div>
+    </div>
+    <div class="targets">相關 targets：15.1 保護陸地生態系統 · 15.4 保護山區生物多樣性 · 15.5 減少生物多樣性流失 · 15.9 將生態系統納入規劃<br>指標：15.1.2 生物多樣性重要地點嘅保護區覆蓋率</div>
+    <div class="connection">
+      <strong>鞍山連結：</strong>呢個係第二強嘅連結！鐵礦場由 1976 年結業到而家近 50 年，完全依靠自然修復（natural succession），係香港罕見嘅生態復育案例。礦山範圍已成為馬鞍山郊野公園嘅一部分。觀察植物群落變化（先鋒植物 → 灌木 → 次生林）就係一個活生生嘅生態修復 timeline。配合同事嘅公民科學記錄（問卷 F 部分），可以逐步建立礦山生態數據庫。
+    </div>
+    <div class="ai-role">🤖 AI 角色：Florence-2 物種辨識、生態數據分析、公民科學 App、年度「生態修復指數」報告</div>
+  </div>
+
+  <!-- SDG 17 -->
+  <div class="sdg-card color-17">
+    <div class="header">
+      <div class="num" style="color:#1a237e;">1️⃣7️⃣</div>
+      <div class="name">夥伴關係<br><span style="font-size:0.6rem;font-weight:400;color:#888;">Partnerships for the Goals</span></div>
+    </div>
+    <div class="targets">相關 targets：17.16 多方夥伴關係 · 17.17 鼓勵有效夥伴關係</div>
+    <div class="connection">
+      <strong>鞍山連結：</strong>呢個係「點線面」框架中 SDG 17 嘅實踐 — 鞍山探索館 × 漁護署 × 導賞員 × 學校 × 企業 × AI 技術，係一個典型嘅 multi-stakeholder partnership。Roots &amp; Shoots 全球網絡亦係 SDG 17 嘅體現（全球超過 50 個國家有分會）。
+    </div>
+    <div class="ai-role">🤖 AI 角色：數據共享平台、Roots &amp; Shoots 國際串連、跨組織協作工具</div>
+  </div>
+</section>
+
+<!-- ═══════ COMPARISON ═══════ -->
+<section>
+  <h2>4. SDGs 優先級矩陣</h2>
+  <p>按「鞍山連結強度」同「易執行度」排出優先順序：</p>
+
+  <table>
+    <tr><th>優先級</th><th>SDG</th><th>鞍山連結強度</th><th>易執行度</th><th>Quick Win</th></tr>
+    <tr><td style="color:#4caf50;font-weight:700;">P0</td><td><strong>4️⃣ 優質教育</strong></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>SDGs 導賞卡 + 口稿小改動</td></tr>
+    <tr><td style="color:#4caf50;font-weight:700;">P0</td><td><strong>1️⃣1️⃣ 文化遺產</strong></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>導賞路線加入「工業遺產」包裝</td></tr>
+    <tr><td style="color:#4caf50;font-weight:700;">P0</td><td><strong>1️⃣5️⃣ 陸地生態</strong></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>生態問卷 + 公民科學記錄起步</td></tr>
+    <tr><td>P1</td><td><strong>1️⃣2️⃣ 負責任消費</strong></td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>淨山挑戰 + 加水站 + 不留痕跡</td></tr>
+    <tr><td>P1</td><td><strong>8️⃣ 尊嚴就業</strong></td><td>⭐⭐⭐</td><td>⭐⭐⭐</td><td>AI 培訓輔助、可持續旅遊包裝</td></tr>
+    <tr><td>P2</td><td><strong>3️⃣ 健康福祉</strong></td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>行山+導賞=整全健康</td></tr>
+    <tr><td>P2</td><td><strong>6️⃣ 淨水</strong></td><td>⭐⭐</td><td>⭐⭐⭐⭐</td><td>加水站、塑膠減量</td></tr>
+    <tr><td>P1</td><td><strong>1️⃣7️⃣ 夥伴關係</strong></td><td>⭐⭐⭐</td><td>⭐⭐⭐</td><td>確定合作夥伴名單</td></tr>
+  </table>
+</section>
+
+<!-- ═══════ INTERNATIONAL CASES ═══════ -->
+<section>
+  <h2>5. 國際參考案例</h2>
+
+  <table>
+    <tr><th>例子</th><th>地點</th><th>SDGs 連結</th><th>值得參考嘅位</th></tr>
+    <tr>
+      <td><strong>Zollverein Coal Mine</strong></td>
+      <td>德國 · 埃森</td>
+      <td>SDG 4 · 8 · 11</td>
+      <td>將成個廢棄煤礦變成 UNESCO 世界遺產 + 文化中心 + 博物館。每年吸引 150 萬遊客，完全將工業遺產轉型為可持續旅遊 + 教育平台。</td>
+    </tr>
+    <tr>
+      <td><strong>Big Pit National Coal Museum</strong></td>
+      <td>英國 · 威爾斯</td>
+      <td>SDG 4 · 8 · 11</td>
+      <td>前煤礦變成互動博物館，遊客可以落礦洞體驗。教育 program 涵蓋工業革命、能源轉型、循環經濟 — 直接對應 SDG 4 + 12。</td>
+    </tr>
+    <tr>
+      <td><strong>Banská Štiavnica</strong></td>
+      <td>斯洛伐克</td>
+      <td>SDG 4 · 11 · 15</td>
+      <td>中世紀礦業小鎮，UNESCO 世界遺產。將礦山水利系統結合生態步道，有完整嘅地質教育徑。</td>
+    </tr>
+    <tr>
+      <td><strong>Kennecott Copper Mine</strong></td>
+      <td>美國 · 猶他</td>
+      <td>SDG 8 · 12 · 15</td>
+      <td>全球最大嘅人工開採礦場之一，而家轉型為可持續採礦 + 教育中心。展示點樣喺礦業運作中平衡經濟同生態。</td>
+    </tr>
+    <tr>
+      <td><strong>茅坪礦洞（香港）</strong></td>
+      <td>香港 · 西貢</td>
+      <td>SDG 11 · 15</td>
+      <td>香港另一個小型礦洞遺址，對比鞍山規模細好多，但同樣有生態修復嘅故事。</td>
+    </tr>
+  </table>
+</section>
+
+<!-- ═══════ AI ROLE ═══════ -->
+<section>
+  <h2>6. AI × SDGs 強化策略</h2>
+
+  <table>
+    <tr><th>SDG</th><th>Without AI（傳統做法）</th><th>With AI（強化版）</th></tr>
+    <tr>
+      <td>4️⃣ 教育</td>
+      <td>導賞員單向講解，遊客被動接收</td>
+      <td>AI Chatbot 24 小時答問 + Florence-2 生態辨識 + GPS 互動地圖</td>
+    </tr>
+    <tr>
+      <td>1️⃣1️⃣ 遺產</td>
+      <td>展板展示礦場歷史相片</td>
+      <td>AI 舊相修復彩色化 + AI 生成「當年場景」想像圖 + 口述歷史 AI 轉錄</td>
+    </tr>
+    <tr>
+      <td>1️⃣5️⃣ 生態</td>
+      <td>導賞員：「呢度有好多蝴蝶」</td>
+      <td>公民科學 App + AI 辨識物種 + 自動生成「生態修復指數」年報</td>
+    </tr>
+    <tr>
+      <td>1️⃣2️⃣ 消費</td>
+      <td>告示牌：「請勿亂拋垃圾」</td>
+      <td>AI 動畫「鐵礦的一生」+ App SDGs 足跡記錄 + 淨山數據可視化</td>
+    </tr>
+    <tr>
+      <td>8️⃣ 就業</td>
+      <td>傳統導賞員培訓手冊</td>
+      <td>AI 輔助培訓內容自動更新 + 多語言翻譯導賞</td>
+    </tr>
+  </table>
+</section>
+
+<!-- ═══════ REFS ═══════ -->
+<section>
+  <h2>7. 參考資料</h2>
+  <ul style="font-size:0.65rem;">
+    <li>聯合國 SDGs 官方網站 — <a href="https://sdgs.un.org/goals" style="color:#80b0d0;">sdgs.un.org/goals</a></li>
+    <li>UNESCO World Heritage and SDGs 指南 — <a href="https://whc.unesco.org/en/sdgs/" style="color:#80b0d0;">whc.unesco.org/en/sdgs/</a></li>
+    <li>Roots &amp; Shoots 4-Step Formula — <a href="https://rootsandshoots.org/our-model/four-step-formula/" style="color:#80b0d0;">rootsandshoots.org</a></li>
+    <li>Zollverein Coal Mine — <a href="https://www.zollverein.de/" style="color:#80b0d0;">zollverein.de</a></li>
+    <li>Big Pit National Coal Museum — <a href="https://museum.wales/bigpit/" style="color:#80b0d0;">museum.wales/bigpit/</a></li>
+    <li>珍古德協會（香港）— <a href="https://janegoodall.org.hk/" style="color:#80b0d0;">janegoodall.org.hk</a></li>
+  </ul>
+  <div class="infobox" style="margin-top:1rem;">
+    <div class="label">📌 備註</div>
+    <p>本報告由 mvmv（AI Agent）根據聯合國 SDGs 公開資料、相關文獻及計劃需求整理而成，內容僅供參考，唔代表聯合國或珍古德協會官方立場。</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  🌍 SDGs 深度分析報告 · 鞍山礦山 × AI 教育計劃 · 2026 年 7 月<br>
+  由 mvmv 編寫 · Data reference from: United Nations SDGs, UNESCO, Roots &amp; Shoots
+</footer>
+
+</body>
+</html>
