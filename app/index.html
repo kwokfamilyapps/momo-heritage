@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>鞍山探索館 · 山徑與水道巡查記錄</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 26px; }
+  body {
+    font-family: -apple-system, "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    line-height: 1.7;
+    padding: 0;
+    max-width: 500px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, #1a3a2a, #0d2a1a);
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 2px solid #40a060;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header h1 { font-size: 1.1rem; color: #c0e8c0; }
+  .header .sub { font-size: 0.5rem; color: #80a080; margin-top: 0.1rem; }
+  .header .user-badge {
+    display: inline-block; background: #2a4a3a; color: #80e080;
+    padding: 0.1rem 0.6rem; border-radius: 20px; font-size: 0.5rem; margin-top: 0.2rem;
+  }
+  /* ── Screens ── */
+  .screen { display: none; padding: 0.8rem; }
+  .screen.active { display: block; }
+
+  /* ── Login ── */
+  .login-box {
+    background: #10181a; border: 1px solid #1a2a2a; border-radius: 14px;
+    padding: 2rem 1.5rem; margin-top: 3rem;
+  }
+  .login-box h2 { font-size: 1rem; color: #60c080; text-align: center; margin-bottom: 1rem; }
+  .login-btn {
+    display: block; width: 100%; padding: 0.8rem;
+    margin: 0.5rem 0; border: none; border-radius: 10px;
+    font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  }
+  .login-btn.admin { background: #2a4a6a; color: #c0e0ff; }
+  .login-btn.vol { background: #2a4a3a; color: #c0e8c0; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-block; padding: 0.5rem 1rem; border: none; border-radius: 8px;
+    font-size: 0.65rem; font-weight: 600; cursor: pointer; text-align: center;
+  }
+  .btn-primary { background: #2a6a4a; color: #fff; }
+  .btn-secondary { background: #2a2a3a; color: #c0c0e0; }
+  .btn-danger { background: #6a2a2a; color: #ffa0a0; }
+  .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.5rem; }
+  .btn-full { width: 100%; margin: 0.3rem 0; }
+
+  /* ── Form ── */
+  .form-group { margin-bottom: 0.8rem; }
+  .form-group label { display: block; font-size: 0.6rem; color: #80b080; margin-bottom: 0.2rem; font-weight: 600; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 0.5rem; border: 1px solid #2a3a2a; border-radius: 8px;
+    background: #0c0c14; color: #e0e0e0; font-size: 0.6rem;
+  }
+  .form-group textarea { min-height: 2.5rem; resize: vertical; }
+  .form-group .hint { font-size: 0.45rem; color: #666; margin-top: 0.1rem; }
+
+  /* ── Checkbox Grid ── */
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+  .check-grid label {
+    display: flex; align-items: center; gap: 0.3rem;
+    font-size: 0.55rem; color: #aaa; padding: 0.3rem;
+    background: #0c0c14; border-radius: 6px; border: 1px solid #1a1a2a;
+  }
+  .check-grid input[type="checkbox"] { width: 1rem; height: 1rem; }
+
+  /* ── Photo Upload ── */
+  .photo-zone {
+    border: 2px dashed #2a4a3a; border-radius: 10px; padding: 0.8rem;
+    text-align: center; color: #888; font-size: 0.5rem; cursor: pointer;
+    margin: 0.3rem 0;
+  }
+  .photo-previews { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.3rem; }
+  .photo-previews .thumb {
+    width: 4rem; height: 4rem; border-radius: 6px; overflow: hidden;
+    position: relative; background: #0c0c14; border: 1px solid #2a2a3a;
+  }
+  .photo-previews .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-previews .thumb .del {
+    position: absolute; top: 0; right: 0; background: rgba(200,0,0,0.7);
+    color: #fff; width: 1rem; height: 1rem; font-size: 0.5rem;
+    text-align: center; line-height: 1rem; cursor: pointer; border-radius: 0 6px 0 6px;
+  }
+
+  /* ── Record List ── */
+  .record-card {
+    background: #10181a; border: 1px solid #1a2a2a; border-radius: 10px;
+    padding: 0.6rem; margin: 0.5rem 0;
+  }
+  .record-card .date { font-size: 0.5rem; color: #888; }
+  .record-card .trail { font-size: 0.65rem; color: #c0e8c0; font-weight: 600; }
+  .record-card .type { font-size: 0.5rem; color: #80b080; }
+  .record-card .issues { font-size: 0.5rem; color: #aaa; margin-top: 0.2rem; }
+
+  /* ── Nav ── */
+  .nav-bar {
+    display: flex; gap: 0.3rem; padding: 0.5rem;
+    background: #0c0c14; border-top: 1px solid #1a1a2a; position: sticky; bottom: 0;
+  }
+  .nav-btn {
+    flex: 1; text-align: center; padding: 0.4rem; border: none; border-radius: 8px;
+    background: transparent; color: #888; font-size: 0.5rem; cursor: pointer;
+  }
+  .nav-btn.active { background: #1a3a2a; color: #60c080; }
+
+  .tabs { display: flex; gap: 0.3rem; margin-bottom: 0.6rem; }
+  .tab { padding: 0.3rem 0.6rem; border: 1px solid #2a3a2a; border-radius: 6px;
+    font-size: 0.5rem; cursor: pointer; color: #888; background: #0c0c14; }
+  .tab.active { background: #1a3a2a; color: #60c080; border-color: #40a060; }
+
+  /* ── Admin ── */
+  .admin-section { display: none; }
+  .admin-section.show { display: block; }
+
+  @media (max-width: 400px) {
+    html { font-size: 22px; }
+    .check-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header" id="appHeader">
+  <h1>🏞️ 鞍山探索館</h1>
+  <div class="sub">山徑及水道巡查記錄工具</div>
+  <div class="user-badge" id="userBadge">未登入</div>
+</div>
+
+<!-- ═══ SCREEN: LOGIN ═══ -->
+<div class="screen active" id="screenLogin">
+  <div class="login-box">
+    <h2>🔐 登入</h2>
+    <button class="login-btn admin" onclick="login('admin')">👤 Admin 登入</button>
+    <button class="login-btn vol" onclick="login('vol')">👥 義工隊登入</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: MAIN ═══ -->
+<div class="screen" id="screenMain">
+  <div id="tabContent"></div>
+  <div class="nav-bar">
+    <button class="nav-btn active" onclick="switchTab('form')">📝 記錄</button>
+    <button class="nav-btn" onclick="switchTab('list')">📋 紀錄</button>
+    <button class="nav-btn admin-only" onclick="switchTab('admin')" id="adminTabBtn">⚙️ 管理</button>
+    <button class="nav-btn" onclick="logout()">🚪 登出</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+const TRAILS = [
+  "馬鞍山郊遊徑",
+  "礦場遺址路線",
+  "礦村路線",
+  "恩光堂路線",
+  "鹿巢山路線",
+  "昂平路線",
+  "其他"
+];
+
+const TRAIL_ISSUES = [
+  "垃圾黑點", "山徑水土流失", "山徑路面擴闊", "山徑路面泥濘",
+  "山徑樹根外露", "山徑複線化", "捷徑", "設施損壞", "營火痕跡", "其他"
+];
+
+const WATER_ISSUES = [
+  "完全暢通", "部份阻塞", "完全阻塞（清理後功能恢復）",
+  "失效（清理後不能恢復功能）", "已損毀", "其他"
+];
+
+const TRAIL_SOLUTIONS = [
+  "堵截捷徑", "石籃修復", "通知漁護署維修",
+  "暫不用處理", "另行再議（需跟進）", "其他"
+];
+
+const WATER_SOLUTIONS = [
+  "義工清理水道", "通知漁護署維修",
+  "暫不用處理", "另行再議（需跟進）", "其他"
+];
+
+let state = {
+  user: null,
+  tab: 'form',
+  activityType: 'trail',
+  records: JSON.parse(localStorage.getItem('mos_records') || '[]'),
+  photos: [],
+  editId: null
+};
+
+// ══════════════════════════════════════════════
+// LOGIN / LOGOUT
+// ══════════════════════════════════════════════
+function login(role) {
+  state.user = { role };
+  document.getElementById('userBadge').textContent = role === 'admin' ? '👤 Admin' : '👥 義工隊';
+  document.getElementById('screenLogin').classList.remove('active');
+  document.getElementById('screenMain').classList.add('active');
+  document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'inline' : 'none';
+  renderForm();
+  renderList();
+}
+
+function logout() {
+  state.user = null;
+  document.getElementById('screenMain').classList.remove('active');
+  document.getElementById('screenLogin').classList.add('active');
+  document.getElementById('userBadge').textContent = '未登入';
+}
+
+// ══════════════════════════════════════════════
+// TAB SWITCH
+// ══════════════════════════════════════════════
+function switchTab(tab) {
+  state.tab = tab;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn')[['form','list','admin','logout'].indexOf(tab)]?.classList.add('active');
+  if (tab === 'form') renderForm();
+  else if (tab === 'list') renderList();
+  else if (tab === 'admin') renderAdmin();
+}
+
+// ══════════════════════════════════════════════
+// RENDER FORM
+// ══════════════════════════════════════════════
+let photoCount = 0;
+
+function renderForm() {
+  const r = state.editId ? state.records.find(rec => rec.id === state.editId) : null;
+  const today = new Date().toISOString().split('T')[0];
+
+  let html = `<div style="margin-bottom:0.6rem;">
+    <div class="tabs">
+      <div class="tab ${state.activityType==='trail'?'active':''}" onclick="setActivity('trail')">🪨 山徑問題</div>
+      <div class="tab ${state.activityType==='water'?'active':''}" onclick="setActivity('water')">💧 水道記錄</div>
+    </div>
+  </div>
+  <form id="recordForm">
+    <div class="form-group">
+      <label>📅 日期</label>
+      <input type="date" id="fDate" value="${r ? r.date : today}">
+    </div>
+    <div class="form-group">
+      <label>👤 記錄人員</label>
+      <input type="text" id="fRecorder" value="${r ? r.recorder : ''}" placeholder="姓名">
+    </div>
+    <div class="form-group">
+      <label>🛤️ 山徑名稱</label>
+      <select id="fTrail">`;
+
+  TRAILS.forEach(t => {
+    const sel = r && r.trail === t ? 'selected' : '';
+    html += `<option value="${t}" ${sel}>${t}</option>`;
+  });
+
+  html += `</select>
+      <input type="text" id="fTrailOther" placeholder="其他山徑名稱" style="margin-top:0.3rem;display:${r && r.trail === '其他' ? 'block' : 'none'};">
+    </div>`;
+
+  if (state.activityType === 'trail') {
+    html += `<div class="form-group">
+      <label>⚠️ 山徑問題（可選多項）</label>
+      <div class="check-grid">`;
+    TRAIL_ISSUES.forEach(issue => {
+      const checked = r && r.issues && r.issues.includes(issue) ? 'checked' : '';
+      html += `<label><input type="checkbox" class="trail-issue" value="${issue}" ${checked}>${issue}</label>`;
+    });
+    html += `</div></div>
+    <div class="form-group">
+      <label>🔧 建議處理方法</label>
+      <select id="fSolution">`;
+    TRAIL_SOLUTIONS.forEach(s => {
+      const sel = r && r.solution === s ? 'selected' : '';
+      html += `<option value="${s}" ${sel}>${s}</option>`;
+    });
+    html += `</select>
+    </div>`;
+  } else {
+    html += `<div class="form-group">
+      <label>💧 水道狀況（可選多項）</label>
+      <div class="check-grid">`;
+    WATER_ISSUES.forEach(issue => {
+      const checked = r && r.issues && r.issues.includes(issue) ? 'checked' : '';
+      html += `<label><input type="checkbox" class="water-issue" value="${issue}" ${checked}>${issue}</label>`;
+    });
+    html += `</div></div>
+    <div class="form-group">
+      <label>🔧 建議處理方法</label>
+      <select id="fSolution">`;
+    WATER_SOLUTIONS.forEach(s => {
+      const sel = r && r.solution === s ? 'selected' : '';
+      html += `<option value="${s}" ${sel}>${s}</option>`;
+    });
+    html += `</select>
+    </div>`;
+  }
+
+  // Photos
+  const photos = r ? r.photos || [] : [];
+  html += `<div class="form-group">
+    <label>📸 相片記錄（最多 3 張）</label>
+    <div class="photo-zone" onclick="document.getElementById('photoInput').click()">
+      + 點擊新增相片
+    </div>
+    <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(event)">
+    <div class="photo-previews" id="photoPreviews">`;
+  photos.forEach((p, idx) => {
+    html += `<div class="thumb"><img src="${p}" alt="photo"><div class="del" onclick="removePhoto(${idx})">×</div></div>`;
+  });
+  html += `</div>
+    <div class="hint">每次最多 3 張，可於上載前更換相片</div>
+  </div>
+
+  <div class="form-group">
+    <label>📝 備註</label>
+    <textarea id="fNote" placeholder="其他補充…">${r ? (r.note||'') : ''}</textarea>
+  </div>
+
+  <div style="display:flex;gap:0.3rem;">
+    <button type="button" class="btn btn-primary btn-full" onclick="submitRecord()">${state.editId ? '📝 更新記錄' : '💾 提交記錄'}</button>
+    ${state.editId ? `<button type="button" class="btn btn-secondary btn-full" onclick="cancelEdit()">取消</button>` : ''}
+  </div>
+  </form>`;
+
+  document.getElementById('tabContent').innerHTML = html;
+  state.photos = photos;
+}
+
+function setActivity(type) {
+  state.activityType = type;
+  state.editId = null;
+  state.photos = [];
+  renderForm();
+}
+
+// ══════════════════════════════════════════════
+// PHOTOS
+// ══════════════════════════════════════════════
+function handlePhotos(e) {
+  const files = Array.from(e.target.files);
+  const remaining = 3 - state.photos.length;
+  const toAdd = files.slice(0, remaining);
+  toAdd.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      state.photos.push(ev.target.result);
+      updatePhotoPreview();
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+}
+
+function removePhoto(idx) {
+  state.photos.splice(idx, 1);
+  updatePhotoPreview();
+}
+
+function updatePhotoPreview() {
+  const container = document.getElementById('photoPreviews');
+  if (!container) return;
+  container.innerHTML = '';
+  state.photos.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = 'thumb';
+    div.innerHTML = `<img src="${p}" alt="photo"><div class="del" onclick="removePhoto(${idx})">×</div>`;
+    container.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════════════════
+function submitRecord() {
+  const date = document.getElementById('fDate')?.value;
+  const recorder = document.getElementById('fRecorder')?.value;
+  const trail = document.getElementById('fTrail')?.value;
+  const trailOther = document.getElementById('fTrailOther')?.value;
+  const solution = document.getElementById('fSolution')?.value;
+  const note = document.getElementById('fNote')?.value;
+
+  if (!date || !recorder) {
+    alert('請填寫日期和記錄人員');
+    return;
+  }
+
+  let issues = [];
+  if (state.activityType === 'trail') {
+    document.querySelectorAll('.trail-issue:checked').forEach(cb => issues.push(cb.value));
+  } else {
+    document.querySelectorAll('.water-issue:checked').forEach(cb => issues.push(cb.value));
+  }
+
+  const record = {
+    id: state.editId || Date.now().toString(),
+    date, recorder,
+    trail: trail === '其他' ? trailOther : trail,
+    activityType: state.activityType,
+    issues, solution, note: note || '',
+    photos: state.photos,
+    createdBy: state.user.role,
+    createdAt: new Date().toISOString()
+  };
+
+  if (state.editId) {
+    const idx = state.records.findIndex(r => r.id === state.editId);
+    if (idx >= 0) state.records[idx] = record;
+  } else {
+    state.records.unshift(record);
+  }
+
+  localStorage.setItem('mos_records', JSON.stringify(state.records));
+  state.editId = null;
+  state.photos = [];
+  switchTab('list');
+  renderList();
+}
+
+function cancelEdit() {
+  state.editId = null;
+  state.photos = [];
+  renderForm();
+}
+
+// ══════════════════════════════════════════════
+// LIST
+// ══════════════════════════════════════════════
+function renderList() {
+  let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+    <h2 style="font-size:0.8rem;color:#60c080;">📋 巡查紀錄</h2>
+    <span style="font-size:0.5rem;color:#888;">共 ${state.records.length} 項</span>
+  </div>`;
+
+  if (state.records.length === 0) {
+    html += `<p style="text-align:center;color:#555;margin-top:3rem;">暫無記錄</p>`;
+  } else {
+    state.records.forEach(r => {
+      const canEdit = state.user.role === 'admin' || r.createdBy === 'vol';
+      html += `<div class="record-card">
+        <div class="date">${r.date} · ${r.createdBy === 'admin' ? 'Admin' : '義工'}</div>
+        <div class="trail">${r.trail}</div>
+        <div class="type">${r.activityType === 'trail' ? '🪨 山徑' : '💧 水道'}</div>
+        <div class="issues"><strong>問題：</strong>${(r.issues||['']).join('、')}</div>
+        ${r.solution ? `<div class="issues"><strong>建議：</strong>${r.solution}</div>` : ''}
+        ${r.recorder ? `<div class="issues"><strong>記錄：</strong>${r.recorder}</div>` : ''}
+        ${r.note ? `<div class="issues"><strong>備註：</strong>${r.note}</div>` : ''}
+        ${r.photos && r.photos.length > 0 ? `<div class="issues"><strong>相片：</strong>${r.photos.length} 張</div>` : ''}
+        ${canEdit ? `<div style="margin-top:0.3rem;">
+          <button class="btn btn-sm btn-secondary" onclick="editRecord('${r.id}')">✏️ 修改</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteRecord('${r.id}')">🗑️ 刪除</button>
+        </div>` : ''}
+      </div>`;
+    });
+  }
+
+  // Export
+  if (state.user.role === 'admin') {
+    html += `<div style="margin-top:1rem;">
+      <button class="btn btn-primary btn-full" onclick="exportCSV()">📊 匯出報表 (CSV)</button>
+    </div>`;
+  }
+
+  document.getElementById('tabContent').innerHTML = html;
+}
+
+function editRecord(id) {
+  state.editId = id;
+  state.photos = [];
+  const rec = state.records.find(r => r.id === id);
+  if (rec) state.activityType = rec.activityType;
+  renderForm();
+}
+
+function deleteRecord(id) {
+  if (!confirm('確定刪除此記錄？')) return;
+  state.records = state.records.filter(r => r.id !== id);
+  localStorage.setItem('mos_records', JSON.stringify(state.records));
+  renderList();
+}
+
+// ══════════════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════════════
+function renderAdmin() {
+  if (state.user.role !== 'admin') {
+    document.getElementById('tabContent').innerHTML = '<p style="text-align:center;color:#c06060;margin-top:3rem;">⚠️ 僅限 Admin 使用</p>';
+    return;
+  }
+  const total = state.records.length;
+  const trailCount = state.records.filter(r => r.activityType === 'trail').length;
+  const waterCount = state.records.filter(r => r.activityType === 'water').length;
+  const uniqueRecorders = [...new Set(state.records.map(r => r.recorder))].filter(Boolean);
+
+  let html = `<h2 style="font-size:0.8rem;color:#60c080;">⚙️ 管理</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin:0.5rem 0;">
+    <div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;">
+      <div style="font-size:1.2rem;color:#60c080;">${total}</div>
+      <div style="font-size:0.45rem;color:#888;">總記錄</div>
+    </div>
+    <div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;">
+      <div style="font-size:1.2rem;color:#c0a060;">${trailCount}</div>
+      <div style="font-size:0.45rem;color:#888;">山徑問題</div>
+    </div>
+    <div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;">
+      <div style="font-size:1.2rem;color:#40a0c0;">${waterCount}</div>
+      <div style="font-size:0.45rem;color:#888;">水道記錄</div>
+    </div>
+    <div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;">
+      <div style="font-size:1.2rem;color:#c08080;">${uniqueRecorders.length}</div>
+      <div style="font-size:0.45rem;color:#888;">記錄人員</div>
+    </div>
+  </div>
+  <button class="btn btn-danger btn-full" onclick="clearAllData()">🗑️ 清除所有數據</button>`;
+
+  document.getElementById('tabContent').innerHTML = html;
+}
+
+function clearAllData() {
+  if (!confirm('確定清除所有記錄？此操作不可復原！')) return;
+  if (!confirm('再次確認：清除全部 ${state.records.length} 項記錄？')) return;
+  state.records = [];
+  localStorage.setItem('mos_records', JSON.stringify(state.records));
+  renderAdmin();
+}
+
+// ══════════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════════
+function exportCSV() {
+  let csv = "日期,記錄人員,山徑名稱,類別,問題,建議處理方法,備註,相片數\n";
+  state.records.forEach(r => {
+    const issues = (r.issues||[]).join(';');
+    csv += `"${r.date}","${r.recorder||''}","${r.trail}","${r.activityType==='trail'?'山徑':'水道'}","${issues}","${r.solution||''}","${r.note||''}","${(r.photos||[]).length}"\n`;
+  });
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `巡查記錄_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+}
+
+// ══════════════════════════════════════════════
+// AUTO-TRAIL OTHER FIELD
+// ══════════════════════════════════════════════
+document.addEventListener('change', function(e) {
+  if (e.target && e.target.id === 'fTrail') {
+    const otherInput = document.getElementById('fTrailOther');
+    if (otherInput) otherInput.style.display = e.target.value === '其他' ? 'block' : 'none';
+  }
+});
+</script>
+
+</body>
+</html>
