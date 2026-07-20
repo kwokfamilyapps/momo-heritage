@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪨「從礦藏到寶藏」— 鞍山永續傳承 4-Step Formula × SDGs 計劃書</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 26px; }
+  body {
+    font-family: -apple-system, "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    line-height: 1.85;
+    padding: 0;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 3px solid #e94560;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+    color: #f5f5f5;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+  .hero .subtitle {
+    font-size: 1.1rem;
+    color: #a0a0c0;
+    margin-bottom: 1rem;
+  }
+  .hero .tagline {
+    display: inline-block;
+    background: #e94560;
+    color: #fff;
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* Navigation */
+  .toc {
+    background: #12121a;
+    padding: 1.5rem;
+    border-bottom: 1px solid #2a2a3a;
+  }
+  .toc h2 { font-size: 1rem; color: #e94560; margin-bottom: 0.8rem; }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.5rem;
+  }
+  .toc a {
+    color: #80b0e0;
+    text-decoration: none;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .toc a:hover { background: #1e1e30; color: #c0e0ff; }
+
+  /* Main */
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem; }
+  section { margin-bottom: 3rem; }
+
+  h2 {
+    font-size: 1.5rem;
+    color: #e94560;
+    border-left: 5px solid #e94560;
+    padding-left: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: #f0c040;
+    margin: 1.2rem 0 0.6rem;
+  }
+  h4 {
+    font-size: 0.95rem;
+    color: #80b0e0;
+    margin: 0.8rem 0 0.4rem;
+  }
+
+  p { margin-bottom: 0.8rem; }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+
+  /* Central Theme Box */
+  .theme-box {
+    background: linear-gradient(135deg, #1e1e30, #2a1a2e);
+    border: 2px solid #e94560;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .theme-box h3 {
+    color: #e94560;
+    font-size: 1.3rem;
+    margin: 0 0 0.8rem;
+  }
+  .theme-box .timeline {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.8rem;
+  }
+  .theme-box .timeline span {
+    background: #2a2a40;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+  }
+  .theme-box .timeline .past { border-left: 3px solid #888; }
+  .theme-box .timeline .present { border-left: 3px solid #f0c040; }
+  .theme-box .timeline .future { border-left: 3px solid #40c080; }
+
+  /* 4-Step Flow */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .flow-card {
+    background: #16161f;
+    border-radius: 12px;
+    padding: 1rem;
+    border-top: 4px solid #555;
+    text-align: center;
+  }
+  .flow-card .step-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #e94560;
+    line-height: 1;
+  }
+  .flow-card .step-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #f0c040;
+    margin: 0.3rem 0 0.5rem;
+  }
+  .flow-card .step-en {
+    font-size: 0.6rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+  }
+  .flow-card ul { text-align: left; font-size: 0.7rem; margin-left: 0.8rem; }
+  .flow-card li { margin-bottom: 0.2rem; }
+
+  /* SDG Grid */
+  .sdg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.8rem;
+    margin: 1rem 0;
+  }
+  .sdg-card {
+    background: #16161f;
+    border-radius: 10px;
+    padding: 0.8rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  .sdg-card .num {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #e94560;
+    min-width: 36px;
+    text-align: center;
+  }
+  .sdg-card .desc { font-size: 0.7rem; flex: 1; }
+
+  /* Action Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.7rem;
+    margin: 1rem 0;
+  }
+  th, td {
+    border: 1px solid #2a2a3a;
+    padding: 0.5rem 0.6rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #1e1e30;
+    color: #f0c040;
+    font-weight: 600;
+  }
+  td { background: #101018; }
+
+  /* Info Box */
+  .info-box {
+    background: #1a1a2e;
+    border-left: 4px solid #40c0e0;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.75rem;
+  }
+  .info-box strong { color: #40c0e0; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #555;
+    font-size: 0.6rem;
+    border-top: 1px solid #1a1a2e;
+  }
+
+  @media (max-width: 600px) {
+    html { font-size: 22px; }
+    .hero h1 { font-size: 1.6rem; }
+    .flow { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<div class="hero">
+  <h1>🪨 從礦藏到寶藏</h1>
+  <div class="subtitle">鞍山永續傳承 — 4-Step Formula × SDGs 實踐計劃書</div>
+  <div class="tagline">鞍山探索館 · 珍古德 Roots &amp; Shoots 框架</div>
+</div>
+
+<!-- ========== TOC ========== -->
+<div class="toc">
+  <h2>📋 目錄</h2>
+  <div class="toc-grid">
+    <a href="#theme">🎯 中央主題</a>
+    <a href="#overview">🔭 計劃概述</a>
+    <a href="#step1">1️⃣ 投入熱情</a>
+    <a href="#step2">2️⃣ 觀察地圖</a>
+    <a href="#step3">3️⃣ 行動改變</a>
+    <a href="#step4">4️⃣ 慶祝分享</a>
+    <a href="#sdg">🏁 SDGs 連結</a>
+    <a href="#flow">🔄 完整流程</a>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ========== THEME ========== -->
+<section id="theme">
+  <h2>🎯 中央主題：從礦藏到寶藏</h2>
+  <div class="theme-box">
+    <h3>「從礦藏到寶藏 — 鞍山永續傳承」</h3>
+    <p style="font-size:0.8rem;color:#aaa;">鐵礦場嘅過去係「開採」，而家係「保存」，未來係「永續」。</p>
+    <p style="font-size:0.75rem;color:#ccc;">呢個主題貫穿 4 個步驟，將歷史 × 生態 × 社區連成一條線</p>
+    <div class="timeline">
+      <span class="past">🪨 過去：鐵礦開採</span>
+      <span class="present">🌳 現在：文化生態保存</span>
+      <span class="future">🌱 未來：永續傳承</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== OVERVIEW ========== -->
+<section id="overview">
+  <h2>🔭 計劃概述</h2>
+  <p style="font-size:0.8rem;">以 <strong>珍古德博士 Roots &amp; Shoots 4-Step Formula</strong> 為框架，將鞍山探索館嘅導賞服務升級為一套 <strong>有系統、可持續、連結聯合國 SDGs</strong> 嘅社區行動計劃。</p>
+  <div class="info-box">
+    <strong>💡 核心問題：</strong>點樣令遊客由「嚟行吓」變成「關心鞍山、參與保育」？
+  </div>
+</section>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+  <h2>1️⃣ Get Engaged — 投入熱情</h2>
+  <p style="font-size:0.75rem;color:#888;">目標：令遊客一開場就 feel 到鞍山唔係普通山頭</p>
+
+  <div class="flow">
+    <div class="flow-card" style="border-top-color:#e94560;">
+      <div class="step-num">🔥</div>
+      <div class="step-title">故事觸發</div>
+      <div style="font-size:0.65rem;color:#aaa;">導賞員（包括 Ming！）用礦工故事、鐵礦場變遷，開場就抓住人心</div>
+    </div>
+    <div class="flow-card" style="border-top-color:#f0c040;">
+      <div class="step-num">🎬</div>
+      <div class="step-title">短片引入</div>
+      <div style="font-size:0.65rem;color:#aaa;">探索館入口播 3 分鐘短片，對比昔日礦場 vs 今日山林</div>
+    </div>
+    <div class="flow-card" style="border-top-color:#40c0e0;">
+      <div class="step-num">❓</div>
+      <div class="step-title">互動問題</div>
+      <div style="font-size:0.65rem;color:#aaa;">導賞開始前問：「鐵礦場關閉後，呢度發生咗咩事？」</div>
+    </div>
+    <div class="flow-card" style="border-top-color:#40c080;">
+      <div class="step-num">🗺️</div>
+      <div class="step-title">SDGs 簡介卡</div>
+      <div style="font-size:0.65rem;color:#aaa;">每位遊客派一張 SDGs 卡，留意今日旅程見到邊個目標</div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>行動</th><th>邊個負責</th><th>SDGs</th></tr>
+    <tr><td>礦工故事搜集（訪問舊居民）</td><td>導賞員團隊</td><td>SDG 4️⃣ 優質教育</td></tr>
+    <tr><td>3分鐘短片製作</td><td>探索館 + 義工</td><td>SDG 1️⃣1️⃣ 文化遺產</td></tr>
+    <tr><td>SDGs 導賞卡設計</td><td>導賞員 + 設計義工</td><td>SDG 4️⃣ 優質教育</td></tr>
+  </table>
+</section>
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+  <h2>2️⃣ Observe — 觀察 / 社區地圖</h2>
+  <p style="font-size:0.75rem;color:#888;">目標：帶遊客用新角度望鞍山，發現平時忽略嘅細節</p>
+
+  <table>
+    <tr><th>路線</th><th>觀察重點</th><th>SDGs</th></tr>
+    <tr>
+      <td>🪨 礦場遺址路線</td>
+      <td>礦洞、礦車軌、選礦廠遺迹 → 問：點解呢啲建築仲喺度？</td>
+      <td>SDG 1️⃣1️⃣ 文化遺產</td>
+    </tr>
+    <tr>
+      <td>⛪ 恩光堂路線</td>
+      <td>白牆青苔屋頂、紅十字鐘樓 → 建築同自然如何共存</td>
+      <td>SDG 1️⃣1️⃣ + 1️⃣5️⃣</td>
+    </tr>
+    <tr>
+      <td>🌳 礦山生態路線</td>
+      <td>礦場修復後嘅植物群落、雀鳥、蝴蝶</td>
+      <td>SDG 1️⃣5️⃣ 陸地生態</td>
+    </tr>
+    <tr>
+      <td>👨‍👩‍👧‍👦 礦村生活路線</td>
+      <td>天光墟、聖約瑟堂、礦工宿舍 → 以前嘅社區生活</td>
+      <td>SDG 8️⃣ 社區經濟</td>
+    </tr>
+  </table>
+
+  <div class="info-box">
+    <strong>🧰 Community Mapping 工具：</strong>簡易 checklist 卡俾遊客自己 mark 低觀察到嘅嘢，導賞完結時收集做數據。同你個 GPS 相機 app 完美對接！
+  </div>
+</section>
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+  <h2>3️⃣ Take Action — 行動改變</h2>
+  <p style="font-size:0.75rem;color:#888;">目標：由觀察變成具體貢獻</p>
+
+  <table>
+    <tr><th>行動</th><th>由邊個做</th><th>具體內容</th><th>SDGs</th></tr>
+    <tr>
+      <td>🗑️ 山徑清潔</td>
+      <td>遊客 + 導賞員</td>
+      <td>導賞途中順手清潔山徑（參考珍古德海洋清潔模式）</td>
+      <td>SDG 1️⃣5️⃣</td>
+    </tr>
+    <tr>
+      <td>📸 公民科學記錄</td>
+      <td>遊客</td>
+      <td>用手機影低礦山生態變化，上載去共同資料庫（GPS 相機功能！）</td>
+      <td>SDG 1️⃣5️⃣</td>
+    </tr>
+    <tr>
+      <td>🏗️ 遺迹維護</td>
+      <td>導賞員團隊</td>
+      <td>定期檢查礦場建築狀況，記錄需要修復嘅位置</td>
+      <td>SDG 1️⃣1️⃣</td>
+    </tr>
+    <tr>
+      <td>📖 口述歷史收集</td>
+      <td>導賞員 + 街坊</td>
+      <td>訪問礦村舊居民，記錄礦工故事</td>
+      <td>SDG 4️⃣</td>
+    </tr>
+    <tr>
+      <td>🌱 綠化行動</td>
+      <td>社區義工</td>
+      <td>礦場周邊植樹，加速生態修復</td>
+      <td>SDG 1️⃣5️⃣</td>
+    </tr>
+  </table>
+</section>
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+  <h2>4️⃣ Celebrate — 慶祝分享</h2>
+  <p style="font-size:0.75rem;color:#888;">目標：令成果被看見，吸引更多人參與</p>
+
+  <table>
+    <tr><th>慶祝方式</th><th>點做</th></tr>
+    <tr><td>📊 季度成果報表</td><td>用 HTML 技能整「鞍山永續報告」，show 清潔咗幾多、記錄咗幾多物種</td></tr>
+    <tr><td>📸 遊客故事牆</td><td>探索館實體牆 + 網上版，貼滿遊客嘅觀察相片同感言</td></tr>
+    <tr><td>🏆 導賞員感謝日</td><td>每年一次聚會，分享心得，表揚活躍導賞員</td></tr>
+    <tr><td>🌐 Roots &amp; Shoots 上架</td><td>成個 project upload 上 Roots &amp; Shoots 官網，同全球分享鞍山故事</td></tr>
+    <tr><td>🎬 年度影片</td><td>用一年收集嘅相片同數據，整一條「鞍山蛻變」短片</td></tr>
+  </table>
+</section>
+
+<!-- ========== SDGs ========== -->
+<section id="sdg">
+  <h2>🏁 SDGs 連結分析</h2>
+  <p style="font-size:0.8rem;">鞍山探索館計劃可直接連結 <strong>6 個 SDGs</strong>：</p>
+
+  <div class="sdg-grid">
+    <div class="sdg-card">
+      <div class="num">4️⃣</div>
+      <div class="desc">
+        <strong>優質教育</strong><br>
+        導賞本身就係戶外教室 — 歷史教育、生態教育、永續教育一次過
+      </div>
+    </div>
+    <div class="sdg-card">
+      <div class="num">8️⃣</div>
+      <div class="desc">
+        <strong>尊嚴就業與經濟增長</strong><br>
+        可持續旅遊帶動馬鞍山社區經濟，導賞員計劃創造就業
+      </div>
+    </div>
+    <div class="sdg-card">
+      <div class="num">1️⃣1️⃣</div>
+      <div class="desc">
+        <strong>可持續城市與社區</strong><br>
+        保存礦場文化遺產，延續礦村社區記憶
+      </div>
+    </div>
+    <div class="sdg-card">
+      <div class="num">1️⃣2️⃣</div>
+      <div class="desc">
+        <strong>負責任消費與生產</strong><br>
+        推廣不留痕跡行山、生態旅遊唔破壞環境
+      </div>
+    </div>
+    <div class="sdg-card">
+      <div class="num">1️⃣5️⃣</div>
+      <div class="desc">
+        <strong>陸地生態</strong><br>
+        記錄礦山修復後嘅生物多樣性變化，保護馬鞍山郊野公園
+      </div>
+    </div>
+    <div class="sdg-card">
+      <div class="num">1️⃣7️⃣</div>
+      <div class="desc">
+        <strong>夥伴關係</strong><br>
+        探索館 × 漁護署 × 導賞員 × 社區 × 學校 — 多機構協作
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FULL FLOW ========== -->
+<section id="flow">
+  <h2>🔄 完整流程圖</h2>
+
+  <div style="text-align:center;background:#12121a;border-radius:16px;padding:2rem 1rem;border:1px solid #2a2a3a;">
+    <div style="font-size:1.3rem;font-weight:700;color:#e94560;margin-bottom:1rem;">
+      ╔══ 中央主題 ══╗<br>
+      「從礦藏到寶藏」<br>
+      鞍山永續傳承<br>
+      ╚══════════════╝
+    </div>
+
+    <div style="display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <span style="background:#2a1a1a;padding:0.3rem 0.8rem;border-radius:8px;font-size:0.7rem;">🪨 過去：開採</span>
+      <span style="background:#2a2a1a;padding:0.3rem 0.8rem;border-radius:8px;font-size:0.7rem;">🌳 現在：保存</span>
+      <span style="background:#1a2a1a;padding:0.3rem 0.8rem;border-radius:8px;font-size:0.7rem;">🌱 未來：永續</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.8rem;">
+      <div style="background:#1e1a2e;border-radius:10px;padding:0.8rem;border-top:3px solid #e94560;">
+        <div style="font-size:0.8rem;font-weight:700;color:#e94560;">Step 1<br>🔥 投入熱情</div>
+        <div style="font-size:0.6rem;color:#aaa;margin-top:0.3rem;">故事觸發 · 短片引入<br>互動問題 · SDGs 卡</div>
+        <div style="font-size:0.55rem;color:#666;margin-top:0.3rem;">SDG 4️⃣</div>
+      </div>
+      <div style="background:#1e1a2e;border-radius:10px;padding:0.8rem;border-top:3px solid #f0c040;">
+        <div style="font-size:0.8rem;font-weight:700;color:#f0c040;">Step 2<br>👀 觀察地圖</div>
+        <div style="font-size:0.6rem;color:#aaa;margin-top:0.3rem;">4 條主題路線<br>Community Mapping</div>
+        <div style="font-size:0.55rem;color:#666;margin-top:0.3rem;">SDG 1️⃣1️⃣ + 1️⃣5️⃣</div>
+      </div>
+      <div style="background:#1e1a2e;border-radius:10px;padding:0.8rem;border-top:3px solid #40c0e0;">
+        <div style="font-size:0.8rem;font-weight:700;color:#40c0e0;">Step 3<br>🚀 行動改變</div>
+        <div style="font-size:0.6rem;color:#aaa;margin-top:0.3rem;">山徑清潔 · GPS記錄<br>遺迹維護 · 口述歷史</div>
+        <div style="font-size:0.55rem;color:#666;margin-top:0.3rem;">SDG 1️⃣1️⃣ + 1️⃣5️⃣</div>
+      </div>
+      <div style="background:#1e1a2e;border-radius:10px;padding:0.8rem;border-top:3px solid #40c080;">
+        <div style="font-size:0.8rem;font-weight:700;color:#40c080;">Step 4<br>🎉 慶祝分享</div>
+        <div style="font-size:0.6rem;color:#aaa;margin-top:0.3rem;">季度報告 · 故事牆<br>R&S 全球上架</div>
+        <div style="font-size:0.55rem;color:#666;margin-top:0.3rem;">SDG 1️⃣7️⃣</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  🪨 鞍山永續傳承計劃 · 由 無虛 (mvmv) 為 Ming 生成 · 私人版本<br>
+  框架參考：珍古德博士 Roots &amp; Shoots 4-Step Formula · 聯合國 SDGs
+</footer>
+
+</body>
+</html>
