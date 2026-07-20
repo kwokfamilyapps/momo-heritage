@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鞍山礦山生態復育觀察 — 導賞員問卷</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 26px; }
+  body {
+    font-family: "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    line-height: 1.85;
+    padding: 0;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0d1a0d, #1a2a1a);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid #40a060;
+  }
+  .hero h1 { font-size: 1.8rem; color: #c0e8c0; }
+  .hero .subtitle { font-size: 0.9rem; color: #80b080; margin-top: 0.5rem; }
+  .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.2rem; }
+  section { margin-bottom: 2.5rem; }
+  h2 {
+    font-size: 1.2rem; color: #60c080;
+    border-left: 4px solid #60c080;
+    padding-left: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  h3 { font-size: 0.95rem; color: #a0d0a0; margin: 1rem 0 0.5rem; }
+  p { margin-bottom: 0.6rem; font-size: 0.75rem; }
+  .question {
+    background: #10181a;
+    border: 1px solid #1a2a2a;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 0.8rem 0;
+  }
+  .question .q-num {
+    display: inline-block;
+    background: #1a3a2a;
+    color: #60c080;
+    padding: 0.1rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .question .q-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .question .q-hint {
+    font-size: 0.6rem;
+    color: #888;
+    margin-bottom: 0.4rem;
+  }
+  .question .q-options {
+    font-size: 0.7rem;
+    color: #aaa;
+    padding-left: 0.5rem;
+  }
+  .question .q-options span {
+    display: block;
+    margin: 0.15rem 0;
+  }
+  .infobox {
+    background: #0e1818; border: 1px solid #1a2a2a;
+    border-radius: 8px; padding: 0.7rem 1rem;
+    margin: 1rem 0;
+  }
+  .infobox .label { font-size: 0.6rem; color: #60c080; font-weight: 600; }
+  .infobox p { font-size: 0.7rem; }
+  footer {
+    text-align: center; padding: 2rem 1rem;
+    color: #444; font-size: 0.55rem;
+    border-top: 1px solid #12121a;
+  }
+  @media (max-width: 600px) {
+    html { font-size: 22px; }
+    .hero h1 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌿 鞍山礦山生態復育觀察問卷</h1>
+  <div class="subtitle">鞍山探索館導賞員 · 公民科學基礎資料收集</div>
+</div>
+
+<div class="container">
+
+<section>
+  <h2>📋 問卷目的</h2>
+  <p>呢份問卷係為「鞍山永續 · AI 覺醒」計劃收集基礎生態資料。你嘅觀察將會成為：</p>
+  <ul style="font-size:0.7rem;margin-left:1.2rem;">
+    <li>📊 礦山生態修復數據庫嘅起點</li>
+    <li>🎯 AI 生態辨識系統（Florence-2）嘅訓練參考</li>
+    <li>📚 導賞內容更新嘅實證基礎</li>
+    <li>🌍 SDG 15（陸地生態）連結嘅具體案例</li>
+  </ul>
+  <div class="infobox">
+    <div class="label">⏱ 預計需時</div>
+    <p>約 15-20 分鐘。每條問題都係你日常導賞就會見到嘅嘢，唔使特登去搵。</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PART A: 導賞員背景 -->
+<!-- ════════════════════════════════════════ -->
+<section>
+  <h2>A. 導賞員基本資料</h2>
+
+  <div class="question">
+    <div class="q-num">A1</div>
+    <div class="q-text">你喺鞍山探索館做導賞員幾耐？</div>
+    <div class="q-options">
+      <span>□ 少於 3 個月</span>
+      <span>□ 3 個月至 1 年</span>
+      <span>□ 1 年至 2 年</span>
+      <span>□ 2 年至 5 年</span>
+      <span>□ 5 年以上</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">A2</div>
+    <div class="q-text">你平均每月帶幾多團？</div>
+    <div class="q-options">
+      <span>□ 少於 5 團</span>
+      <span>□ 5 至 10 團</span>
+      <span>□ 10 至 20 團</span>
+      <span>□ 20 團以上</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">A3</div>
+    <div class="q-text">你主要帶邊條路線？（可選多項）</div>
+    <div class="q-options">
+      <span>□ 礦場遺址路線（礦洞/選礦廠）</span>
+      <span>□ 礦村/社區路線（天光墟/教堂）</span>
+      <span>□ 生態路線（自然景觀/植物）</span>
+      <span>□ 混合路線（視乎團體要求）</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PART B: 植物生態觀察 -->
+<!-- ════════════════════════════════════════ -->
+<section>
+  <h2>B. 植物生態觀察 🌿</h2>
+
+  <div class="question">
+    <div class="q-num">B1</div>
+    <div class="q-text">你喺導賞途中，最常見嘅植物品種有邊啲？（可列舉 3-5 種）</div>
+    <div class="q-hint">例如：芒萁、野牡丹、毛稔、白楸、山蒼樹…</div>
+    <div style="background:#0c0c14;border-radius:6px;padding:0.5rem;margin-top:0.3rem;">
+      <div style="font-size:0.65rem;color:#888;">你嘅觀察：</div>
+      <div style="height:2.5rem;border-bottom:1px dashed #2a2a3a;margin-top:0.3rem;"></div>
+      <div style="height:2.5rem;border-bottom:1px dashed #2a2a3a;"></div>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">B2</div>
+    <div class="q-text">你有冇留意到礦場範圍內有「外來入侵物種」？（例如薇甘菊、日本蛇菰等）</div>
+    <div class="q-options">
+      <span>□ 有，邊啲？___________</span>
+      <span>□ 冇留意</span>
+      <span>□ 唔肯定，需要專家確認</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">B3</div>
+    <div class="q-text">你覺得邊個位置嘅植物多樣性最高？（可選多項）</div>
+    <div class="q-options">
+      <span>□ 礦洞口附近</span>
+      <span>□ 選礦廠遺址周圍</span>
+      <span>□ 恩光堂旁邊嘅山坡</span>
+      <span>□ 礦村舊址周邊</span>
+      <span>□ 山徑兩旁</span>
+      <span>□ 其他：___________</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">B4</div>
+    <div class="q-text">你認為礦山嘅植被覆蓋率，比起你最初做導賞時有冇變化？</div>
+    <div class="q-options">
+      <span>□ 明顯增加（愈嚟愈多樹木/植物）</span>
+      <span>□ 少少增加</span>
+      <span>□ 冇明顯變化</span>
+      <span>□ 少咗（原因：___________）</span>
+      <span>□ 唔肯定</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PART C: 雀鳥生態觀察 -->
+<!-- ════════════════════════════════════════ -->
+<section>
+  <h2>C. 雀鳥生態觀察 🐦</h2>
+
+  <div class="question">
+    <div class="q-num">C1</div>
+    <div class="q-text">你喺導賞途中，最常見到嘅雀鳥品種有邊啲？（可列舉 3-5 種）</div>
+    <div class="q-hint">例如：紅耳鵯、白頭鵯、麻雀、珠頸斑鳩、鵲鴝…</div>
+    <div style="background:#0c0c14;border-radius:6px;padding:0.5rem;margin-top:0.3rem;">
+      <div style="font-size:0.65rem;color:#888;">你嘅觀察：</div>
+      <div style="height:2.5rem;border-bottom:1px dashed #2a2a3a;margin-top:0.3rem;"></div>
+      <div style="height:2.5rem;border-bottom:1px dashed #2a2a3a;"></div>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">C2</div>
+    <div class="q-text">你有冇留意到某啲季節特別多雀鳥？</div>
+    <div class="q-options">
+      <span>□ 春季（3-5月）</span>
+      <span>□ 夏季（6-8月）</span>
+      <span>□ 秋季（9-11月）</span>
+      <span>□ 冬季（12-2月）</span>
+      <span>□ 全年差不多</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">C3</div>
+    <div class="q-text">你最常喺邊個位置見到雀鳥活動？</div>
+    <div class="q-options">
+      <span>□ 樹頂/高空飛過</span>
+      <span>□ 灌木叢中</span>
+      <span>□ 建築物（教堂/礦洞）上</span>
+      <span>□ 地面覓食</span>
+      <span>□ 其他：___________</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PART D: 蝴蝶及昆蟲觀察 -->
+<!-- ════════════════════════════════════════ -->
+<section>
+  <h2>D. 蝴蝶及昆蟲觀察 🦋</h2>
+
+  <div class="question">
+    <div class="q-num">D1</div>
+    <div class="q-text">你喺導賞途中，最常見嘅蝴蝶品種有邊啲？（可列舉 2-3 種）</div>
+    <div class="q-hint">例如：報喜斑粉蝶、巴黎翠鳳蝶、玉帶鳳蝶、黃粉蝶…</div>
+    <div style="background:#0c0c14;border-radius:6px;padding:0.5rem;margin-top:0.3rem;">
+      <div style="font-size:0.65rem;color:#888;">你嘅觀察：</div>
+      <div style="height:2rem;border-bottom:1px dashed #2a2a3a;margin-top:0.3rem;"></div>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">D2</div>
+    <div class="q-text">你有冇注意到其他昆蟲？（蜻蜓、蜜蜂、甲蟲等）</div>
+    <div style="background:#0c0c14;border-radius:6px;padding:0.5rem;margin-top:0.3rem;">
+      <div style="font-size:0.65rem;color:#888;">請描述：</div>
+      <div style="height:2rem;border-bottom:1px dashed #2a2a3a;margin-top:0.3rem;"></div>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">D3</div>
+    <div class="q-text">你覺得礦山嘅昆蟲數量，比起之前有冇變化？</div>
+    <div class="q-options">
+      <span>□ 明顯增多</span>
+      <span>□ 差唔多</span>
+      <span>□ 減少</span>
+      <span>□ 唔肯定</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PART E: 地質與環境觀察 -->
+<!-- ════════════════════════════════════════ -->
+<section>
+  <h2>E. 地質與環境觀察 🪨</h2>
+
+  <div class="question">
+    <div class="q-num">E1</div>
+    <div class="q-text">你覺得礦場遺址嘅建築/結構，有冇明顯嘅自然侵蝕或風化現象？</div>
+    <div class="q-options">
+      <span>□ 有，邊啲位置最明顯？___________</span>
+      <span>□ 少少，但唔嚴重</span>
+      <span>□ 冇特別留意</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">E2</div>
+    <div class="q-text">你有冇喺礦場範圍見過特別嘅岩石/礦物標本可以分享？</div>
+    <div style="background:#0c0c14;border-radius:6px;padding:0.5rem;margin-top:0.3rem;">
+      <div style="font-size:0.65rem;color:#888;">請描述（如有相片更佳）：</div>
+      <div style="height:2.5rem;border-bottom:1px dashed #2a2a3a;margin-top:0.3rem;"></div>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">E3</div>
+    <div class="q-text">你覺得礦山嘅水源（溪澗/地下水）狀況如何？</div>
+    <div class="q-options">
+      <span>□ 明顯有水流，水質清澈</span>
+      <span>□ 有水流但水質一般</span>
+      <span>□ 乾旱季節會乾涸</span>
+      <span>□ 冇留意</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PART F: 導賞實踐觀察 -->
+<!-- ════════════════════════════════════════ -->
+<section>
+  <h2>F. 導賞實踐觀察 🥾</h2>
+
+  <div class="question">
+    <div class="q-num">F1</div>
+    <div class="q-text">遊客最常問關於生態/自然嘅問題係咩？（可列舉）</div>
+    <div style="background:#0c0c14;border-radius:6px;padding:0.5rem;margin-top:0.3rem;">
+      <div style="font-size:0.65rem;color:#888;">你遇過嘅問題：</div>
+      <div style="height:3rem;border-bottom:1px dashed #2a2a3a;margin-top:0.3rem;"></div>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">F2</div>
+    <div class="q-text">你有冇影低過礦山嘅生態相片？（植物/雀鳥/蝴蝶/風景等）</div>
+    <div class="q-options">
+      <span>□ 有，好多（50+ 張）</span>
+      <span>□ 有，少少（10-50 張）</span>
+      <span>□ 有，但好少（少於 10 張）</span>
+      <span>□ 冇影開</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">F3</div>
+    <div class="q-text">如果可以將你嘅生態觀察變成 AI 嘅數據庫，你會唔有興趣參與？</div>
+    <div class="q-options">
+      <span>□ 有興趣！可以幫手影相/記錄</span>
+      <span>□ 有啲興趣，但要睇實際點做</span>
+      <span>□ 冇乜興趣</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">F4</div>
+    <div class="q-text">你覺得礦山仲有冇其他值得記錄嘅生態/環境現象，係上面未提及嘅？</div>
+    <div style="background:#0c0c14;border-radius:6px;padding:0.5rem;margin-top:0.3rem;">
+      <div style="font-size:0.65rem;color:#888;">自由補充：</div>
+      <div style="height:4rem;border-bottom:1px dashed #2a2a3a;margin-top:0.3rem;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PART G: SDGs 認知 -->
+<!-- ════════════════════════════════════════ -->
+<section>
+  <h2>G. SDGs 認知（可選填）🌍</h2>
+
+  <div class="question">
+    <div class="q-num">G1</div>
+    <div class="q-text">你之前聽過聯合國可持續發展目標（SDGs）嗎？</div>
+    <div class="q-options">
+      <span>□ 聽過，清楚係咩</span>
+      <span>□ 聽過個名，但唔太清楚</span>
+      <span>□ 未聽過</span>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">G2</div>
+    <div class="q-text">你覺得鞍山探索館嘅工作，同邊啲 SDGs 最有關係？（可選多項，見下面列表）</div>
+    <div style="font-size:0.65rem;color:#888;margin:0.3rem 0;">
+      4️⃣ 優質教育 · 8️⃣ 就業與經濟 · 1️⃣1️⃣ 永續社區 · 1️⃣2️⃣ 負責任消費 · 1️⃣5️⃣ 陸地生態 · 1️⃣7️⃣ 夥伴關係
+    </div>
+    <div style="background:#0c0c14;border-radius:6px;padding:0.5rem;margin-top:0.3rem;">
+      <div style="font-size:0.65rem;color:#888;">你揀嘅 SDGs：</div>
+      <div style="height:1.5rem;border-bottom:1px dashed #2a2a3a;margin-top:0.2rem;"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="infobox">
+    <div class="label">🙏 感謝你的參與</div>
+    <p>你嘅觀察將會直接貢獻鞍山生態數據庫，成為「礦山永續 · AI 覺醒」計劃嘅基礎。收集完成後，我哋會同你分享分析結果。</p>
+    <p style="margin-top:0.3rem;">如有任何補充，歡迎聯絡 Ming（鞍山探索館導賞員）或直接同 mvmv（AI 助手）講。</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  🌿 鞍山礦山生態復育觀察問卷 · v1.0<br>
+  由 mvmv 設計 · 2026 年 7 月
+</footer>
+
+</body>
+</html>
