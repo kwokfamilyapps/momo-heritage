@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>「礦山永續．AI 覺醒」— 鞍山 SDGs × AI 生態導賞系統計劃書</title>
+<title>「礦山永續・AI 覺醒」— 馬鞍山鐵礦場 SDGs × AI 生態導賞系統計劃書</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 32px; }
@@ -14,699 +14,330 @@
     line-height: 2.0;
     padding: 0;
   }
-
-  /* ── HERO ── */
   .hero {
     background: linear-gradient(135deg, #0d0d1a 0%, #1a0d1a 40%, #0d1a0d 100%);
-    padding: 4rem 1.5rem 3rem;
+    padding: 3.5rem 1.5rem 2.5rem;
     text-align: center;
     border-bottom: 2px solid #c0a060;
-    position: relative;
-    overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(ellipse at 30% 50%, rgba(192,160,96,0.04) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 50%, rgba(64,192,128,0.04) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .hero h1 {
-    font-size: 2.4rem;
-    color: #f0e8d0;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.6rem;
-    position: relative;
-  }
-  .hero .chinese-title {
-    font-size: 1.6rem;
-    color: #c8b888;
-    margin-bottom: 0.3rem;
-    position: relative;
-  }
-  .hero .tagline {
-    font-size: 0.8rem;
-    color: #a0a080;
-    margin-bottom: 1.5rem;
-    position: relative;
-  }
-  .hero .meta-line {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    font-size: 0.6rem;
-    color: #888;
-    position: relative;
-  }
-  .hero .meta-line span {
-    background: rgba(255,255,255,0.04);
-    padding: 0.2rem 0.8rem;
-    border-radius: 20px;
-  }
-
-  /* ── TOC ── */
-  .toc {
-    background: #101018;
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid #1e1e2a;
-  }
-  .toc-title { font-size: 0.8rem; color: #c0a060; margin-bottom: 0.6rem; font-weight: 600; }
-  .toc-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 0.35rem;
-  }
-  .toc a {
-    color: #80a0b0;
-    text-decoration: none;
-    font-size: 0.65rem;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    transition: 0.2s;
-  }
-  .toc a:hover { background: #1a1a28; color: #c0d0e0; }
-
-  /* ── MAIN ── */
-  .container { max-width: 880px; margin: 0 auto; padding: 2.5rem 1.2rem; }
-  section { margin-bottom: 3.5rem; }
-
-  h2 {
-    font-size: 1.3rem;
-    color: #e0c888;
-    border-bottom: 1px solid #2a2a1a;
-    padding-bottom: 0.3rem;
-    margin-bottom: 1.2rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-  }
-  h3 {
-    font-size: 1rem;
-    color: #c8b080;
-    margin: 1.2rem 0 0.6rem;
-    font-weight: 600;
-  }
-  h4 {
-    font-size: 0.85rem;
-    color: #a0c8a0;
-    margin: 0.8rem 0 0.4rem;
-  }
-
-  p { margin-bottom: 0.8rem; font-size: 0.75rem; }
-  ul, ol { margin: 0.4rem 0 0.8rem 1.5rem; }
-  li { margin-bottom: 0.25rem; font-size: 0.72rem; }
-
-  blockquote {
-    border-left: 3px solid #c0a060;
-    padding: 0.6rem 1rem;
-    margin: 1rem 0;
-    background: #101018;
-    font-size: 0.72rem;
-    color: #b0a888;
-    font-style: italic;
-  }
-  blockquote cite { display: block; text-align: right; font-size: 0.6rem; color: #888; margin-top: 0.3rem; }
-
-  /* ── DIAGRAM BOX ── */
-  .diagram-box {
-    background: #10101a;
-    border: 1px solid #2a2a3a;
-    border-radius: 14px;
-    padding: 1.5rem 1rem;
-    margin: 1.2rem 0;
-    text-align: center;
-  }
-  .diagram-box .big-icon { font-size: 3rem; margin-bottom: 0.5rem; }
-  .diagram-box .title { font-size: 0.9rem; color: #e0c888; font-weight: 600; margin-bottom: 0.5rem; }
-  .diagram-box .body { font-size: 0.7rem; color: #aaa; }
-
-  /* ── THREE-PILLAR ── */
-  .pillars {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.8rem;
-    margin: 1.2rem 0;
-  }
-  .pillar {
-    background: #10101a;
-    border-radius: 12px;
-    padding: 1rem;
-    border-top: 3px solid #555;
-  }
-  .pillar h4 { font-size: 0.85rem; margin: 0 0 0.4rem; }
-  .pillar p { font-size: 0.65rem; color: #aaa; }
+  .hero h1 { font-size: 2rem; color: #f0e8d0; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+  .hero .subtitle { font-size: 0.9rem; color: #a0a080; margin-bottom: 1rem; }
+  .hero .meta-line { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; font-size: 0.55rem; color: #888; }
+  .hero .meta-line span { background: rgba(255,255,255,0.04); padding: 0.2rem 0.6rem; border-radius: 20px; }
+  .container { max-width: 880px; margin: 0 auto; padding: 2rem 1rem; }
+  section { margin-bottom: 2.5rem; }
+  h2 { font-size: 1.2rem; color: #e0c888; border-bottom: 1px solid #2a2a1a; padding-bottom: 0.3rem; margin-bottom: 1rem; }
+  h3 { font-size: 0.9rem; color: #c8b080; margin: 1rem 0 0.5rem; }
+  h4 { font-size: 0.8rem; color: #a0c8a0; margin: 0.6rem 0 0.3rem; }
+  p { margin-bottom: 0.6rem; font-size: 0.7rem; }
+  ul, ol { margin: 0.3rem 0 0.6rem 1.2rem; }
+  li { margin-bottom: 0.2rem; font-size: 0.68rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.62rem; margin: 0.8rem 0; }
+  th, td { border: 1px solid #1e1e2a; padding: 0.35rem 0.5rem; text-align: left; vertical-align: top; }
+  th { background: #12121e; color: #c8b080; }
+  td { background: #0c0c14; }
+  .diagram-box { background: #10101a; border: 1px solid #2a2a3a; border-radius: 12px; padding: 1.2rem 1rem; margin: 1rem 0; text-align: center; }
+  .diagram-box .title { font-size: 0.85rem; color: #e0c888; font-weight: 600; margin-bottom: 0.4rem; }
+  .diagram-box .body { font-size: 0.65rem; color: #aaa; }
+  .infobox { background: #0e0e18; border: 1px solid #1e1e2e; border-radius: 8px; padding: 0.6rem 0.8rem; margin: 0.7rem 0; }
+  .infobox .label { font-size: 0.55rem; color: #c0a060; font-weight: 600; }
+  .infobox p { font-size: 0.65rem; margin: 0.2rem 0 0; }
+  blockquote { border-left: 3px solid #c0a060; padding: 0.5rem 0.8rem; margin: 0.8rem 0; background: #101018; font-size: 0.68rem; color: #b0a888; font-style: italic; }
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin: 1rem 0; }
+  .pillar { background: #10101a; border-radius: 10px; padding: 0.8rem; border-top: 3px solid #555; }
+  .pillar h4 { font-size: 0.8rem; margin: 0 0 0.3rem; }
+  .pillar p { font-size: 0.6rem; color: #aaa; }
   .pillar-dot { border-top-color: #c0a060; }
   .pillar-line { border-top-color: #60a0c0; }
   .pillar-surface { border-top-color: #60c080; }
-
-  /* ── TABLE ── */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.68rem;
-    margin: 1rem 0;
-  }
-  th, td {
-    border: 1px solid #1e1e2a;
-    padding: 0.4rem 0.5rem;
-    text-align: left;
-    vertical-align: top;
-  }
-  th { background: #12121e; color: #c8b080; font-weight: 600; }
-  td { background: #0c0c14; }
-
-  /* ── TIMELINE ── */
-  .timeline-strip {
-    display: flex;
-    gap: 0.4rem;
-    margin: 1rem 0;
-    flex-wrap: wrap;
-  }
-  .tl-item {
-    flex: 1;
-    min-width: 120px;
-    background: #10101a;
-    border-radius: 10px;
-    padding: 0.6rem;
-    border-left: 3px solid #555;
-  }
-  .tl-item .week { font-size: 0.55rem; color: #888; }
-  .tl-item .phase { font-size: 0.8rem; font-weight: 700; margin: 0.1rem 0; }
-  .tl-item .desc { font-size: 0.6rem; color: #aaa; }
+  .timeline-strip { display: flex; gap: 0.3rem; margin: 1rem 0; flex-wrap: wrap; }
+  .tl-item { flex: 1; min-width: 100px; background: #10101a; border-radius: 8px; padding: 0.5rem; border-left: 3px solid #555; }
+  .tl-item .week { font-size: 0.5rem; color: #888; }
+  .tl-item .phase { font-size: 0.7rem; font-weight: 700; margin: 0.1rem 0; }
+  .tl-item .desc { font-size: 0.55rem; color: #aaa; }
   .tl-p1 { border-left-color: #c0a060; }
   .tl-p2 { border-left-color: #60a0c0; }
   .tl-p3 { border-left-color: #60c080; }
   .tl-p4 { border-left-color: #c06080; }
-
-  /* ── INFOBOX ── */
-  .infobox {
-    background: #0e0e18;
-    border: 1px solid #1e1e2e;
-    border-radius: 10px;
-    padding: 0.7rem 1rem;
-    margin: 0.8rem 0;
-  }
-  .infobox .label { font-size: 0.6rem; color: #c0a060; font-weight: 600; }
-  .infobox p { font-size: 0.7rem; margin: 0.3rem 0 0; }
-
-  /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 2rem 1rem;
-    color: #444;
-    font-size: 0.55rem;
-    border-top: 1px solid #12121a;
-  }
-
+  .sdg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 0.6rem; margin: 0.8rem 0; }
+  .sdg-card { background: #10101a; border: 1px solid #1a1a2e; border-radius: 10px; padding: 0.8rem; display: flex; align-items: flex-start; gap: 0.6rem; }
+  .sdg-card .num { font-size: 1rem; font-weight: 700; color: #e94560; min-width: 30px; text-align: center; }
+  .sdg-card .desc { font-size: 0.62rem; flex: 1; }
+  footer { text-align: center; padding: 1.5rem 1rem; color: #444; font-size: 0.5rem; border-top: 1px solid #12121a; }
   @media (max-width: 600px) {
     html { font-size: 26px; }
-    .hero h1 { font-size: 1.6rem; }
-    .pillars { grid-template-columns: 1fr; }
+    .pillars, .sdg-grid { grid-template-columns: 1fr; }
     .timeline-strip { flex-direction: column; }
-    .hero .meta-line { flex-direction: column; align-items: center; gap: 0.4rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══════════ HERO ══════════ -->
 <div class="hero">
-  <div class="chinese-title">礦山永續 · AI 覺醒</div>
-  <h1>From Mine to Mind</h1>
-  <div class="tagline">鞍山 SDGs × AI 生態導賞系統 — 跨世代可持續發展實踐藍圖</div>
+  <h1>礦山永續・AI 覺醒</h1>
+  <div class="subtitle">馬鞍山鐵礦場 SDGs × AI 生態導賞系統 — 跨世代可持續發展實踐藍圖</div>
   <div class="meta-line">
-    <span>🪨 點：鞍山文化生態資源</span>
-    <span>🔗 線：AI 技術整合</span>
-    <span>🌐 面：新一代環保意識形態</span>
-  </div>
-</div>
-
-<!-- ══════════ TOC ══════════ -->
-<div class="toc">
-  <div class="toc-title">📋 目錄</div>
-  <div class="toc-grid">
-    <a href="#abstract">I. 計劃摘要</a>
-    <a href="#framework">II. 理論框架 — 點線面 × 4-Step</a>
-    <a href="#dots">III. 點｜鞍山獨有資源</a>
-    <a href="#lines">IV. 線｜AI 技術生態</a>
-    <a href="#surface">V. 面｜願景與實踐</a>
-    <a href="#sdgs">VI. SDGs 矩陣</a>
-    <a href="#roadmap">VII. 開發路線圖</a>
-    <a href="#audience">VIII. 目標群眾</a>
-    <a href="#conclusion">IX. 結語</a>
-    <a href="#references">X. 參考與版權</a>
+    <span>點：馬鞍山鐵礦場文化生態資源</span>
+    <span>線：AI 技術整合</span>
+    <span>面：新一代環保意識形態與實踐</span>
   </div>
 </div>
 
 <div class="container">
 
-<!-- ══════ I. ABSTRACT ══════ -->
-<section id="abstract">
+<!-- I. ABSTRACT -->
+<section>
   <h2>I. 計劃摘要</h2>
-  <p>本計劃以馬鞍山鐵礦場遺址為核心場景，連結礦村、教會、鞍山探索館、山徑巡查工作坊、生物多樣性及地質多樣性等在地資源（<strong>點</strong>），透過人工智能技術（<strong>線</strong>），創造一套跨世代嘅環保意識、形態、概念與實踐體系（<strong>面</strong>），並與聯合國可持續發展目標（SDGs）深度連結。</p>
+  <p>本計劃以馬鞍山鐵礦場遺址為核心場景，結合礦村、教會、鞍山探索館、山徑巡查工作坊、生物多樣性及地質多樣性等在地資源（<strong>點</strong>），透過人工智能技術（<strong>線</strong>），創造一套跨世代之環保意識、形態、概念與實踐體系（<strong>面</strong>），並與聯合國可持續發展目標（SDGs）深度連結。</p>
 
   <div class="diagram-box">
-    <div style="display:flex;justify-content:center;align-items:center;gap:1rem;flex-wrap:wrap;">
-      <span style="font-size:1.2rem;">🪨 點</span>
-      <span style="color:#c0a060;font-size:1.5rem;">→</span>
-      <span style="font-size:1.2rem;">🤖 線</span>
-      <span style="color:#c0a060;font-size:1.5rem;">→</span>
-      <span style="font-size:1.2rem;">🌐 面</span>
-      <span style="color:#c0a060;font-size:1.5rem;">→</span>
-      <span style="font-size:1.2rem;">🌍 SDGs</span>
+    <div style="display:flex;justify-content:center;align-items:center;gap:0.8rem;flex-wrap:wrap;">
+      <span style="font-size:1.1rem;">🪨 點</span>
+      <span style="color:#c0a060;font-size:1.3rem;">→</span>
+      <span style="font-size:1.1rem;">🤖 線</span>
+      <span style="color:#c0a060;font-size:1.3rem;">→</span>
+      <span style="font-size:1.1rem;">🌐 面</span>
+      <span style="color:#c0a060;font-size:1.3rem;">→</span>
+      <span style="font-size:1.1rem;">🌍 SDGs</span>
     </div>
-    <p style="margin-top:0.8rem;font-size:0.7rem;color:#aaa;">鞍山資源 × AI 技術 → 跨世代可持續發展教育與實踐平台</p>
+    <p style="margin-top:0.6rem;font-size:0.65rem;color:#aaa;">馬鞍山鐵礦場資源 × AI 技術 → 跨世代可持續發展教育與實踐平台</p>
   </div>
 
-  <p>計劃採用珍古德博士 Roots &amp; Shoots <strong>4-Step Formula</strong>（投入熱情 → 觀察地圖 → 行動改變 → 慶祝分享）為行動框架，分階段開發 5 個 AI Demo，最終形成一套可複製、可擴展嘅「AI 鞍山 SDGs 導賞系統」。</p>
+  <p>本計劃採用珍古德博士 Roots &amp; Shoots <strong>4-Step Formula</strong>（投入熱情 → 觀察地圖 → 行動改變 → 慶祝分享）為行動框架，分階段開發 5 個 AI Demo，最終形成一套可複製、可擴展之「AI 馬鞍山鐵礦場 SDGs 導賞系統」。</p>
 </section>
 
-<!-- ══════ II. FRAMEWORK ══════ -->
-<section id="framework">
+<!-- II. FRAMEWORK -->
+<section>
   <h2>II. 理論框架 — 點線面 × 4-Step Formula</h2>
 
-  <h3>2.1 「點線面」概念架構（參考 Chan Hiu-yu 2017 論文框架）</h3>
+  <h3>2.1 「點線面」概念架構（參考 Chan Hiu-yu 2017 年論文框架）</h3>
   <div class="pillars">
     <div class="pillar pillar-dot">
-      <h4 style="color:#c0a060;">🪨 點</h4>
-      <p><strong>鞍山獨有資源：</strong>鐵礦場遺址、礦村、兩個教會（恩光堂、聖約瑟堂）、鞍山探索館、山徑巡查工作坊、生物多樣性、地質多樣性、礦村村民與口述歷史、SDGs 框架</p>
+      <h4 style="color:#c0a060;">點</h4>
+      <p><strong>馬鞍山鐵礦場獨有資源：</strong>鐵礦場遺址（1905-1976）、礦村（山頂區、馬鞍橋區、潮洲村、礦場碼頭區）、恩光堂與聖約瑟堂、鞍山探索館（2015 年開館）、山徑巡查工作坊、生物多樣性、地質多樣性、礦村村民口述歷史、SDGs 框架</p>
     </div>
     <div class="pillar pillar-line">
-      <h4 style="color:#60a0c0;">🤖 線</h4>
+      <h4 style="color:#60a0c0;">線</h4>
       <p><strong>AI 技術整合：</strong>圖像生成（FLUX 2）、電腦視覺辨識（Florence-2）、影片生成（Pixverse）、語音合成（Edge TTS）、文字生成與分析（DeepSeek）、互動網頁開發、GPS 路線系統</p>
     </div>
     <div class="pillar pillar-surface">
-      <h4 style="color:#60c080;">🌐 面</h4>
+      <h4 style="color:#60c080;">面</h4>
       <p><strong>願景產出：</strong>新一代環保意識形態、可持續發展思維、社區參與文化、跨代共融學習、企業與 NGO 合作網絡、AI 輔助教育新模式</p>
     </div>
   </div>
 
   <h3>2.2 4-Step Formula 整合</h3>
   <table>
-    <tr><th style="width:15%;">步驟</th><th style="width:25%;">名稱</th><th>喺本計劃嘅角色</th></tr>
-    <tr><td>1️⃣</td><td><strong>Get Engaged</strong><br>投入熱情</td><td>透過 AI 生成嘅對比圖、動畫短片、互動地圖，令目標群眾（學生、行山客、企業）一接觸就 feel 到鞍山嘅價值</td></tr>
-    <tr><td>2️⃣</td><td><strong>Observe</strong><br>觀察地圖</td><td>GPS 互動路線、AI 雀鳥/植物辨識、Community Mapping 工具，引導使用者系統性觀察礦山生態與文化</td></tr>
-    <tr><td>3️⃣</td><td><strong>Take Action</strong><br>行動改變</td><td>公民科學記錄、淨山挑戰、工作坊、口述歷史收集 — 每項行動都有 SDGs 對應</td></tr>
-    <tr><td>4️⃣</td><td><strong>Celebrate</strong><br>慶祝分享</td><td>AI 自動生成「我嘅 SDGs 足跡」報告、社交媒體分享、Roots &amp; Shoots 全球上架</td></tr>
+    <tr><th style="width:15%;">步驟</th><th style="width:25%;">名稱</th><th>在本計劃之角色</th></tr>
+    <tr><td>1️⃣</td><td><strong>Get Engaged</strong><br>投入熱情</td><td>透過 AI 生成之對比圖、動畫短片、互動地圖，令目標群眾一接觸即感受馬鞍山鐵礦場之價值</td></tr>
+    <tr><td>2️⃣</td><td><strong>Observe</strong><br>觀察地圖</td><td>GPS 互動路線、AI 雀鳥與植物辨識、Community Mapping 工具，引導使用者系統性觀察礦山生態與文化</td></tr>
+    <tr><td>3️⃣</td><td><strong>Take Action</strong><br>行動改變</td><td>公民科學記錄、淨山挑戰、工作坊、口述歷史收集 — 每項行動均有 SDGs 對應</td></tr>
+    <tr><td>4️⃣</td><td><strong>Celebrate</strong><br>慶祝分享</td><td>AI 自動生成「我的 SDGs 足跡」報告、社交媒體分享、Roots &amp; Shoots 全球上架</td></tr>
   </table>
 </section>
 
-<!-- ══════ III. DOTS ══════ -->
-<section id="dots">
-  <h2>III. 點｜鞍山獨有資源分析</h2>
-
+<!-- III. DOTS -->
+<section>
+  <h2>III. 點｜馬鞍山鐵礦場獨有資源分析</h2>
   <table>
     <tr><th>資源類別</th><th>具體內容</th><th>可連結 SDGs</th></tr>
-    <tr><td>🪨 <strong>鐵礦場遺址</strong></td><td>1905 年發現磁鐵礦，1906-1976 年營運。1931 年華興礦務領牌，1949 年大公洋行接手，1953 年與日本 Nittetsu 合資開發 240ML/110ML 地下礦洞。1976 年結業，400 工人遣散。2016 年礦場建築獲古諮會評級（240ML/110ML 外牆 Grade 2，選礦廠 Grade 3，礦村遺址 Grade 3）</td><td>SDG 1️⃣1️⃣</td></tr>
-    <tr><td>🏘️ <strong>礦村</strong></td><td>馬鞍山礦村舊址、天光墟、礦工宿舍 — 社區生活嘅見證。參考論文：Chan Hiu-yu (2017)「教堂、礦山與人」</td><td>SDG 1️⃣1️⃣、8️⃣</td></tr>
-    <tr><td>👴 <strong>礦村村民</strong></td><td>口述歷史資源，正在流失中 — 需要 urgent 記錄。1950s 高峰期約 400 名工人</td><td>SDG 4️⃣、1️⃣1️⃣</td></tr>
-    <tr><td>⛪ <strong>兩個教會</strong></td><td>恩光堂（白牆青苔屋頂紅十字鐘樓，路德會）+ 聖約瑟堂（天主教）— 見證礦村社區</td><td>SDG 1️⃣1️⃣</td></tr>
-    <tr><td>🏛️ <strong>鞍山探索館</strong></td><td>2015 年開館，有導賞、展覽、工作坊基礎設施</td><td>SDG 4️⃣、1️⃣7️⃣</td></tr>
-    <tr><td>🥾 <strong>山徑巡查工作坊</strong></td><td>已有 GPS 相機 App 開發中，公民科學基礎</td><td>SDG 1️⃣5️⃣</td></tr>
-    <tr><td>🌿 <strong>生物多樣性</strong></td><td>礦場結業近 50 年自然修復，植物群落、雀鳥、蝴蝶豐富。參考論文：Kwan Sai Ho (1979) 中大 M.Phil 土壤植被生態調查</td><td>SDG 1️⃣5️⃣</td></tr>
-    <tr><td>🪨 <strong>地質多樣性</strong></td><td>磁鐵礦（Magnetite, Fe₃O₄）地質結構。參考：Choi Wing-sang (2013) HKU MSc 地質成因論文</td><td>SDG 4️⃣、1️⃣5️⃣</td></tr>
+    <tr><td>鐵礦場遺址</td><td>1905 年發現磁鐵礦，1906 年至 1976 年營運。1931 年華興礦務有限公司獲採礦牌照，1949 年大公洋行接手，1953 年與日本礦業株式會社 (Nittetsu Mining Company) 合資開發 240ML 及 110ML 地下礦洞。1976 年結業，高峰時礦工約 3,000 人。2016 年礦場建築獲古物諮詢委員會評級（240ML 及 110ML 外牆為二級歷史建築，選礦廠及礦村遺址為三級歷史建築）</td><td>SDG 11</td></tr>
+    <tr><td>礦村</td><td>馬鞍山礦村舊址，涵蓋山頂區、馬鞍橋區、潮洲村及礦場碼頭區，高峰時聚居約 10,000 人。見證社區生活。參考論文：Chan Hiu-yu (2017)「教堂、礦山與人」</td><td>SDG 11、8</td></tr>
+    <tr><td>礦村村民</td><td>口述歷史資源正在流失，亟需系統性記錄。高峰時期約 3,000 名礦工，礦村四大區域約 10,000 人聚居</td><td>SDG 4、11</td></tr>
+    <tr><td>兩個教會</td><td>恩光堂（路德會，白牆青苔屋頂紅十字鐘樓）及聖約瑟堂（天主教），見證礦村社區變遷</td><td>SDG 11</td></tr>
+    <tr><td>鞍山探索館</td><td>2015 年開館，具備導賞、展覽、工作坊等基礎設施</td><td>SDG 4、17</td></tr>
+    <tr><td>山徑巡查工作坊</td><td>GPS 相機 App 開發中，公民科學基礎已建立</td><td>SDG 15</td></tr>
+    <tr><td>生物多樣性</td><td>礦場結業近 50 年自然修復，植物群落、雀鳥、蝴蝶生態豐富。參考論文：Kwan Sai Ho (1979) 香港中文大學 M.Phil 土壤植被生態調查</td><td>SDG 15</td></tr>
+    <tr><td>地質多樣性</td><td>磁鐵礦（Magnetite, Fe₃O₄）地質結構。參考：Choi Wing-sang (2013) 香港大學 MSc 地質成因論文</td><td>SDG 4、15</td></tr>
   </table>
-
-  <div class="infobox">
-    <div class="label">💡 關鍵洞察</div>
-    <p>呢啲「點」唔係獨立存在，而係互相關聯嘅生態系統。AI 嘅角色就係將佢哋串連成有意義嘅故事線，令不同背景嘅參與者都能找到自己嘅切入點。</p>
-  </div>
 </section>
 
-<!-- ══════ IV. LINES ══════ -->
-<section id="lines">
+<!-- IV. LINES -->
+<section>
   <h2>IV. 線｜AI 技術生態</h2>
-
-  <h3>4.1 現有 AI 能力盤點</h3>
+  <p>本計劃所運用之 AI 技術涵蓋七大範疇，全部已可實作：</p>
   <table>
-    <tr><th>AI 技術</th><th>工具</th><th>應用場景</th><th>成本</th></tr>
-    <tr><td>🖼️ 圖像生成</td><td>FLUX 2（FAL.ai）</td><td>「鞍山蛻變」對比圖、SDGs 視覺素材、AI 想像圖</td><td>~$0.01/張</td></tr>
-    <tr><td>👁️ 電腦視覺辨識</td><td>Florence-2（本地 RTX 5060）</td><td>植物辨識、雀鳥辨識、舊相內容分析、生態記錄</td><td>$0（本地運算）</td></tr>
-    <tr><td>🎬 影片生成</td><td>Pixverse（FAL.ai）</td><td>「鐵礦的一生」動畫、礦場 time-lapse、導賞短片</td><td>~$0.05/條</td></tr>
-    <tr><td>🔊 語音合成</td><td>Edge TTS</td><td>多語言語音導賞、AI 旁白</td><td>$0</td></tr>
-    <tr><td>🧠 語言模型</td><td>DeepSeek（API）</td><td>內容生成、翻譯、分析、chatbot 後端</td><td>~$0.01/次</td></tr>
-    <tr><td>📄 互動網頁</td><td>Mvmv（HTML/CSS/JS）</td><td>SDGs 互動地圖、成果報表、計劃書</td><td>$0</td></tr>
-    <tr><td>🗺️ GPS 系統</td><td>PWA App（開發中）</td><td>鞍山路線導航、公民科學數據收集</td><td>$0（自家開發）</td></tr>
+    <tr><th>AI 技術</th><th>工具</th><th>應用場景</th></tr>
+    <tr><td>圖像生成</td><td>FLUX 2（FAL.ai）</td><td>「馬鞍山鐵礦場蛻變」對比圖、SDGs 視覺素材</td></tr>
+    <tr><td>電腦視覺辨識</td><td>Florence-2（本地 GPU）</td><td>植物辨識、雀鳥辨識、舊相內容分析</td></tr>
+    <tr><td>影片生成</td><td>Pixverse（FAL.ai）</td><td>礦場歷史動畫、生態紀錄短片</td></tr>
+    <tr><td>語音合成</td><td>Edge TTS</td><td>多語言語音導賞</td></tr>
+    <tr><td>語言模型</td><td>DeepSeek</td><td>內容生成、翻譯、Chatbot 後端</td></tr>
+    <tr><td>互動網頁</td><td>HTML/CSS/JS</td><td>SDGs 互動地圖、成果報表</td></tr>
+    <tr><td>GPS 系統</td><td>PWA App（開發中）</td><td>礦山路線導航、公民科學數據收集</td></tr>
   </table>
 
-  <h3>4.2 5 個 AI Demo 詳細設計</h3>
-
+  <h3>4.1 五個 AI Demo 設計</h3>
   <table>
-    <tr><th>#</th><th>Demo 名稱</th><th>AI 技術</th><th>預估時間</th><th>SDGs</th><th>目標群眾</th></tr>
-    <tr>
-      <td>🥇</td>
-      <td><strong>「鞍山蛻變」AI 對比圖</strong></td>
-      <td>FLUX 2 圖像生成</td>
-      <td>2-3 日</td>
-      <td>1️⃣1️⃣、1️⃣5️⃣</td>
-      <td>學校、公眾、企業</td>
-    </tr>
-    <tr><td colspan="6" style="font-size:0.6rem;color:#888;">
-      <strong>概念：</strong>AI 生成同一地點「1960s 礦場 vs 今日山林」對比圖。做展板、IG post、計劃書視覺。每張圖附加 SDGs 說明。
-    </td></tr>
-    <tr>
-      <td>🥇</td>
-      <td><strong>鞍山 SDGs 互動地圖</strong></td>
-      <td>HTML 互動網頁 + GPS</td>
-      <td>3-5 日</td>
-      <td>4️⃣、1️⃣1️⃣、1️⃣5️⃣</td>
-      <td>行山客、學生、家庭</td>
-    </tr>
-    <tr><td colspan="6" style="font-size:0.6rem;color:#888;">
-      <strong>概念：</strong>手機開到嘅互動地圖，鞍山行山路線設 SDGs checkpoint。到點自動 show 歷史/生態資訊。可配合你個 GPS App 一齊用。
-    </td></tr>
-    <tr>
-      <td>🥈</td>
-      <td><strong>AI 雀鳥/植物辨識體驗</strong></td>
-      <td>Florence-2（本地）</td>
-      <td>約 1 週</td>
-      <td>4️⃣、1️⃣5️⃣</td>
-      <td>學校、家庭、工作坊</td>
-    </tr>
-    <tr><td colspan="6" style="font-size:0.6rem;color:#888;">
-      <strong>概念：</strong>用手機影植物/雀鳥 → Florence-2 即時辨識 → show 結果 + SDGs 連結（「呢種植物係礦場關閉後第 X 年出現，證明生態修復緊 SDG 15」）。現場互動性極高。
-    </td></tr>
-    <tr>
-      <td>🥈</td>
-      <td><strong>「鐵礦的一生」AI 動畫</strong></td>
-      <td>FLUX 2 + Pixverse + Edge TTS</td>
-      <td>1-2 週</td>
-      <td>1️⃣2️⃣</td>
-      <td>公眾、學校、社交媒體</td>
-    </tr>
-    <tr><td colspan="6" style="font-size:0.6rem;color:#888;">
-      <strong>概念：</strong>60 秒 AI 動畫：鐵礦開採 → 起樓 → 回收 → 礦山變綠。帶出「循環經濟」SDG 12 概念。可放 YouTube / 探索館播放。
-    </td></tr>
-    <tr>
-      <td>🥉</td>
-      <td><strong>AI 導賞員 Chatbot</strong></td>
-      <td>DeepSeek + Web UI</td>
-      <td>1-2 週</td>
-      <td>4️⃣</td>
-      <td>所有遊客</td>
-    </tr>
-    <tr><td colspan="6" style="font-size:0.6rem;color:#888;">
-      <strong>概念：</strong>遊客用手機問鞍山問題（「呢個礦洞有幾深？」「點解咁多蝴蝶？」），AI 即時答 + 補一句 SDGs 連結。24 小時導賞服務。
-    </td></tr>
+    <tr><th>優先級</th><th>Demo 名稱</th><th>AI 技術</th><th>預估時間</th></tr>
+    <tr><td>🥇</td><td>「馬鞍山鐵礦場蛻變」AI 對比圖</td><td>FLUX 2</td><td>2-3 日</td></tr>
+    <tr><td>🥇</td><td>SDGs 互動地圖</td><td>HTML + GPS</td><td>3-5 日</td></tr>
+    <tr><td>🥈</td><td>AI 雀鳥 / 植物辨識體驗</td><td>Florence-2</td><td>約 1 週</td></tr>
+    <tr><td>🥈</td><td>「鐵礦的一生」AI 動畫</td><td>FLUX 2 + Pixverse + TTS</td><td>1-2 週</td></tr>
+    <tr><td>🥉</td><td>AI 導賞 Chatbot</td><td>DeepSeek + Web UI</td><td>1-2 週</td></tr>
   </table>
 </section>
 
-<!-- ══════ V. SURFACE ══════ -->
-<section id="surface">
+<!-- V. SURFACE -->
+<section>
   <h2>V. 面｜願景與實踐體系</h2>
-
-  <p>「面」唔係一次性產出，而係一個 <strong>持續演化嘅生態系統</strong>。透過「點 × 線」嘅互動，逐步形成：</p>
-
-  <h3>5.1 五大產出面</h3>
-
+  <p>五大產出面：</p>
   <table>
-    <tr><th>產出面</th><th>具體內容</th><th>指標</th></tr>
-    <tr>
-      <td>🌱 <strong>環保意識</strong></td>
-      <td>參加者理解礦山修復、循環經濟、生態保育嘅重要性</td>
-      <td>問卷前後測、社交媒體互動量</td>
-    </tr>
-    <tr>
-      <td>🧠 <strong>環保形態</strong></td>
-      <td>將 SDGs 內化為生活習慣：自備水樽、淨山、公民科學記錄</td>
-      <td>App 活躍用戶、淨山參與人次</td>
-    </tr>
-    <tr>
-      <td>💡 <strong>環保概念</strong></td>
-      <td>用 AI 技術重新包裝「可持續發展」呢個概念，令佢變得具體、互動、有趣</td>
-      <td>學校/企業合作數目、媒體報導</td>
-    </tr>
-    <tr>
-      <td>👣 <strong>環保實踐</strong></td>
-      <td>由鞍山開始，延伸至社區、學校、家庭、職場</td>
-      <td>行動記錄、工作坊參加人數</td>
-    </tr>
-    <tr>
-      <td>🤝 <strong>環保社群</strong></td>
-      <td>建立跨代、跨界嘅 SDGs 行動網絡</td>
-      <td>合作夥伴數目、義工網絡規模</td>
-    </tr>
+    <tr><th>產出面</th><th>具體內容</th></tr>
+    <tr><td>環保意識</td><td>參加者理解礦山修復、循環經濟、生態保育之重要性</td></tr>
+    <tr><td>環保形態</td><td>將 SDGs 內化為生活習慣：自備水樽、淨山、公民科學記錄</td></tr>
+    <tr><td>環保概念</td><td>以 AI 技術重新包裝「可持續發展」，使之變得具體、互動、有趣</td></tr>
+    <tr><td>環保實踐</td><td>由馬鞍山鐵礦場開始，延伸至社區、學校、家庭、職場</td></tr>
+    <tr><td>環保社群</td><td>建立跨代、跨界之 SDGs 行動網絡</td></tr>
   </table>
 
-  <h3>5.2 目標群眾觸及策略</h3>
+  <h3>5.1 目標群眾觸及策略</h3>
   <table>
-    <tr><th>群組</th><th>切入點</th><th>用邊個 Demo</th></tr>
-    <tr><td>🧒 幼稚園</td><td>動物/顏色/玩 — AI 雀鳥辨識遊戲、SDGs 填色卡</td><td>Demo 3</td></tr>
-    <tr><td>🏫 小學</td><td>SDGs 尋寶、AI 動畫、礦石手作</td><td>Demo 1、4</td></tr>
-    <tr><td>📚 中學</td><td>公民科學記錄、口述歷史訪問、生態數據分析</td><td>Demo 2、3</td></tr>
-    <tr><td>🎓 大專/大學</td><td>學術研究、實習計劃、AI 技術應用研究</td><td>全部 Demo</td></tr>
-    <tr><td>👴 長者</td><td>礦村回憶、口述歷史、舊相修復（AI）、輕鬆導賞</td><td>Demo 1、Chatbot</td></tr>
-    <tr><td>🥾 行山/晨運</td><td>加水站、GPS 互動路線、SDGs 打卡</td><td>Demo 2</td></tr>
-    <tr><td>🏢 企業 / NGO</td><td>CSR 合作、員工培訓、Team Building 工作坊</td><td>全部 Demo</td></tr>
+    <tr><th>群組</th><th>切入點</th></tr>
+    <tr><td>幼稚園</td><td>AI 雀鳥辨識遊戲、SDGs 填色卡</td></tr>
+    <tr><td>小學</td><td>SDGs 尋寶、AI 動畫</td></tr>
+    <tr><td>中學</td><td>公民科學記錄、生態數據分析</td></tr>
+    <tr><td>大專 / 大學</td><td>學術研究、實習計劃、AI 技術應用</td></tr>
+    <tr><td>長者</td><td>礦村回憶、口述歷史、AI 舊相修復</td></tr>
+    <tr><td>行山 / 晨運人士</td><td>免費補給站、GPS 互動路線、SDGs 打卡</td></tr>
+    <tr><td>輪椅 / SEN 家庭</td><td>無障礙路線、感官體驗工作坊</td></tr>
+    <tr><td>企業 / NGO</td><td>CSR 合作、員工培訓、團隊建設</td></tr>
   </table>
 </section>
 
-<!-- ══════ VI. SDGs ══════ -->
-<section id="sdgs">
+<!-- VI. SDGs -->
+<section>
   <h2>VI. SDGs 連結矩陣</h2>
-
-  <p>本計劃直接貢獻以下 <strong>7 個 SDGs</strong>，並間接影響 SDG 3、6、8、12、17：</p>
-
+  <p>本計劃直接貢獻以下 SDGs：</p>
   <table>
-    <tr><th>SDG</th><th>目標</th><th>鞍山具體貢獻</th><th>AI 角色</th></tr>
-    <tr>
-      <td><strong>3️⃣</strong></td><td>良好健康與福祉</td>
-      <td>礦山晨間靜觀、行山 + 文化體驗 = 整全健康</td>
-      <td>AI 聲景重現、語音引導</td>
-    </tr>
-    <tr>
-      <td><strong>4️⃣</strong></td><td>優質教育</td>
-      <td>戶外教室、SDGs 導賞、跨學科學習（歷史/生態/科技）</td>
-      <td>AI Chatbot、互動地圖、植物辨識</td>
-    </tr>
-    <tr>
-      <td><strong>6️⃣</strong></td><td>淨水與衛生</td>
-      <td>免費加水站、推廣自備水樽、源頭減廢</td>
-      <td>App 記錄膠樽減量</td>
-    </tr>
-    <tr>
-      <td><strong>8️⃣</strong></td><td>尊嚴就業與經濟增長</td>
-      <td>導賞員培訓、社區經濟、可持續旅遊</td>
-      <td>AI 輔助導賞員培訓、內容生成</td>
-    </tr>
-    <tr>
-      <td><strong>1️⃣1️⃣</strong></td><td>可持續城市與社區</td>
-      <td>保存礦場工業遺產、延續礦村記憶、社區歸屬</td>
-      <td>舊相修復、口述歷史數位化、AI 生成歷史想像圖</td>
-    </tr>
-    <tr>
-      <td><strong>1️⃣2️⃣</strong></td><td>負責任消費與生產</td>
-      <td>循環經濟教育（「鐵礦的一生」）、淨山挑戰、不留痕跡</td>
-      <td>AI 動畫製作、SDGs 足跡記錄</td>
-    </tr>
-    <tr>
-      <td><strong>1️⃣5️⃣</strong></td><td>陸地生態</td>
-      <td>礦山生態修復記錄、生物多樣性監察、公民科學</td>
-      <td>Florence-2 物種辨識、生態數據分析</td>
-    </tr>
-    <tr>
-      <td><strong>1️⃣7️⃣</strong></td><td>夥伴關係</td>
-      <td>探索館 × 漁護署 × 學校 × 企業 × AI 技術 — 跨界協作</td>
-      <td>數據共享平台、Roots &amp; Shoots 全球串連</td>
-    </tr>
+    <tr><th>SDG</th><th>目標</th><th>馬鞍山鐵礦場具體貢獻</th></tr>
+    <tr><td>3️⃣</td><td>良好健康與福祉</td><td>礦山晨間靜觀、行山與文化體驗結合</td></tr>
+    <tr><td>4️⃣</td><td>優質教育</td><td>戶外教室、SDGs 導賞、跨學科學習</td></tr>
+    <tr><td>6️⃣</td><td>淨水與衛生</td><td>免費補給站、推廣自備水樽</td></tr>
+    <tr><td>8️⃣</td><td>尊嚴就業與經濟增長</td><td>導賞員培訓、社區經濟、可持續旅遊</td></tr>
+    <tr><td>11</td><td>可持續城市與社區</td><td>保存工業遺產、延續礦村記憶</td></tr>
+    <tr><td>12</td><td>負責任消費與生產</td><td>循環經濟教育、淨山挑戰</td></tr>
+    <tr><td>15</td><td>陸地生態</td><td>礦山生態修復記錄、生物多樣性監察</td></tr>
+    <tr><td>17</td><td>夥伴關係</td><td>跨機構協作、Roots &amp; Shoots 全球網絡</td></tr>
   </table>
-
-  <div class="infobox">
-    <div class="label">🎯 SDGs 整合策略</div>
-    <p>每個 Demo、每個工作坊、每條導賞路線都必須標明「你而家參與緊邊個 SDG」。唔係事後解說，而係 <strong>體驗的一部分</strong>。咁樣 SDGs 先會由抽象口號變為具體體驗。</p>
-  </div>
 </section>
 
-<!-- ══════ VII. ROADMAP ══════ -->
-<section id="roadmap">
+<!-- VII. ROADMAP -->
+<section>
   <h2>VII. 開發路線圖</h2>
-
   <div class="timeline-strip">
     <div class="tl-item tl-p1">
-      <div class="week">Phase 1 · Week 1-2</div>
+      <div class="week">Phase 1 · 第 1-2 週</div>
       <div class="phase" style="color:#c0a060;">Demo 1 + 計劃書</div>
-      <div class="desc">「鞍山蛻變」AI 對比圖<br>完整計劃書生成</div>
+      <div class="desc">AI 對比圖系列<br>完整計劃書定稿</div>
     </div>
     <div class="tl-item tl-p2">
-      <div class="week">Phase 2 · Week 3-4</div>
+      <div class="week">Phase 2 · 第 3-4 週</div>
       <div class="phase" style="color:#60a0c0;">Demo 2</div>
-      <div class="desc">SDGs 互動地圖 HTML<br>配合 GPS App 整合</div>
+      <div class="desc">SDGs 互動地圖<br>配合 GPS 系統整合</div>
     </div>
     <div class="tl-item tl-p3">
-      <div class="week">Phase 3 · Week 5-6</div>
+      <div class="week">Phase 3 · 第 5-6 週</div>
       <div class="phase" style="color:#60c080;">Demo 3</div>
-      <div class="desc">AI 雀鳥/植物辨識<br>現場工作坊版本</div>
+      <div class="desc">AI 生態辨識<br>現場工作坊版本</div>
     </div>
     <div class="tl-item tl-p4">
-      <div class="week">Phase 4 · Week 7-8</div>
+      <div class="week">Phase 4 · 第 7-8 週</div>
       <div class="phase" style="color:#c06080;">Demo 4 + 5</div>
       <div class="desc">AI 動畫短片<br>AI Chatbot 原型</div>
     </div>
   </div>
-
-  <h3>7.1 Phase 1 詳細執行計劃</h3>
-  <table>
-    <tr><th>日</th><th>任務</th><th>負責</th></tr>
-    <tr><td>Day 1-2</td><td>搜集鞍山舊相參考資料（網上 archive、礦村舊相）</td><td>Ming + Mvmv</td></tr>
-    <tr><td>Day 3-5</td><td>用 FLUX 2 生成「鞍山蛻變」對比圖系列（3-5 個地點）</td><td>Mvmv</td></tr>
-    <tr><td>Day 6-7</td><td>篩選最佳對比圖 + 排版 + 附加 SDGs 說明文字</td><td>Mvmv</td></tr>
-    <tr><td>Day 8-10</td><td>生成完整計劃書 HTML（私人版 + 分享版）+ 上傳 GitHub Pages</td><td>Mvmv</td></tr>
-    <tr><td>Day 11-14</td><td>你 review 計劃書 + Demo 對比圖 + 修改 + 決定下階段</td><td>Ming + Mvmv</td></tr>
-  </table>
 </section>
 
-<!-- ══════ VIII. AUDIENCE ══════ -->
-<section id="audience">
+<!-- VIII. AUDIENCE -->
+<section>
   <h2>VIII. 目標群眾與合作夥伴</h2>
-
-  <h3>8.1 目標群眾</h3>
-  <table>
-    <tr><th>群組</th><th>需求 / 動機</th><th>我哋提供嘅價值</th></tr>
-    <tr><td>🏫 幼稚園 - 大學</td><td>課程連結、戶外學習、STEM/STEAM</td><td>SDGs 主題導賞 + AI 體驗工作坊</td></tr>
-    <tr><td>👴 長者</td><td>懷舊、輕鬆活動、社交</td><td>礦村記憶分享、AI 舊相修復、輕度導賞</td></tr>
-    <tr><td>🥾 行山/晨運客</td><td>運動、放鬆、新體驗</td><td>SDGs 互動路線、免費補給、打卡點</td></tr>
-    <tr><td>♿ 輪椅 / SEN 家庭</td><td>無障礙設施、包容性活動</td><td>可達路線設計、感官體驗工作坊</td></tr>
-    <tr><td>🏢 企業 / NGO</td><td>CSR、Team Building、品牌形象</td><td>SDGs 主題培訓、AI 體驗 + 淨山活動</td></tr>
-  </table>
-
-  <h3>8.2 潛在合作夥伴</h3>
+  <h3>8.1 潛在合作夥伴</h3>
   <ul>
-    <li><strong>漁護署</strong> — 山徑巡查合作、生態保育支援</li>
-    <li><strong>珍古德協會（香港）</strong> — Roots &amp; Shoots 網絡、SDGs 教育資源</li>
-    <li><strong>本地大學（教育/生態/IT 學系）</strong> — 學術研究、實習生計劃、AI 技術合作</li>
-    <li><strong>中小學</strong> — 戶外學習、STEAM 教育、全方位學習津貼</li>
-    <li><strong>企業 CSR 部門</strong> — Team Building、員工義工日、贊助</li>
-    <li><strong>馬鞍山社區組織</strong> — 街坊網絡、義工招募</li>
+    <li>漁農自然護理署 — 山徑巡查合作、生態保育支援</li>
+    <li>珍古德協會（香港）— Roots &amp; Shoots 網絡、SDGs 教育資源</li>
+    <li>本地大學（教育、生態、IT 學系）— 學術研究、實習計劃</li>
+    <li>中小學 — 戶外學習、STEAM 教育、全方位學習津貼</li>
+    <li>企業 CSR 部門 — 團隊建設、員工義工日、贊助</li>
+    <li>馬鞍山社區組織 — 街坊網絡、義工招募</li>
   </ul>
 </section>
 
-<!-- ══════ IX. CONCLUSION ══════ -->
-<section id="conclusion">
-  <h2>IX. 結語 — 從鞍山出發，改變世界</h2>
+<!-- IX. CONCLUSION -->
+<section>
+  <h2>IX. 結語 — 從馬鞍山鐵礦場出發</h2>
 
   <blockquote>
-    「你以為只係一座礦山？其實佢係一個活生生嘅 SDGs 教室。你以為只係 AI 技術？其實佢係一個跨世代嘅環保覺醒工具。」
+    「你以為這只是一座礦山？其實它是一個活生生的 SDGs 教室。你以為這只是 AI 技術？其實它是一套跨世代的環保覺醒工具。」
   </blockquote>
 
-  <p>馬鞍山鐵礦場由 1905 年發現磁鐵礦，1906 年正式開採，歷經英資香港鐵礦公司、華興礦務、大公洋行、日本礦業株式會社合資等多個時期，至 1976 年結業，營運 70 年。結業後近 50 年嘅自然修復，令礦山由昔日工業遺址蛻變成今日嘅生態寶庫。2016 年礦場建築獲古諮會評級，確認其歷史價值。再到未來嘅 SDGs × AI 教育平台 — 呢座山嘅故事仲未講完。</p>
+  <p>馬鞍山鐵礦場由 1905 年發現磁鐵礦，1906 年正式開採，歷經英資香港鐵礦公司、華興礦務、大公洋行、日本礦業株式會社合資等多個時期，至 1976 年結業，營運 70 年。高峰時期礦工約 3,000 人，礦村四大區域（山頂區、馬鞍橋區、潮洲村、礦場碼頭區）聚居約 10,000 人。結業後近 50 年自然修復，礦山由昔日工業遺址蛻變為今日之生態寶庫。2016 年礦場建築獲古物諮詢委員會評級，確認其歷史價值。展望未來，馬鞍山鐵礦場將成為 SDGs × AI 教育平台。這座山的故事還未完結。</p>
 
   <div class="infobox" style="border-left-color:#c06060;">
-    <div class="label" style="color:#c06060;">📌 資料修正記錄</div>
-    <p>本計劃書初版曾誤述「鞍山鐵礦場由 1906 年開採至今」，經 fact check 後於 2026 年 7 月修正為「1906 年至 1976 年結業」（資料由鞍山探索館導賞員確認）。如發現其他錯誤，歡迎指正，持續更新。</p>
+    <div class="label" style="color:#c06060;">資料修正記錄</div>
+    <p>本計劃書初版曾誤述若干歷史數據，經鞍山探索館導賞員 fact check 後修正：礦工高峰人數 400 → 3,000 人、礦村聚居人口 10,000 人、礦區劃分為四大區域。如發現其他錯誤，歡迎指正，持續更新。</p>
   </div>
 
-  <p>呢份計劃書唔係一份靜態文件，而係一個 <strong>行動起點</strong>。透過「點線面」嘅策略框架、4-Step Formula 嘅行動循環、AI 技術嘅創新應用，我哋可以將鞍山變成香港第一個 <strong>AI 驅動嘅 SDGs 戶外教育平台</strong>，由馬鞍山出發，影響全港，甚至連結全球 Roots &amp; Shoots 網絡。</p>
+  <p>本計劃書並非一份靜態文件，而是一個 <strong>行動起點</strong>。透過「點線面」策略框架、4-Step Formula 行動循環、AI 技術創新應用，我們可將馬鞍山鐵礦場轉化為香港第一個 <strong>AI 驅動之 SDGs 戶外教育平台</strong>，由馬鞍山出發，影響全港，連結全球 Roots &amp; Shoots 網絡。</p>
 
   <div class="diagram-box">
-    <div class="big-icon">🪨🤖🌍</div>
-    <div class="title">鞍山 × AI × SDGs = 無限可能</div>
-    <div class="body">
-      「從礦藏到寶藏，從 Mines 到 Minds」<br>
-      — 鞍山永續傳承計劃
-    </div>
+    <div class="title">馬鞍山鐵礦場 × AI × SDGs = 無限可能</div>
+    <div class="body">「從礦藏到寶藏，從 Mines 到 Minds」</div>
   </div>
 </section>
 
-<!-- ══════ X. REFERENCES ══════ -->
-<section id="references">
+<!-- X. REFERENCES -->
+<section>
   <h2>X. 參考資料與版權聲明</h2>
 
   <h3>10.1 框架與概念來源</h3>
   <table>
-    <tr><th>框架 / 概念</th><th>來源機構</th><th>備註</th></tr>
-    <tr>
-      <td>Roots &amp; Shoots 4-Step Formula</td>
-      <td>珍古德協會（Jane Goodall Institute）<br>rootsandshoots.org</td>
-      <td>4-Step Formula（Get Engaged → Observe → Take Action → Celebrate）為珍古德博士 Roots &amp; Shoots 計劃之核心行動框架。本計劃獲其啟發並參考應用，特此鳴謝。</td>
-    </tr>
-    <tr>
-      <td>聯合國可持續發展目標（SDGs）</td>
-      <td>聯合國（United Nations）<br>sdgs.un.org</td>
-      <td>SDGs 圖標及目標描述之版權屬聯合國所有，按聯合國 SDGs 使用指引引用。本計劃非聯合國官方項目。</td>
-    </tr>
-    <tr>
-      <td>「點線面」策略框架</td>
-      <td>本計劃原創概念</td>
-      <td>由 Ming 提出概念方向，mvmv（AI Agent）整理成文。</td>
-    </tr>
+    <tr><th>框架 / 概念</th><th>來源機構</th></tr>
+    <tr><td>Roots &amp; Shoots 4-Step Formula</td><td>珍古德協會（Jane Goodall Institute）rootsandshoots.org</td></tr>
+    <tr><td>聯合國可持續發展目標（SDGs）</td><td>聯合國（United Nations）sdgs.un.org</td></tr>
+    <tr><td>「點線面」策略框架</td><td>參考 Chan Hiu-yu (2017) HKU Thesis 及本計劃原創概念</td></tr>
   </table>
 
   <h3>10.2 歷史資料與數據來源</h3>
   <table>
-    <tr><th>資料類別</th><th>來源 / 參考</th><th>備註</th></tr>
-    <tr>
-      <td>馬鞍山鐵礦場歷史</td>
-      <td>鞍山探索館館藏資料、Wikipedia "Ma On Shan Iron Mine"、SCMP (2014)、CEDD 經濟地質報告</td>
-      <td>詳細史料包括：1905 年發現磁鐵礦、1931 年華興礦務牌照、1949 年大公洋行接手、1953 年與日本 Nittetsu 合資、1976 年結業等</td>
-    </tr>
-    <tr>
-      <td>礦場建築評級</td>
-      <td>古物諮詢委員會（AAB）2016 年評級公告</td>
-      <td>240ML/110ML 外牆 Grade 2，選礦廠 Grade 3，礦村遺址 Grade 3</td>
-    </tr>
-    <tr>
-      <td>日本連結</td>
-      <td>Shibata Taketo (1964) Development Plan；Nakajima Tamotsu (1964) Geology and Ore Deposits；Yang J.Y. (1952) FEER</td>
-      <td>日本學者參與礦場設計規劃，鐵礦砂出口日本</td>
-    </tr>
-    <tr>
-      <td>礦村與教會資料</td>
-      <td>鞍山探索館導賞資料、Chan Hiu-yu (2017) HKU Thesis</td>
-      <td>論文框架：教堂 × 礦山 × 人 — 直接對應本計劃「點線面」概念</td>
-    </tr>
-    <tr>
-      <td>生態與生物多樣性</td>
-      <td>鞍山探索館導賞內容、Kwan Sai Ho (1979) CUHK M.Phil</td>
-      <td>中大論文記錄礦場結業初期嘅土壤植被污染 baseline data</td>
-    </tr>
-    <tr>
-      <td>地質資料</td>
-      <td>Choi Wing-sang (2013) HKU MSc；Davis S.G. (1961) Economic Geology</td>
-      <td>磁鐵礦（Magnetite）成因同礦物學分析</td>
-    </tr>
+    <tr><th>資料類別</th><th>來源</th></tr>
+    <tr><td>馬鞍山鐵礦場歷史</td><td>鞍山探索館館藏資料、Wikipedia、SCMP (2014)、CEDD 經濟地質報告</td></tr>
+    <tr><td>礦場建築評級</td><td>古物諮詢委員會（AAB）2016 年評級公告</td></tr>
+    <tr><td>日本連結</td><td>Shibata Taketo (1964)、Nakajima Tamotsu (1964)、Yang J.Y. (1952)</td></tr>
+    <tr><td>礦村與教會資料</td><td>鞍山探索館導賞資料、Chan Hiu-yu (2017) HKU Thesis</td></tr>
+    <tr><td>生態與生物多樣性</td><td>鞍山探索館導賞內容、Kwan Sai Ho (1979) CUHK M.Phil</td></tr>
+    <tr><td>礦工人數及礦村人口</td><td>鞍山探索館導賞員提供</td></tr>
   </table>
 
   <h3>10.3 AI 技術工具鳴謝</h3>
   <table>
-    <tr><th>AI 工具</th><th>提供者</th><th>用途</th></tr>
-    <tr><td>FLUX 2</td><td>FAL.ai / Black Forest Labs</td><td>AI 圖像生成</td></tr>
-    <tr><td>Florence-2</td><td>Microsoft</td><td>本地電腦視覺辨識</td></tr>
-    <tr><td>Pixverse</td><td>Pixverse / FAL.ai</td><td>AI 影片生成</td></tr>
-    <tr><td>Edge TTS</td><td>Microsoft</td><td>語音合成</td></tr>
-    <tr><td>DeepSeek</td><td>DeepSeek</td><td>語言模型 / 內容生成</td></tr>
-    <tr><td>Hermes Agent</td><td>Nous Research</td><td>AI Agent 框架（mvmv）</td></tr>
+    <tr><th>AI 工具</th><th>提供者</th></tr>
+    <tr><td>FLUX 2</td><td>FAL.ai / Black Forest Labs</td></tr>
+    <tr><td>Florence-2</td><td>Microsoft</td></tr>
+    <tr><td>Pixverse</td><td>Pixverse / FAL.ai</td></tr>
+    <tr><td>Edge TTS</td><td>Microsoft</td></tr>
+    <tr><td>DeepSeek</td><td>DeepSeek</td></tr>
+    <tr><td>Hermes Agent</td><td>Nous Research</td></tr>
   </table>
 
-  <h3>10.4 相片與圖像版權</h3>
+  <h3>10.4 版權提示</h3>
   <div class="infobox" style="border-left-color:#c06060;">
-    <div class="label" style="color:#c06060;">⚠️ 重要版權提示</div>
-    <p>本計劃書目前使用之圖標及視覺元素均為 Unicode Emoji 或 AI 生成（FLUX 2），不涉及第三方版權圖片。日後若引用歷史相片（包括礦場舊相、礦村生活照、教會歷史圖片等），<strong>必須</strong>：</p>
-    <ul style="font-size:0.7rem;">
-      <li>📌 註明相片提供者 / 機構名稱（e.g.「相片由鞍山探索館提供」或「Photo courtesy of …」）</li>
-      <li>📌 獲得版權持有人授權後方可使用</li>
-      <li>📌 若使用 AI 生成圖像模擬歷史場景，需標明「AI 生成想像圖，非真實歷史照片」</li>
-      <li>📌 引用政府或機構公開資料時，標明「Data reference from: [機構名稱]」</li>
-    </ul>
+    <div class="label" style="color:#c06060;">版權聲明</div>
+    <p>本計劃書使用之圖標為 Unicode Emoji 或 AI 生成。日後引用歷史相片需註明提供者、取得版權授權。AI 生成圖像需標明「AI 生成想像圖」。引用政府或機構資料時標明「Data reference from: [機構名稱]」。</p>
   </div>
 
   <h3>10.5 免責聲明</h3>
-  <ul>
+  <ul style="font-size:0.58rem;">
     <li>本計劃書為概念提案，部分數據及時間線為估算，具體執行需按實際情況調整。</li>
-    <li>計劃書內提及之 AI 成本為撰寫時之參考價格，實際使用可能因市場變動而不同。</li>
     <li>本計劃並非聯合國或珍古德協會官方認可項目，僅為參考其框架之獨立倡議。</li>
-    <li>計劃書由 mvmv（基於 Hermes Agent 嘅 AI Agent）協助生成，內容經 Ming（鞍山探索館導賞員）審閱及修正。</li>
   </ul>
 </section>
 
 </div>
 
 <footer>
-  🪨 鞍山永續 · AI 覺醒 — From Mine to Mind<br>
-  計劃書由 無虛 (mvmv) 為 Ming 生成 · 私人版本<br>
-  參考框架：珍古德博士 Roots &amp; Shoots 4-Step Formula · 聯合國 SDGs 2030<br>
-  生成日期：2026 年 7 月
+  馬鞍山鐵礦場 SDGs × AI 生態導賞系統計劃書 · 私人版本<br>
+  由 無虛 (mvmv) 為 Ming 生成 · 2026 年 7 月
 </footer>
 
 </body>
