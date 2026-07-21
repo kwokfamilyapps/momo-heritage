@@ -263,65 +263,43 @@ function switchTab(tab) {
 }
 
 // ══════════════════════════════════════════════
-// CLOUD SYNC - temporary API server
+// CLOUD SYNC
 // ══════════════════════════════════════════════
 const CLOUD_API = "https://mos-patrol-api.loca.lt";
 
 async function syncToCloud(record) {
   try {
-    const resp = await fetch(CLOUD_API + "/api/records", {
+    await fetch(CLOUD_API + "/api/records", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(record)
     });
-    const result = await resp.json();
-    if (result.ok) {
-      console.log("☁️ Synced to cloud! Total:", result.total);
-    }
   } catch(e) {
-    console.log("☁️ Cloud sync failed (offline?) - saving locally only");
+    console.log("☁️ Sync failed - offline");
   }
 }
 
-// Load from cloud on startup
 async function loadFromCloud() {
   try {
     const resp = await fetch(CLOUD_API + "/api/records");
     if (!resp.ok) return;
-    const cloudRecords = await resp.json();
-    if (cloudRecords.length > 0) {
-      // Merge: prefer local records (newly created offline)
-      const localIds = new Set(state.records.map(r => r.id));
-      for (const r of cloudRecords) {
-        if (!localIds.has(r.id)) {
-          state.records.push(r);
-        }
-      }
-      // Save merged data
+    const cloudRecs = await resp.json();
+    if (cloudRecs.length > 0) {
+      // Merge cloud + local (local wins)
+      const localMap = {};
+      state.records.forEach(r => localMap[r.id] = r);
+      cloudRecs.forEach(r => { if (!localMap[r.id]) localMap[r.id] = r; });
+      state.records = Object.values(localMap);
       localStorage.setItem('mos_records', JSON.stringify(state.records));
-      console.log("☁️ Loaded", cloudRecords.length, "cloud records");
+      if (state.tab === 'list') renderList();
     }
   } catch(e) {
-    console.log("☁️ Cloud load failed - using local data");
+    console.log("☁️ Cloud load failed");
   }
 }
 
-// ══════════════════════════════════════════════
-// LOAD DATA ON STARTUP
-// ══════════════════════════════════════════════
-// Ensure data loads properly
-document.addEventListener('DOMContentLoaded', function() {
-  try {
-    const saved = localStorage.getItem('mos_records');
-    if (saved) {
-      state.records = JSON.parse(saved);
-      console.log(`Loaded ${state.records.length} records from local storage`);
-    }
-  } catch(e) {
-    console.log('No saved data found');
-    state.records = [];
-  }
-});
+// LOAD DATA ON STARTUP - done at top of script
+// No duplicate DOMContentLoaded handler needed
 
 // ══════════════════════════════════════════════
 // RENDER FORM
