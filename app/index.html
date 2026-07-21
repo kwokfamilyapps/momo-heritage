@@ -260,7 +260,18 @@ const firebaseConfig = {
 // ══════════════════════════════════════════════
 // LOGIN / LOGOUT
 // ══════════════════════════════════════════════
+const PASSWORDS = {
+  admin: 'admin2024',
+  vol: 'vol2024'
+};
+
 function login(role) {
+  const pwd = prompt('請輸入 ' + (role === 'admin' ? 'Admin' : '義工隊') + ' 密碼：');
+  if (!pwd) return;
+  if (pwd !== PASSWORDS[role]) {
+    alert('❌ 密碼錯誤');
+    return;
+  }
   state.user = { role };
   document.getElementById('userBadge').textContent = role === 'admin' ? '👤 Admin' : '👥 義工隊';
   document.getElementById('screenLogin').classList.remove('active');
