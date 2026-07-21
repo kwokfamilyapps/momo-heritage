@@ -236,12 +236,17 @@ const firebaseConfig = {
     editId: null
   };
 
-  // Load from Firestore on startup
+  // Load from Firestore on startup — only on first load, not overwrite local records
+  let _initialLoadDone = false;
   async function loadRecords() {
+    if (_initialLoadDone) return; // 防止重複執行清空記錄
+    _initialLoadDone = true;
     try {
       const snap = await db.collection('records').orderBy('createdAt','desc').get();
-      state.records = [];
-      snap.forEach(doc => state.records.push({ id: doc.id, ...doc.data() }));
+      // 只有在當前無本地記錄時先 load（避免 overwrite 用戶剛輸入嘅記錄）
+      if (state.records.length === 0) {
+        snap.forEach(doc => state.records.push({ id: doc.id, ...doc.data() }));
+      }
       if (state.user) {
         if (state.tab === 'list') renderList();
         else if (state.tab === 'admin') renderAdmin();
@@ -496,7 +501,7 @@ function submitRecord() {
   }
 
   const record = {
-    id: state.editId || Date.now().toString(),
+    id: state.editId || Date.now().toString(36) + Math.random().toString(36).substr(2, 6),
     date, recorder: recorder.trim(),
     trail: trail === '其他' ? (trailOther || '其他') : trail,
     activityType: state.activityType,
