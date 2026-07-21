@@ -20,18 +20,21 @@
   /* ── Header ── */
   .header {
     background: linear-gradient(135deg, #1a3a2a, #0d2a1a);
-    padding: 1.2rem;
+    padding: 0.5rem 1rem;
     text-align: center;
     border-bottom: 2px solid #40a060;
     position: sticky;
     top: 0;
     z-index: 100;
+    display: flex; align-items: center; gap: 0.5rem;
   }
-  .header h1 { font-size: 1.2rem; color: #c0e8c0; }
-  .header .sub { font-size: 0.6rem; color: #80a080; margin-top: 0.15rem; }
+  .header-icon { width: 2rem; height: 2rem; border-radius: 6px; flex-shrink: 0; }
+  .header-text { flex: 1; text-align: left; }
+  .header h1 { font-size: 0.8rem; color: #c0e8c0; margin: 0; }
+  .header .sub { font-size: 0.45rem; color: #80a080; margin: 0; }
   .header .user-badge {
     display: inline-block; background: #2a4a3a; color: #80e080;
-    padding: 0.15rem 0.7rem; border-radius: 20px; font-size: 0.55rem; margin-top: 0.2rem;
+    padding: 0.1rem 0.5rem; border-radius: 20px; font-size: 0.45rem; white-space: nowrap;
   }
   /* ── Screens ── */
   .screen { display: none; padding: 0.8rem; }
@@ -139,8 +142,11 @@
 
 <!-- ═══ HEADER ═══ -->
 <div class="header" id="appHeader">
-  <h1>🏞️ 鞍山探索館</h1>
-  <div class="sub">山徑及水道巡查記錄工具</div>
+  <img class="header-icon" src="https://raw.githubusercontent.com/kwokfamilyapps/momo-heritage/main/app/icon-192.png" alt="icon" onerror="this.style.display='none'">
+  <div class="header-text">
+    <h1>🏞️ 鞍山探索館</h1>
+    <div class="sub">山徑及水道巡查記錄工具</div>
+  </div>
   <div class="user-badge" id="userBadge">未登入</div>
 </div>
 
@@ -496,6 +502,12 @@ function submitRecord() {
     const idx = state.records.findIndex(r => r.id === state.editId);
     if (idx >= 0) state.records[idx] = record;
   } else {
+    // 防重複：檢查最後一筆係咪一樣
+    const last = state.records[0];
+    if (last && last.date === record.date && last.recorder === record.recorder &&
+        last.trail === record.trail && JSON.stringify(last.issues) === JSON.stringify(record.issues)) {
+      if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
+    }
     state.records.unshift(record);
   }
 
