@@ -501,7 +501,11 @@ function submitRecord() {
 
   if (state.editId) {
     const idx = state.records.findIndex(r => r.id === state.editId);
-    if (idx >= 0) state.records[idx] = record;
+    if (idx >= 0) {
+      state.records[idx] = record;
+      localStorage.setItem('mos_records', JSON.stringify(state.records));
+    }
+    saveAndSubmit(record);
   } else {
     // 防重複：檢查最後一筆係咪一樣
     const last = state.records[0];
@@ -510,17 +514,19 @@ function submitRecord() {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
     state.records.unshift(record);
-  }
-
-  localStorage.setItem('mos_records', JSON.stringify(state.records));
-  // 記錄當下 GPS 位置
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(pos => {
-      record.gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    localStorage.setItem('mos_records', JSON.stringify(state.records));
+    // 記錄當下 GPS 位置
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        record.gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        // Update the record in state with GPS
+        state.records[0].gps = record.gps;
+        localStorage.setItem('mos_records', JSON.stringify(state.records));
+        saveAndSubmit(record);
+      }, () => saveAndSubmit(record), { timeout: 5000, enableHighAccuracy: true });
+    } else {
       saveAndSubmit(record);
-    }, () => saveAndSubmit(record), { timeout: 5000, enableHighAccuracy: true });
-  } else {
-    saveAndSubmit(record);
+    }
   }
 }
 
@@ -610,18 +616,43 @@ function renderMap() {
       maxZoom: 18
     }).addTo(map);
 
-    // Add markers for records with GPS
+    // Add markers and route lines
     let count = 0;
+    const gpsPoints = [];
+
     state.records.forEach(r => {
       if (r.gps && r.gps.lat && r.gps.lng) {
         const color = r.activityType === 'trail' ? '#4a8a5a' : '#4080c0';
-        L.circleMarker([r.gps.lat, r.gps.lng], {
+        const latlng = [r.gps.lat, r.gps.lng];
+        gpsPoints.push(latlng);
+
+        // Build popup content with photos
+        let popupHtml = `<b>${r.trail}</b><br>${r.date}<br>${r.recorder || ''}<br>${(r.issues||[]).join('、')}`;
+        if (r.photos && r.photos.length > 0) {
+          popupHtml += '<br><div style="display:flex;gap:4px;margin-top:4px;">';
+          r.photos.forEach(p => {
+            popupHtml += `<img src="${p}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">`;
+          });
+          popupHtml += '</div>';
+        }
+
+        L.circleMarker(latlng, {
           radius: 8, color: color, fillColor: color, fillOpacity: 0.7
         }).addTo(map)
-          .bindPopup(`<b>${r.trail}</b><br>${r.date}<br>${(r.issues||[]).join('、')}`);
+          .bindPopup(popupHtml);
         count++;
       }
     });
+
+    // Draw route line connecting GPS points in order
+    if (gpsPoints.length >= 2) {
+      L.polyline(gpsPoints.reverse(), {
+        color: '#4a8a5a',
+        weight: 3,
+        opacity: 0.6,
+        dashArray: '8, 8'
+      }).addTo(map);
+    }
 
     document.getElementById('mapStatus').textContent =
       count > 0 ? `📍 已顯示 ${count} 個有 GPS 嘅記錄` : '📌 暫無 GPS 記錄 — 填寫時系統會自動記錄位置';
