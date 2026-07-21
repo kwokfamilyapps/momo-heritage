@@ -529,11 +529,16 @@ function submitRecord() {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
     state.records.unshift(record);
-    db.collection('records').doc(record.id).set(record).then(function() {
-      console.log("🔥 SYNC OK:", record.id);
+    // Use add() instead of doc().set() for better compatibility
+    db.collection('records').add(record).then(function(docRef) {
+      console.log("🔥 SYNC OK:", docRef.id);
+      // Update local record with Firestore-generated ID
+      if (state.records[0] && state.records[0].id === record.id) {
+        state.records[0].id = docRef.id;
+      }
     }).catch(function(e) {
-      console.log("🔥 SYNC FAIL:", record.id, e.code, e.message);
-      alert("⚠️ 記錄未能同步到雲端: " + e.message);
+      console.log("🔥 SYNC FAIL:", e.code, e.message);
+      alert("⚠️ 記錄未能同步到雲端\\n" + e.code + ": " + e.message);
     });
   }
 
