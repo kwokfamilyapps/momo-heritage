@@ -6,12 +6,12 @@
 <title>鞍山探索館 · 山徑與水道巡查記錄</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 26px; }
+  html { font-size: 36px; }
   body {
     font-family: -apple-system, "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
     background: #0a0a0f;
     color: #e0e0e0;
-    line-height: 1.7;
+    line-height: 1.8;
     padding: 0;
     max-width: 500px;
     margin: 0 auto;
@@ -20,18 +20,18 @@
   /* ── Header ── */
   .header {
     background: linear-gradient(135deg, #1a3a2a, #0d2a1a);
-    padding: 1rem;
+    padding: 1.2rem;
     text-align: center;
     border-bottom: 2px solid #40a060;
     position: sticky;
     top: 0;
     z-index: 100;
   }
-  .header h1 { font-size: 1.1rem; color: #c0e8c0; }
-  .header .sub { font-size: 0.5rem; color: #80a080; margin-top: 0.1rem; }
+  .header h1 { font-size: 1.2rem; color: #c0e8c0; }
+  .header .sub { font-size: 0.6rem; color: #80a080; margin-top: 0.15rem; }
   .header .user-badge {
     display: inline-block; background: #2a4a3a; color: #80e080;
-    padding: 0.1rem 0.6rem; border-radius: 20px; font-size: 0.5rem; margin-top: 0.2rem;
+    padding: 0.15rem 0.7rem; border-radius: 20px; font-size: 0.55rem; margin-top: 0.2rem;
   }
   /* ── Screens ── */
   .screen { display: none; padding: 0.8rem; }
@@ -42,54 +42,54 @@
     background: #10181a; border: 1px solid #1a2a2a; border-radius: 14px;
     padding: 2rem 1.5rem; margin-top: 3rem;
   }
-  .login-box h2 { font-size: 1rem; color: #60c080; text-align: center; margin-bottom: 1rem; }
+  .login-box h2 { font-size: 1.1rem; color: #60c080; text-align: center; margin-bottom: 1rem; }
   .login-btn {
-    display: block; width: 100%; padding: 0.8rem;
-    margin: 0.5rem 0; border: none; border-radius: 10px;
-    font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    display: block; width: 100%; padding: 1rem;
+    margin: 0.6rem 0; border: none; border-radius: 12px;
+    font-size: 0.9rem; font-weight: 600; cursor: pointer;
   }
   .login-btn.admin { background: #2a4a6a; color: #c0e0ff; }
   .login-btn.vol { background: #2a4a3a; color: #c0e8c0; }
 
   /* ── Buttons ── */
   .btn {
-    display: inline-block; padding: 0.5rem 1rem; border: none; border-radius: 8px;
-    font-size: 0.65rem; font-weight: 600; cursor: pointer; text-align: center;
+    display: inline-block; padding: 0.6rem 1.2rem; border: none; border-radius: 10px;
+    font-size: 0.7rem; font-weight: 600; cursor: pointer; text-align: center;
   }
   .btn-primary { background: #2a6a4a; color: #fff; }
   .btn-secondary { background: #2a2a3a; color: #c0c0e0; }
   .btn-danger { background: #6a2a2a; color: #ffa0a0; }
-  .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.5rem; }
-  .btn-full { width: 100%; margin: 0.3rem 0; }
+  .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.55rem; }
+  .btn-full { width: 100%; margin: 0.4rem 0; }
 
   /* ── Form ── */
-  .form-group { margin-bottom: 0.8rem; }
-  .form-group label { display: block; font-size: 0.6rem; color: #80b080; margin-bottom: 0.2rem; font-weight: 600; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; font-size: 0.7rem; color: #80b080; margin-bottom: 0.3rem; font-weight: 600; }
   .form-group input, .form-group select, .form-group textarea {
-    width: 100%; padding: 0.5rem; border: 1px solid #2a3a2a; border-radius: 8px;
-    background: #0c0c14; color: #e0e0e0; font-size: 0.6rem;
+    width: 100%; padding: 0.6rem; border: 1px solid #2a3a2a; border-radius: 10px;
+    background: #0c0c14; color: #e0e0e0; font-size: 0.7rem;
   }
-  .form-group textarea { min-height: 2.5rem; resize: vertical; }
-  .form-group .hint { font-size: 0.45rem; color: #666; margin-top: 0.1rem; }
+  .form-group textarea { min-height: 3rem; resize: vertical; }
+  .form-group .hint { font-size: 0.5rem; color: #666; margin-top: 0.15rem; }
 
   /* ── Checkbox Grid ── */
-  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
   .check-grid label {
-    display: flex; align-items: center; gap: 0.3rem;
-    font-size: 0.55rem; color: #aaa; padding: 0.3rem;
-    background: #0c0c14; border-radius: 6px; border: 1px solid #1a1a2a;
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.6rem; color: #aaa; padding: 0.4rem;
+    background: #0c0c14; border-radius: 8px; border: 1px solid #1a1a2a;
   }
-  .check-grid input[type="checkbox"] { width: 1rem; height: 1rem; }
+  .check-grid input[type="checkbox"] { width: 1.2rem; height: 1.2rem; }
 
   /* ── Photo Upload ── */
   .photo-zone {
-    border: 2px dashed #2a4a3a; border-radius: 10px; padding: 0.8rem;
-    text-align: center; color: #888; font-size: 0.5rem; cursor: pointer;
-    margin: 0.3rem 0;
+    border: 2px dashed #2a4a3a; border-radius: 12px; padding: 1rem;
+    text-align: center; color: #888; font-size: 0.6rem; cursor: pointer;
+    margin: 0.4rem 0;
   }
-  .photo-previews { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.3rem; }
+  .photo-previews { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
   .photo-previews .thumb {
-    width: 4rem; height: 4rem; border-radius: 6px; overflow: hidden;
+    width: 5rem; height: 5rem; border-radius: 8px; overflow: hidden;
     position: relative; background: #0c0c14; border: 1px solid #2a2a3a;
   }
   .photo-previews .thumb img { width: 100%; height: 100%; object-fit: cover; }
@@ -101,36 +101,36 @@
 
   /* ── Record List ── */
   .record-card {
-    background: #10181a; border: 1px solid #1a2a2a; border-radius: 10px;
-    padding: 0.6rem; margin: 0.5rem 0;
+    background: #10181a; border: 1px solid #1a2a2a; border-radius: 12px;
+    padding: 0.8rem; margin: 0.6rem 0;
   }
-  .record-card .date { font-size: 0.5rem; color: #888; }
-  .record-card .trail { font-size: 0.65rem; color: #c0e8c0; font-weight: 600; }
-  .record-card .type { font-size: 0.5rem; color: #80b080; }
-  .record-card .issues { font-size: 0.5rem; color: #aaa; margin-top: 0.2rem; }
+  .record-card .date { font-size: 0.55rem; color: #888; }
+  .record-card .trail { font-size: 0.75rem; color: #c0e8c0; font-weight: 600; }
+  .record-card .type { font-size: 0.55rem; color: #80b080; margin-top: 0.1rem; }
+  .record-card .issues { font-size: 0.55rem; color: #aaa; margin-top: 0.25rem; }
 
   /* ── Nav ── */
   .nav-bar {
-    display: flex; gap: 0.3rem; padding: 0.5rem;
+    display: flex; gap: 0.3rem; padding: 0.6rem;
     background: #0c0c14; border-top: 1px solid #1a1a2a; position: sticky; bottom: 0;
   }
   .nav-btn {
-    flex: 1; text-align: center; padding: 0.4rem; border: none; border-radius: 8px;
-    background: transparent; color: #888; font-size: 0.5rem; cursor: pointer;
+    flex: 1; text-align: center; padding: 0.5rem; border: none; border-radius: 8px;
+    background: transparent; color: #888; font-size: 0.55rem; cursor: pointer;
   }
   .nav-btn.active { background: #1a3a2a; color: #60c080; }
 
-  .tabs { display: flex; gap: 0.3rem; margin-bottom: 0.6rem; }
-  .tab { padding: 0.3rem 0.6rem; border: 1px solid #2a3a2a; border-radius: 6px;
-    font-size: 0.5rem; cursor: pointer; color: #888; background: #0c0c14; }
+  .tabs { display: flex; gap: 0.4rem; margin-bottom: 0.8rem; }
+  .tab { padding: 0.4rem 0.8rem; border: 1px solid #2a3a2a; border-radius: 8px;
+    font-size: 0.55rem; cursor: pointer; color: #888; background: #0c0c14; }
   .tab.active { background: #1a3a2a; color: #60c080; border-color: #40a060; }
 
   /* ── Admin ── */
   .admin-section { display: none; }
   .admin-section.show { display: block; }
 
-  @media (max-width: 400px) {
-    html { font-size: 22px; }
+  @media (max-width: 600px) {
+    html { font-size: 28px; }
     .check-grid { grid-template-columns: 1fr; }
   }
 </style>
