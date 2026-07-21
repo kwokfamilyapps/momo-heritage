@@ -202,10 +202,16 @@ let state = {
   user: null,
   tab: 'form',
   activityType: 'trail',
-  records: JSON.parse(localStorage.getItem('mos_records') || '[]'),
+  records: [],
   photos: [],
   editId: null
 };
+
+// Load saved data
+try {
+  const saved = localStorage.getItem('mos_records');
+  if (saved) state.records = JSON.parse(saved);
+} catch(e) { state.records = []; }
 
 // ══════════════════════════════════════════════
 // LOGIN / LOGOUT
@@ -233,11 +239,38 @@ function logout() {
 function switchTab(tab) {
   state.tab = tab;
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.nav-btn')[['form','list','admin','logout'].indexOf(tab)]?.classList.add('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  const idx = ['form','list','admin','logout'].indexOf(tab);
+  if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
   if (tab === 'form') renderForm();
   else if (tab === 'list') renderList();
   else if (tab === 'admin') renderAdmin();
 }
+
+// ══════════════════════════════════════════════
+// CLOUD SYNC (temporary: stores in GitHub repo)
+// ══════════════════════════════════════════════
+async function syncToCloud(record) {
+  // 暫時用 localStorage only，等 Firebase ready
+  console.log('Record saved locally. Cloud sync pending Firebase setup.');
+}
+
+// ══════════════════════════════════════════════
+// LOAD DATA ON STARTUP
+// ══════════════════════════════════════════════
+// Ensure data loads properly
+document.addEventListener('DOMContentLoaded', function() {
+  try {
+    const saved = localStorage.getItem('mos_records');
+    if (saved) {
+      state.records = JSON.parse(saved);
+      console.log(`Loaded ${state.records.length} records from local storage`);
+    }
+  } catch(e) {
+    console.log('No saved data found');
+    state.records = [];
+  }
+});
 
 // ══════════════════════════════════════════════
 // RENDER FORM
@@ -398,8 +431,8 @@ function submitRecord() {
   const solution = document.getElementById('fSolution')?.value;
   const note = document.getElementById('fNote')?.value;
 
-  if (!date || !recorder) {
-    alert('請填寫日期和記錄人員');
+  if (!date || !recorder || !recorder.trim()) {
+    alert('⚠️ 請填寫日期和記錄人員');
     return;
   }
 
@@ -412,8 +445,8 @@ function submitRecord() {
 
   const record = {
     id: state.editId || Date.now().toString(),
-    date, recorder,
-    trail: trail === '其他' ? trailOther : trail,
+    date, recorder: recorder.trim(),
+    trail: trail === '其他' ? (trailOther || '其他') : trail,
     activityType: state.activityType,
     issues, solution, note: note || '',
     photos: state.photos,
@@ -431,8 +464,14 @@ function submitRecord() {
   localStorage.setItem('mos_records', JSON.stringify(state.records));
   state.editId = null;
   state.photos = [];
+  state.activityType = 'trail';
+
+  // 自動跳去查閱頁
   switchTab('list');
   renderList();
+
+  // 試下 sync 上雲端（如果用到）
+  syncToCloud(record);
 }
 
 function cancelEdit() {
