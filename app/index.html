@@ -506,7 +506,7 @@ function submitRecord() {
     trail: trail === '其他' ? (trailOther || '其他') : trail,
     activityType: state.activityType,
     issues, solution, note: note || '',
-    photos: state.photos,
+    photoCount: state.photos.length,
     createdBy: state.user.role,
     createdAt: new Date().toISOString()
   };
@@ -597,7 +597,7 @@ function renderList() {
         ${r.solution ? `<div class="issues"><strong>建議：</strong>${r.solution}</div>` : ''}
         ${r.recorder ? `<div class="issues"><strong>記錄：</strong>${r.recorder}</div>` : ''}
         ${r.note ? `<div class="issues"><strong>備註：</strong>${r.note}</div>` : ''}
-        ${r.photos && r.photos.length > 0 ? `<div class="issues"><strong>相片：</strong>${r.photos.length} 張</div>` : ''}
+        ${r.photoCount && r.photoCount > 0 ? `<div class="issues"><strong>相片：</strong>${r.photoCount} 張</div>` : ''}
         ${canEdit ? `<div style="margin-top:0.3rem;">
           <button class="btn btn-sm btn-secondary" onclick="editRecord('${r.id}')">✏️ 修改</button>
           <button class="btn btn-sm btn-danger" onclick="deleteRecord('${r.id}')">🗑️ 刪除</button>
@@ -757,7 +757,7 @@ function exportCSV() {
   let csv = "日期,記錄人員,山徑名稱,類別,問題,建議處理方法,備註,相片數\n";
   state.records.forEach(r => {
     const issues = (r.issues||[]).join(';');
-    csv += `"${r.date}","${r.recorder||''}","${r.trail}","${r.activityType==='trail'?'山徑':'水道'}","${issues}","${r.solution||''}","${r.note||''}","${(r.photos||[]).length}"\n`;
+    csv += `"${r.date}","${r.recorder||''}","${r.trail}","${r.activityType==='trail'?'山徑':'水道'}","${issues}","${r.solution||''}","${r.note||''}","${r.photoCount||0}"\n`;
   });
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
