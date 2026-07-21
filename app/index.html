@@ -231,7 +231,7 @@ function login(role) {
   document.getElementById('userBadge').textContent = role === 'admin' ? '👤 Admin' : '👥 義工隊';
   document.getElementById('screenLogin').classList.remove('active');
   document.getElementById('screenMain').classList.add('active');
-  document.getElementById('adminTabBtn').style.display = role === 'admin' ? '' : 'none';
+  document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'block' : 'none';
   renderForm();
   renderList();
   // Try to load cloud data
@@ -243,6 +243,7 @@ function logout() {
   document.getElementById('screenMain').classList.remove('active');
   document.getElementById('screenLogin').classList.add('active');
   document.getElementById('userBadge').textContent = '未登入';
+  document.getElementById('adminTabBtn').style.display = 'none';
 }
 
 function exitApp() {
