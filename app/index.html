@@ -156,6 +156,9 @@
     <h2>🔐 登入</h2>
     <button class="login-btn admin" onclick="login('admin')">👤 Admin 登入</button>
     <button class="login-btn vol" onclick="login('vol')">👥 義工隊登入</button>
+    <div style="text-align:center;margin-top:1.5rem;">
+      <button class="btn btn-secondary btn-full" onclick="exitLogin()">🚪 離開</button>
+    </div>
   </div>
 </div>
 
@@ -243,8 +246,19 @@ function logout() {
 
 function exitApp() {
   if (confirm('確定退出 App？')) {
-    // 返去登入頁
     logout();
+  }
+}
+
+function exitLogin() {
+  if (confirm('確定離開？')) {
+    // Show a message that they can close the tab
+    document.getElementById('screenLogin').innerHTML = `
+      <div class="login-box" style="text-align:center;">
+        <h2>👋 感謝使用</h2>
+        <p style="color:#888;margin:1rem 0;">你可以關閉此分頁</p>
+        <button class="login-btn vol" onclick="location.reload()">🔄 重新啟動</button>
+      </div>`;
   }
 }
 
