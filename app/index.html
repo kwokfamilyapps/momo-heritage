@@ -224,6 +224,8 @@ function login(role) {
   document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'inline' : 'none';
   renderForm();
   renderList();
+  // Try to load cloud data
+  loadFromCloud();
 }
 
 function logout() {
@@ -248,11 +250,47 @@ function switchTab(tab) {
 }
 
 // ══════════════════════════════════════════════
-// CLOUD SYNC (temporary: stores in GitHub repo)
+// CLOUD SYNC - temporary API server
 // ══════════════════════════════════════════════
+const CLOUD_API = "https://mos-patrol-api.loca.lt";
+
 async function syncToCloud(record) {
-  // 暫時用 localStorage only，等 Firebase ready
-  console.log('Record saved locally. Cloud sync pending Firebase setup.');
+  try {
+    const resp = await fetch(CLOUD_API + "/api/records", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(record)
+    });
+    const result = await resp.json();
+    if (result.ok) {
+      console.log("☁️ Synced to cloud! Total:", result.total);
+    }
+  } catch(e) {
+    console.log("☁️ Cloud sync failed (offline?) - saving locally only");
+  }
+}
+
+// Load from cloud on startup
+async function loadFromCloud() {
+  try {
+    const resp = await fetch(CLOUD_API + "/api/records");
+    if (!resp.ok) return;
+    const cloudRecords = await resp.json();
+    if (cloudRecords.length > 0) {
+      // Merge: prefer local records (newly created offline)
+      const localIds = new Set(state.records.map(r => r.id));
+      for (const r of cloudRecords) {
+        if (!localIds.has(r.id)) {
+          state.records.push(r);
+        }
+      }
+      // Save merged data
+      localStorage.setItem('mos_records', JSON.stringify(state.records));
+      console.log("☁️ Loaded", cloudRecords.length, "cloud records");
+    }
+  } catch(e) {
+    console.log("☁️ Cloud load failed - using local data");
+  }
 }
 
 // ══════════════════════════════════════════════
