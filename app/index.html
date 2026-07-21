@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>鞍山探索館 · 山徑與水道巡查記錄</title>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 36px; }
@@ -204,24 +206,51 @@ const TRAIL_SOLUTIONS = [
 ];
 
 const WATER_SOLUTIONS = [
-  "義工清理水道", "通知漁護署維修",
-  "暫不用處理", "另行再議（需跟進）", "其他"
+  "義工清理水道", "通知漁護署維修", "暫不用處理", "另行再議（需跟進）", "其他"
 ];
 
-let state = {
-  user: null,
-  tab: 'form',
-  activityType: 'trail',
-  records: [],
-  photos: [],
-  editId: null
-};
+// ══════════════════════════════════════════════
+// FIREBASE INIT
+// ══════════════════════════════════════════════
+const firebaseConfig = {
+    apiKey: "...",
+    authDomain: "mos-trail-patrol.firebaseapp.com",
+    projectId: "mos-trail-patrol",
+    storageBucket: "mos-trail-patrol.firebasestorage.app",
+    messagingSenderId: "969542665711",
+    appId: "1:969542665711:web:476f010a61279b200be21a"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  db.enablePersistence().catch(err => console.log("🔥 P: " + err.code));
 
-// Load saved data
-try {
-  const saved = localStorage.getItem('mos_records');
-  if (saved) state.records = JSON.parse(saved);
-} catch(e) { state.records = []; }
+  // ══════════════════════════════════════════════
+  // STATE
+  // ══════════════════════════════════════════════
+  let state = {
+    user: null,
+    tab: 'form',
+    activityType: 'trail',
+    records: [],
+    photos: [],
+    editId: null
+  };
+
+  // Load from Firestore on startup
+  async function loadRecords() {
+    try {
+      const snap = await db.collection('records').orderBy('createdAt','desc').get();
+      state.records = [];
+      snap.forEach(doc => state.records.push({ id: doc.id, ...doc.data() }));
+      if (state.user) {
+        if (state.tab === 'list') renderList();
+        else if (state.tab === 'admin') renderAdmin();
+        else if (state.tab === 'map') renderMap();
+      }
+    } catch(e) {
+      console.log("🔥 Load err: " + e.message);
+    }
+  }
 
 // ══════════════════════════════════════════════
 // LOGIN / LOGOUT
@@ -234,8 +263,8 @@ function login(role) {
   document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'block' : 'none';
   renderForm();
   renderList();
-  // Try to load cloud data
-  loadFromCloud();
+  // Load from Firestore
+  loadRecords();
 }
 
 function logout() {
@@ -283,12 +312,13 @@ function switchTab(tab) {
 // CLOUD SYNC (disabled - using localStorage only)
 // ══════════════════════════════════════════════
 async function syncToCloud(record) {
-  // Cloud sync disabled for now - using localStorage only
-  // Will be re-enabled when Firebase is ready
+  // Firestore auto-sync handles this
+  console.log("🔥 Synced:", record.id);
 }
 
 async function loadFromCloud() {
-  // Cloud sync disabled for now - using localStorage only
+  // Use loadRecords for Firestore
+  loadRecords();
 }
 
 // LOAD DATA ON STARTUP - done at top of script
@@ -480,7 +510,7 @@ function submitRecord() {
     const idx = state.records.findIndex(r => r.id === state.editId);
     if (idx >= 0) {
       state.records[idx] = record;
-      localStorage.setItem('mos_records', JSON.stringify(state.records));
+      db.collection('records').doc(record.id).set(record).catch(e => console.log("🔥", e));
     }
   } else {
     const last = state.records[0];
@@ -489,7 +519,7 @@ function submitRecord() {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
     state.records.unshift(record);
-    localStorage.setItem('mos_records', JSON.stringify(state.records));
+    db.collection('records').doc(record.id).set(record).catch(e => console.log("🔥", e));
   }
 
   // 即時跳去查閱頁（唔等 GPS）
@@ -504,7 +534,9 @@ function submitRecord() {
     navigator.geolocation.getCurrentPosition(pos => {
       if (state.records[0]) {
         state.records[0].gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        localStorage.setItem('mos_records', JSON.stringify(state.records));
+        db.collection('records').doc(state.records[0].id).update({
+          gps: state.records[0].gps
+        }).catch(e => console.log("🔥", e));
       }
     }, () => {}, { timeout: 8000, enableHighAccuracy: true });
   }
@@ -645,7 +677,7 @@ function editRecord(id) {
 function deleteRecord(id) {
   if (!confirm('確定刪除此記錄？')) return;
   state.records = state.records.filter(r => r.id !== id);
-  localStorage.setItem('mos_records', JSON.stringify(state.records));
+  db.collection('records').doc(id).delete().catch(e => console.log("🔥", e));
   renderList();
 }
 
@@ -680,17 +712,17 @@ function renderAdmin() {
       <div style="font-size:1.2rem;color:#c08080;">${uniqueRecorders.length}</div>
       <div style="font-size:0.45rem;color:#888;">記錄人員</div>
     </div>
-  </div>
-  <button class="btn btn-danger btn-full" onclick="clearAllData()">🗑️ 清除所有數據</button>`;
-
+  </div>`;
   document.getElementById('tabContent').innerHTML = html;
 }
 
-function clearAllData() {
+function clearAllRecords() {
   if (!confirm('確定清除所有記錄？此操作不可復原！')) return;
-  if (!confirm('再次確認：清除全部 ${state.records.length} 項記錄？')) return;
+  if (!confirm(`再次確認：清除全部 ${state.records.length} 項記錄？`)) return;
+  const batch = db.batch();
+  state.records.forEach(r => batch.delete(db.collection('records').doc(r.id)));
+  batch.commit().catch(e => console.log("🔥", e));
   state.records = [];
-  localStorage.setItem('mos_records', JSON.stringify(state.records));
   renderAdmin();
 }
 
