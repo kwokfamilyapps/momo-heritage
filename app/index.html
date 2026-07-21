@@ -231,7 +231,7 @@ function login(role) {
   document.getElementById('userBadge').textContent = role === 'admin' ? '👤 Admin' : '👥 義工隊';
   document.getElementById('screenLogin').classList.remove('active');
   document.getElementById('screenMain').classList.add('active');
-  document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'inline' : 'none';
+  document.getElementById('adminTabBtn').style.display = role === 'admin' ? '' : 'none';
   renderForm();
   renderList();
   // Try to load cloud data
@@ -279,39 +279,15 @@ function switchTab(tab) {
 }
 
 // ══════════════════════════════════════════════
-// CLOUD SYNC
+// CLOUD SYNC (disabled - using localStorage only)
 // ══════════════════════════════════════════════
-const CLOUD_API = "https://mos-patrol-api.loca.lt";
-
 async function syncToCloud(record) {
-  try {
-    await fetch(CLOUD_API + "/api/records", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(record)
-    });
-  } catch(e) {
-    console.log("☁️ Sync failed - offline");
-  }
+  // Cloud sync disabled for now - using localStorage only
+  // Will be re-enabled when Firebase is ready
 }
 
 async function loadFromCloud() {
-  try {
-    const resp = await fetch(CLOUD_API + "/api/records");
-    if (!resp.ok) return;
-    const cloudRecs = await resp.json();
-    if (cloudRecs.length > 0) {
-      // Merge cloud + local (local wins)
-      const localMap = {};
-      state.records.forEach(r => localMap[r.id] = r);
-      cloudRecs.forEach(r => { if (!localMap[r.id]) localMap[r.id] = r; });
-      state.records = Object.values(localMap);
-      localStorage.setItem('mos_records', JSON.stringify(state.records));
-      if (state.tab === 'list') renderList();
-    }
-  } catch(e) {
-    console.log("☁️ Cloud load failed");
-  }
+  // Cloud sync disabled for now - using localStorage only
 }
 
 // LOAD DATA ON STARTUP - done at top of script
