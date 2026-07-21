@@ -515,7 +515,12 @@ function submitRecord() {
     const idx = state.records.findIndex(r => r.id === state.editId);
     if (idx >= 0) {
       state.records[idx] = record;
-      db.collection('records').doc(record.id).set(record).catch(e => console.log("🔥", e));
+      db.collection('records').doc(record.id).set(record).then(function() {
+        console.log("🔥 SYNC OK:", record.id);
+      }).catch(function(e) {
+        console.log("🔥 SYNC FAIL:", record.id, e.code, e.message);
+        alert("⚠️ 記錄未能同步到雲端: " + e.message);
+      });
     }
   } else {
     const last = state.records[0];
@@ -524,7 +529,12 @@ function submitRecord() {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
     state.records.unshift(record);
-    db.collection('records').doc(record.id).set(record).catch(e => console.log("🔥", e));
+    db.collection('records').doc(record.id).set(record).then(function() {
+      console.log("🔥 SYNC OK:", record.id);
+    }).catch(function(e) {
+      console.log("🔥 SYNC FAIL:", record.id, e.code, e.message);
+      alert("⚠️ 記錄未能同步到雲端: " + e.message);
+    });
   }
 
   // 即時跳去查閱頁（唔等 GPS）
@@ -541,7 +551,11 @@ function submitRecord() {
         state.records[0].gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         db.collection('records').doc(state.records[0].id).update({
           gps: state.records[0].gps
-        }).catch(e => console.log("🔥", e));
+        }).then(function() {
+          console.log("🔥 GPS SYNC OK");
+        }).catch(function(e) {
+          console.log("🔥 GPS SYNC FAIL:", e.code, e.message);
+        });
       }
     }, () => {}, { timeout: 8000, enableHighAccuracy: true });
   }
