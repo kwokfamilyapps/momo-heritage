@@ -4,194 +4,131 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>馬鞍山鐵礦場 (SDGs × AI) 生態與地質導賞計劃</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 28px; }
   body {
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    background: #f5f4ed;
-    color: #3d3d3a;
-    line-height: 1.7;
+    font-family: "Noto Serif HK", "Songti SC", Georgia, serif;
+    background: #e8e0d0;
+    color: #3a3832;
+    line-height: 1.8;
   }
 
-  /* ── Typography ── */
-  h1, h2, h3, h4 {
-    font-family: Georgia, 'Times New Roman', serif;
-    font-weight: 500;
-    color: #1a1a18;
+  /* ── WARM EARTH PALETTE ── */
+  :root {
+    --bg-page: #e8e0d0;
+    --bg-card: #f0eadc;
+    --bg-dark: #2a2a22;
+    --text: #3a3832;
+    --text-soft: #6a6558;
+    --text-muted: #9a9588;
+    --accent-green: #5a8a5a;
+    --accent-earth: #8a7a5a;
+    --accent-terra: #c97a5a;
+    --accent-warm: #dab88a;
+    --border: #d8d0c0;
   }
-  h1 { font-size: 2.2rem; line-height: 1.15; letter-spacing: -0.02em; }
-  h2 { font-size: 1.6rem; line-height: 1.2; margin-bottom: 0.8rem; color: #2d5a3d; }
-  h3 { font-size: 1.1rem; line-height: 1.3; margin: 1.2rem 0 0.5rem; color: #3d7a4d; }
-  h4 { font-size: 0.85rem; line-height: 1.3; color: #4d4c48; }
-  p { font-size: 0.7rem; margin-bottom: 0.6rem; color: #4d4c48; }
 
-  /* ── Hero ── */
+  h1, h2, h3 { font-weight: 500; color: var(--text); }
+  h1 { font-size: 2rem; line-height: 1.2; }
+  h2 { font-size: 1.3rem; line-height: 1.25; margin-bottom: 0.8rem; color: var(--accent-green); border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+  h3 { font-size: 0.95rem; line-height: 1.3; margin: 1rem 0 0.4rem; color: var(--accent-earth); }
+  p { font-size: 0.68rem; margin-bottom: 0.5rem; color: var(--text-soft); }
+
   .hero {
-    background: #1a1a18;
-    padding: 3rem 1.5rem;
-    text-align: center;
-    border-bottom: 3px solid #4a8a5a;
+    background: linear-gradient(135deg, #2a3a2a, #3a4a2a);
+    padding: 2.5rem 1.5rem; text-align: center;
+    border-bottom: 3px solid var(--accent-warm);
   }
-  .hero h1 { color: #f5f4ed; margin-bottom: 0.4rem; }
-  .hero .subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8rem; color: #b0aea5; font-weight: 300;
-    margin-bottom: 0.8rem;
+  .hero h1 { color: #e8e0d0; font-size: 1.8rem; }
+  .hero .sub { font-size: 0.75rem; color: #b0a890; margin: 0.4rem 0 0.6rem; font-family: "Noto Sans HK", sans-serif; font-weight: 300; }
+  .hero .badge {
+    display: inline-block; background: var(--accent-warm); color: #3a3832;
+    padding: 0.15rem 0.6rem; border-radius: 50px;
+    font-size: 0.5rem; font-weight: 500;
   }
-  .hero .tagline {
-    display: inline-block;
-    background: #4a8a5a; color: #f5f4ed;
-    padding: 0.2rem 0.8rem; border-radius: 50px;
-    font-size: 0.55rem; font-weight: 500;
+  .hero .meta {
+    display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap;
+    font-size: 0.48rem; color: #9a9588; margin-top: 0.8rem;
   }
-  .hero .meta-line {
-    display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
-    font-size: 0.5rem; color: #87867f; margin-top: 1rem;
-  }
-  .hero .meta-line span {
-    background: rgba(255,255,255,0.05);
-    padding: 0.15rem 0.6rem; border-radius: 20px;
-  }
+  .hero .meta span { background: rgba(255,255,255,0.06); padding: 0.1rem 0.5rem; border-radius: 20px; }
 
-  /* ── Navigation ── */
-  .toc {
-    background: #faf9f5;
-    padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid #e8e6dc;
-    position: sticky; top: 0; z-index: 100;
-  }
-  .toc-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.5rem; color: #87867f;
-    text-transform: uppercase; letter-spacing: 0.05em;
-    margin-bottom: 0.4rem;
-  }
-  .toc-grid {
-    display: flex; flex-wrap: wrap; gap: 0.2rem 0.5rem;
-  }
-  .toc a {
-    font-size: 0.5rem; color: #5e5d59;
-    text-decoration: none; padding: 0.1rem 0.3rem;
-    border-radius: 4px; transition: background 0.2s;
-  }
-  .toc a:hover { background: #e8e6dc; color: #1a1a18; }
+  .container { max-width: 780px; margin: 0 auto; padding: 1.8rem 1rem; }
+  section { margin-bottom: 2rem; }
 
-  /* ── Container ── */
-  .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
-  section { margin-bottom: 2.5rem; }
-
-  /* ── Cards ── */
   .card {
-    background: #faf9f5;
-    border: 1px solid #f0eee6;
-    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
     padding: 1rem;
     margin: 0.8rem 0;
   }
-  .card-green { border-left: 3px solid #4a8a5a; }
-  .card-warm { border-left: 3px solid #c96442; }
-  .card-forest { background: #2a3a2a; border-color: #3a5a3a; }
-  .card-forest p, .card-forest li { color: #c0d0b0; }
-  .card-forest h3, .card-forest h4 { color: #a0e0a0; }
-  .card-forest .card-title { color: #80d080; }
 
-  /* ── Dark Section ── */
-  .dark-section {
-    background: #1a1a18;
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin: 1.2rem 0;
-  }
-  .dark-section h2 { color: #a0d0a0; }
-  .dark-section h3 { color: #80c080; }
-  .dark-section p, .dark-section li { color: #b0aea5; }
+  .card-earth { border-left: 4px solid var(--accent-earth); }
+  .card-green { border-left: 4px solid var(--accent-green); }
+  .card-terra { border-left: 4px solid var(--accent-terra); }
 
-  /* ── Two Column ── */
-  .two-col {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+  .card-forest {
+    background: #2a3a2a;
+    border-color: #3a5a3a;
   }
+  .card-forest p, .card-forest li { color: #c0c8a8; }
+  .card-forest h3 { color: #a0c080; }
 
-  /* ── Table ── */
-  table { width: 100%; border-collapse: collapse; font-size: 0.6rem; margin: 0.8rem 0; }
-  th, td {
-    border: 1px solid #e8e6dc;
-    padding: 0.35rem 0.5rem; text-align: left; vertical-align: top;
-  }
-  th { background: #f0eee6; color: #4d4c48; font-weight: 500; }
-  td { background: #faf9f5; color: #5e5d59; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
 
-  /* ── Timeline ── */
-  .timeline {
-    display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 1rem 0;
-  }
-  .tl-item {
-    flex: 1; min-width: 100px;
-    background: #faf9f5; border-radius: 10px; padding: 0.5rem;
-    border-left: 3px solid #c96442;
-  }
-  .tl-item .week { font-size: 0.45rem; color: #87867f; }
-  .tl-item .phase { font-size: 0.65rem; font-weight: 600; color: #1a1a18; margin: 0.1rem 0; }
-  .tl-item .desc { font-size: 0.5rem; color: #87867f; }
-  .tl-p1 { border-left-color: #4a8a5a; }
-  .tl-p2 { border-left-color: #c96442; }
-  .tl-p3 { border-left-color: #5e5d59; }
-  .tl-p4 { border-left-color: #1a1a18; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.58rem; margin: 0.6rem 0; }
+  th, td { border: 1px solid var(--border); padding: 0.3rem 0.5rem; text-align: left; vertical-align: top; }
+  th { background: #e0d8c8; color: var(--text); font-weight: 500; }
+  td { background: var(--bg-card); color: var(--text-soft); }
 
-  /* ── SDG Grid ── */
-  .sdg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.8rem 0; }
-  .sdg-item {
-    background: #faf9f5; border: 1px solid #f0eee6; border-radius: 10px;
-    padding: 0.6rem; display: flex; align-items: flex-start; gap: 0.5rem;
-  }
-  .sdg-item .num { font-size: 1rem; font-weight: 700; color: #4a8a5a; min-width: 28px; }
-  .sdg-item .desc { font-size: 0.5rem; color: #5e5d59; }
+  .timeline { display: flex; gap: 0.3rem; flex-wrap: wrap; margin: 0.8rem 0; }
+  .tl-item { flex: 1; min-width: 90px; background: var(--bg-card); border-radius: 10px; padding: 0.5rem; border-left: 3px solid var(--accent-terra); }
+  .tl-item .week { font-size: 0.42rem; color: var(--text-muted); }
+  .tl-item .phase { font-size: 0.6rem; font-weight: 600; color: var(--text); margin: 0.1rem 0; }
+  .tl-item .desc { font-size: 0.48rem; color: var(--text-muted); }
+  .tl-p1 { border-left-color: var(--accent-green); }
+  .tl-p2 { border-left-color: var(--accent-terra); }
+  .tl-p3 { border-left-color: var(--accent-earth); }
+  .tl-p4 { border-left-color: var(--text); }
 
-  /* ── Blockquote ── */
+  .sdg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.6rem 0; }
+  .sdg-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem; display: flex; align-items: flex-start; gap: 0.4rem; }
+  .sdg-item .num { font-size: 1rem; font-weight: 700; color: var(--accent-green); min-width: 26px; }
+  .sdg-item .desc { font-size: 0.48rem; color: var(--text-soft); }
+
   blockquote {
-    border-left: 3px solid #4a8a5a;
-    background: #faf9f5;
-    padding: 0.6rem 1rem;
-    margin: 1rem 0;
+    border-left: 3px solid var(--accent-warm);
+    background: #f0eadc;
+    padding: 0.5rem 0.8rem;
+    margin: 0.8rem 0;
     border-radius: 0 10px 10px 0;
-    font-family: Georgia, serif;
-    font-size: 0.7rem;
-    color: #5e5d59;
+    font-size: 0.65rem;
+    color: var(--text-soft);
     font-style: italic;
   }
 
-  /* ── Info Box ── */
-  .info-box {
-    background: #faf9f5; border: 1px solid #e8e6dc; border-radius: 8px;
-    padding: 0.6rem 0.8rem; margin: 0.6rem 0;
-    box-shadow: rgba(0,0,0,0.03) 0px 2px 12px;
+  .dark-section {
+    background: #2a2a22;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin: 1rem 0;
   }
-  .info-box .label {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.45rem; color: #87867f;
-    text-transform: uppercase; letter-spacing: 0.04em; font-weight: 500;
-  }
-  .info-box p { font-size: 0.6rem; margin: 0.2rem 0 0; color: #5e5d59; }
+  .dark-section h2 { color: #c0c8a8; border-bottom-color: #3a3a32; }
+  .dark-section p { color: #a0a090; }
+  .dark-section blockquote { border-left-color: var(--accent-warm); background: #3a3a32; color: #c0b8a0; }
 
-  /* ── Button ── */
+  .info-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.8rem; margin: 0.5rem 0; }
+  .info-box .label { font-size: 0.42rem; color: var(--accent-earth); font-weight: 600; letter-spacing: 0.03em; }
+  .info-box p { font-size: 0.58rem; margin: 0.2rem 0 0; color: var(--text-soft); }
+
   .btn {
-    display: inline-block;
-    background: #4a8a5a; color: #f5f4ed;
-    padding: 0.4rem 1rem; border-radius: 8px;
-    font-size: 0.55rem; font-weight: 500;
-    text-decoration: none;
-    border: none; cursor: pointer;
-    box-shadow: #4a8a5a 0px 0px 0px 0px, #4a8a5a 0px 0px 0px 1px;
-    transition: background 0.2s;
+    display: inline-block; background: var(--accent-green); color: #f0eadc;
+    padding: 0.35rem 0.9rem; border-radius: 8px;
+    font-size: 0.5rem; font-weight: 500; text-decoration: none;
   }
-  .btn:hover { background: #3a7a4a; }
 
-  /* ── Footer ── */
-  footer {
-    text-align: center; padding: 1.5rem; color: #87867f;
-    font-size: 0.45rem; border-top: 1px solid #e8e6dc;
-  }
+  footer { text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.42rem; border-top: 1px solid var(--border); }
 
   @media (max-width: 600px) {
     html { font-size: 22px; }
@@ -202,198 +139,117 @@
 </head>
 <body>
 
-<!-- HERO -->
 <div class="hero">
   <h1>馬鞍山鐵礦場<br>(SDGs × AI) 生態與地質導賞計劃</h1>
-  <div class="subtitle">從礦藏到寶藏 · 從 Mine 到 Mind</div>
-  <div class="tagline">鞍山探索館 · 珍古德 Roots &amp; Shoots 框架</div>
-  <div class="meta-line">
-    <span>🪨 點：馬鞍山鐵礦場文化生態資源</span>
-    <span>🤖 線：AI 技術整合</span>
-    <span>🌐 面：新一代環保意識形態</span>
-  </div>
-</div>
-
-<!-- TOC -->
-<div class="toc">
-  <div class="toc-title">目錄</div>
-  <div class="toc-grid">
-    <a href="#abstract">摘要</a>
-    <a href="#framework">理論框架</a>
-    <a href="#dots">鞍山資源</a>
-    <a href="#demo">AI Demo</a>
-    <a href="#sdgs">SDGs 連結</a>
-    <a href="#roadmap">路線圖</a>
-    <a href="#audience">目標群眾</a>
-    <a href="#conclusion">結語</a>
+  <div class="sub">從礦藏到寶藏 · 從 Mine 到 Mind</div>
+  <div class="badge">鞍山探索館 · 珍古德 Roots &amp; Shoots 框架</div>
+  <div class="meta">
+    <span>點：馬鞍山文化生態資源</span>
+    <span>線：AI 技術整合</span>
+    <span>面：環保意識形態</span>
   </div>
 </div>
 
 <div class="container">
 
-<!-- ABSTRACT -->
-<section id="abstract">
+<section>
   <h2>摘要</h2>
   <p>本計劃以馬鞍山鐵礦場遺址為核心場景，結合礦村、教會、鞍山探索館、山徑巡查工作坊、生物多樣性及地質多樣性等在地資源（點），透過人工智能技術（線），創造一套跨世代之環保意識、形態、概念與實踐體系（面），並與聯合國可持續發展目標（SDGs）深度連結。</p>
-
-  <div class="card card-green">
-    <p style="font-size:0.6rem;">🪨 點 → 🤖 線 → 🌐 面 → 🌍 SDGs<br>
-    <span style="color:#87867f;">馬鞍山鐵礦場資源 × AI 技術 → 跨世代可持續發展教育與實踐平台</span></p>
+  <div class="card card-earth">
+    <p style="font-size:0.55rem;">🪨 點 → 🤖 線 → 🌐 面 → 🌍 SDGs</p>
+    <p style="font-size:0.5rem;color:var(--text-muted);">馬鞍山鐵礦場資源 × AI 技術 → 跨世代可持續發展教育與實踐平台</p>
   </div>
-
-  <p>本計劃採用珍古德博士 Roots &amp; Shoots <strong>4-Step Formula</strong>（投入熱情 → 觀察地圖 → 行動改變 → 慶祝分享）為行動框架，分階段開發 5 個 AI Demo，最終形成一套可複製、可擴展之「馬鞍山鐵礦場 (SDGs × AI) 生態與地質導賞計劃」。</p>
+  <p>採用珍古德博士 Roots &amp; Shoots 4-Step Formula（投入熱情 → 觀察地圖 → 行動改變 → 慶祝分享）為行動框架，分階段開發 5 個 AI Demo，形成「馬鞍山鐵礦場 (SDGs × AI) 生態與地質導賞計劃」。</p>
 </section>
 
-<!-- FRAMEWORK -->
-<section id="framework">
-  <h2>理論框架</h2>
-
+<section>
+  <h2>理論框架 — 點線面 × 4-Step</h2>
   <div class="two-col">
-    <div class="card card-warm">
-      <h4 style="color:#c96442;">🪨 點</h4>
-      <p style="font-size:0.55rem;">馬鞍山鐵礦場遺址（1905-1976）、礦村四大區域（山頂區、馬鞍橋區、潮洲村、礦場碼頭區）、恩光堂與聖約瑟堂、鞍山探索館（2015 開館）、山徑巡查工作坊、生物多樣性、地質多樣性、口述歷史</p>
+    <div class="card card-terra">
+      <h4 style="color:var(--accent-terra);font-size:0.8rem;">🪨 點</h4>
+      <p style="font-size:0.52rem;">鐵礦場遺址（1905-1976）· 礦村四大區域 · 恩光堂與聖約瑟堂 · 鞍山探索館（2015）· 山徑巡查 · 生物多樣性 · 地質 · 口述歷史</p>
     </div>
     <div class="card card-green">
-      <h4 style="color:#4a8a5a;">🤖 線</h4>
-      <p style="font-size:0.55rem;">FLUX 2 圖像生成、Florence-2 生態辨識、Pixverse 影片生成、Edge TTS 語音、DeepSeek 語言模型、互動網頁、GPS 路線系統</p>
+      <h4 style="color:var(--accent-green);font-size:0.8rem;">🤖 線</h4>
+      <p style="font-size:0.52rem;">FLUX 2 · Florence-2 · Pixverse · Edge TTS · DeepSeek · 互動網頁 · GPS 路線</p>
     </div>
   </div>
-
   <div class="card card-forest">
-    <h4 style="color:#80d080;">🌐 面</h4>
-    <p>新一代環保意識形態、可持續發展思維、社區參與文化、跨代共融學習、企業與 NGO 合作網絡、AI 輔助教育新模式</p>
+    <p style="font-size:0.55rem;">🌐 <strong>面</strong> — 新一代環保意識形態、可持續發展思維、社區參與文化、跨代共融學習、企業與 NGO 合作網絡、AI 輔助教育新模式</p>
   </div>
 </section>
 
-<!-- DOTS -->
-<section id="dots">
-  <h2>馬鞍山鐵礦場獨有資源</h2>
-
+<section>
+  <h2>馬鞍山鐵礦場資源</h2>
   <table>
     <tr><th>資源</th><th>內容</th></tr>
-    <tr><td>🪨 鐵礦場遺址</td><td>1905 年發現磁鐵礦，1906-1976 年營運。1931 年華興礦務獲牌照，1949 年大公洋行接手，1953 年與日本 Nittetsu 合資開發 240ML/110ML 礦洞。高峰時礦工約 3,000 人。2016 年獲古諮會評級（240ML/110ML Grade 2，選礦廠 Grade 3）</td></tr>
-    <tr><td>🏘️ 礦村</td><td>山頂區、馬鞍橋區、潮洲村、礦場碼頭區，高峰約 10,000 人聚居</td></tr>
-    <tr><td>⛪ 兩個教會</td><td>恩光堂（路德會）、聖約瑟堂（天主教）— 見證礦村社區</td></tr>
-    <tr><td>🏛️ 鞍山探索館</td><td>2015 年開館，導賞、展覽、工作坊基礎設施</td></tr>
-    <tr><td>🌿 生物多樣性</td><td>結業近 50 年自然修復，植物群落、雀鳥、蝴蝶生態豐富</td></tr>
+    <tr><td>鐵礦場遺址</td><td>1905 發現磁鐵礦，1906-1976 營運。華興礦務、大公洋行、日本 Nittetsu 合資開發 240ML/110ML。高峰 3,000 礦工。2016 年古諮會評級 Grade 2/3</td></tr>
+    <tr><td>礦村</td><td>山頂區、馬鞍橋區、潮洲村、礦場碼頭區，高峰約 10,000 人</td></tr>
+    <tr><td>教會</td><td>恩光堂（路德會）· 聖約瑟堂（天主教）</td></tr>
+    <tr><td>鞍山探索館</td><td>2015 年開館</td></tr>
+    <tr><td>生態</td><td>結業近 50 年自然修復，植物群落、雀鳥、蝴蝶豐富</td></tr>
   </table>
 </section>
 
-<!-- DEMO -->
-<section id="demo">
+<section>
   <h2>AI Demo 開發</h2>
-
   <div class="timeline">
     <div class="tl-item tl-p1">
-      <div class="week">Phase 1 · 第 1-2 週</div>
+      <div class="week">Phase 1</div>
       <div class="phase">AI 對比圖</div>
-      <div class="desc">FLUX 2 生成「礦場蛻變」3 場景 6 張圖</div>
+      <div class="desc">3 場景 6 張圖 ✅ 已完成</div>
     </div>
     <div class="tl-item tl-p2">
-      <div class="week">Phase 2 · 第 3-4 週</div>
+      <div class="week">Phase 2</div>
       <div class="phase">SDGs 互動地圖</div>
-      <div class="desc">HTML + GPS 路線 checkpoint</div>
+      <div class="desc">GPS 路線 checkpoint</div>
     </div>
     <div class="tl-item tl-p3">
-      <div class="week">Phase 3 · 第 5-6 週</div>
+      <div class="week">Phase 3</div>
       <div class="phase">AI 生態辨識</div>
-      <div class="desc">Florence-2 即時物種辨識工作坊</div>
+      <div class="desc">Florence-2 工作坊</div>
     </div>
     <div class="tl-item tl-p4">
-      <div class="week">Phase 4 · 第 7-8 週</div>
-      <div class="phase">AI 動畫 + Chatbot</div>
-      <div class="desc">「鐵礦的一生」短片 + 導賞 Chatbot</div>
+      <div class="week">Phase 4</div>
+      <div class="phase">AI 動畫+Chatbot</div>
+      <div class="desc">短片 + 導賞員</div>
     </div>
-  </div>
-
-  <div class="card card-green">
-    <p style="font-size:0.55rem;">✅ Demo 1 已完成 — 3 組 AI 對比圖（240ML 礦洞口、礦山全景、選礦廠），使用免費 Pollinations.ai API 生成，零成本。</p>
   </div>
 </section>
 
-<!-- SDGs -->
-<section id="sdgs">
+<section>
   <h2>SDGs 連結</h2>
-
   <div class="sdg-grid">
-    <div class="sdg-item">
-      <div class="num">4</div>
-      <div class="desc"><strong>優質教育</strong><br>戶外教室、SDGs 導賞、跨學科學習</div>
-    </div>
-    <div class="sdg-item">
-      <div class="num">11</div>
-      <div class="desc"><strong>永續城市與社區</strong><br>保存工業遺產、延續礦村記憶</div>
-    </div>
-    <div class="sdg-item">
-      <div class="num">15</div>
-      <div class="desc"><strong>陸地生態</strong><br>礦山生態修復記錄、生物多樣性監察</div>
-    </div>
-    <div class="sdg-item">
-      <div class="num">12</div>
-      <div class="desc"><strong>負責任消費</strong><br>循環經濟教育、淨山挑戰</div>
-    </div>
-    <div class="sdg-item">
-      <div class="num">8</div>
-      <div class="desc"><strong>尊嚴就業</strong><br>導賞員培訓、可持續旅遊</div>
-    </div>
-    <div class="sdg-item">
-      <div class="num">17</div>
-      <div class="desc"><strong>夥伴關係</strong><br>跨機構協作、Roots &amp; Shoots 網絡</div>
-    </div>
+    <div class="sdg-item"><div class="num">4</div><div class="desc"><strong>優質教育</strong><br>戶外教室、SDGs 導賞</div></div>
+    <div class="sdg-item"><div class="num">11</div><div class="desc"><strong>永續城市</strong><br>保存工業遺產</div></div>
+    <div class="sdg-item"><div class="num">15</div><div class="desc"><strong>陸地生態</strong><br>生態修復記錄</div></div>
+    <div class="sdg-item"><div class="num">12</div><div class="desc"><strong>負責任消費</strong><br>循環經濟教育</div></div>
+    <div class="sdg-item"><div class="num">8</div><div class="desc"><strong>尊嚴就業</strong><br>可持續旅遊</div></div>
+    <div class="sdg-item"><div class="num">17</div><div class="desc"><strong>夥伴關係</strong><br>跨機構協作</div></div>
   </div>
 </section>
 
-<!-- ROADMAP -->
-<section id="roadmap">
-  <h2>開發路線圖</h2>
-
-  <div class="info-box">
-    <div class="label">已完成</div>
-    <p>📄 計劃書定稿 · 🎨 Demo 1 AI 對比圖 · 📊 研究資料庫 · 📝 生態問卷 · 🌍 SDGs 分析報告</p>
-  </div>
-  <div class="info-box">
-    <div class="label">進行中</div>
-    <p>🌐 山徑與水道巡查記錄 App（Web 手機版）</p>
-  </div>
-  <div class="info-box">
-    <div class="label">下一步</div>
-    <p>Demo 2 SDGs 互動地圖 · Demo 3 AI 生態辨識 · 聯繫合作夥伴</p>
-  </div>
+<section>
+  <h2>進度</h2>
+  <div class="info-box"><div class="label">已完成</div><p>📄 計劃書 · 🎨 Demo 1 AI 對比圖 · 📊 研究資料庫 · 📝 生態問卷 · 🌍 SDGs 分析報告</p></div>
+  <div class="info-box"><div class="label">進行中</div><p>🌐 山徑與水道巡查記錄 App（Web 手機版）</p></div>
+  <div class="info-box"><div class="label">下一步</div><p>Demo 2 SDGs 互動地圖 · Demo 3 AI 生態辨識 · 聯繫合作夥伴</p></div>
 </section>
 
-<!-- AUDIENCE -->
-<section id="audience">
-  <h2>目標群眾</h2>
-  <div class="two-col">
-    <div class="card">
-      <p style="font-size:0.55rem;">🧒 幼稚園 · 🏫 小學 · 📚 中學 · 🎓 大學</p>
-    </div>
-    <div class="card">
-      <p style="font-size:0.55rem;">👴 長者 · 🥾 行山客 · ♿ SEN 家庭 · 🏢 企業 / NGO</p>
-    </div>
-  </div>
-</section>
-
-<!-- CONCLUSION -->
-<section id="conclusion">
+<section>
   <div class="dark-section">
     <h2>從馬鞍山鐵礦場出發</h2>
-    <blockquote style="border-left-color:#4a8a5a;background:#2a2a28;color:#b0aea5;">
-      「你以為這只是一座礦山？其實它是一個活生生的 SDGs 教室。你以為這只是 AI 技術？其實它是一套跨世代的環保覺醒工具。」
-    </blockquote>
-    <p>馬鞍山鐵礦場由 1905 年發現磁鐵礦，1906 年正式開採，歷經英資、華興礦務、大公洋行、日本礦業株式會社等多個時期，至 1976 年結業，營運 70 年。高峰時期礦工約 3,000 人，礦村四大區域聚居約 10,000 人。結業後近 50 年自然修復，礦山由工業遺址蛻變為生態寶庫。</p>
-    <p>這座山的故事還未完結。</p>
-    <div style="text-align:center;margin-top:1rem;">
-      <span class="btn">馬鞍山 × AI × SDGs = 無限可能</span>
-    </div>
+    <blockquote>「你以為這只是一座礦山？其實它是活生生的 SDGs 教室。你以為這只是 AI 技術？其實它是跨世代的環保覺醒工具。」</blockquote>
+    <p>馬鞍山鐵礦場由 1905 年發現磁鐵礦，1906 年正式開採，歷經英資、華興礦務、大公洋行、日本礦業株式會社等多個時期，至 1976 年結業，營運 70 年。結業後近 50 年自然修復，礦山由工業遺址蛻變為生態寶庫。這座山的故事還未完結。</p>
+    <div style="text-align:center;margin-top:0.8rem;"><span class="btn">馬鞍山 × AI × SDGs = 無限可能</span></div>
   </div>
 </section>
 
 </div>
 
 <footer>
-  馬鞍山鐵礦場 (SDGs × AI) 生態與地質導賞計劃<br>
-  策劃人：Vernon Kwok · 由 無虛 (mvmv) 協助生成 · 2026 年 7 月
+馬鞍山鐵礦場 (SDGs × AI) 生態與地質導賞計劃<br>
+策劃人：Vernon Kwok · 由 無虛 (mvmv) 協助生成 · 2026 年 7 月
 </footer>
 
 </body>
