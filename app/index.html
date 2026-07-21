@@ -482,9 +482,7 @@ function submitRecord() {
       state.records[idx] = record;
       localStorage.setItem('mos_records', JSON.stringify(state.records));
     }
-    saveAndSubmit(record);
   } else {
-    // 防重複：檢查最後一筆係咪一樣
     const last = state.records[0];
     if (last && last.date === record.date && last.recorder === record.recorder &&
         last.trail === record.trail && JSON.stringify(last.issues) === JSON.stringify(record.issues)) {
@@ -492,38 +490,29 @@ function submitRecord() {
     }
     state.records.unshift(record);
     localStorage.setItem('mos_records', JSON.stringify(state.records));
-    // 記錄當下 GPS 位置
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        record.gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        // Update the record in state with GPS
-        state.records[0].gps = record.gps;
+  }
+
+  // 即時跳去查閱頁（唔等 GPS）
+  state.editId = null;
+  state.photos = [];
+  state.activityType = 'trail';
+  switchTab('list');
+  renderList();
+
+  // 背景 Capture GPS（唔阻住畫面）
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      if (state.records[0]) {
+        state.records[0].gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         localStorage.setItem('mos_records', JSON.stringify(state.records));
-        saveAndSubmit(record);
-      }, () => saveAndSubmit(record), { timeout: 5000, enableHighAccuracy: true });
-    } else {
-      saveAndSubmit(record);
-    }
+      }
+    }, () => {}, { timeout: 8000, enableHighAccuracy: true });
   }
 }
 
-function saveAndSubmit(record) {
-  state.tab = 'list';
-  
-  // Render list view
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const allBtns = document.querySelectorAll('.nav-btn');
-  if (allBtns[1]) allBtns[1].classList.add('active');
-  
-  renderList();
-  // 確保查閱 tab 顯示
-  document.getElementById('tabContent').innerHTML = '';
-  renderList();
-
-  // 同步去雲端
-  syncToCloud(record);
-}
-
+// ══════════════════════════════════════════════
+// CANCEL EDIT
+// ══════════════════════════════════════════════
 function cancelEdit() {
   state.editId = null;
   state.photos = [];
