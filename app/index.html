@@ -1007,30 +1007,14 @@ function renderMap() {
           + '</div>'
         : '📌 暫無 GPS 記錄 — 填寫時系統會自動記錄位置';
 
-    // Center map on current location (no marker)
+    // Silently capture current location (no zoom, no marker)
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(pos) {
-        var myLoc = [pos.coords.latitude, pos.coords.longitude];
-        if (count > 0) {
-          // Fit map to show all record points AND current location
-          var allPoints = [];
-          trailPoints.forEach(function(p) { allPoints.push(p); });
-          waterPoints.forEach(function(p) { allPoints.push(p); });
-          allPoints.push(myLoc);
-          map.fitBounds(allPoints, { padding: [30, 30], maxZoom: 16 });
-        } else {
-          map.setView(myLoc, 15);
-          document.getElementById('mapStatus').innerHTML =
-            '<div style="font-size:0.55rem;">📍 地圖已置中於你嘅位置（未有 GPS 記錄點）</div>';
-        }
-      }, function() {
-        // GPS unavailable - fit to records only
-        if (count > 0) {
-          var allPts = trailPoints.concat(waterPoints);
-          map.fitBounds(allPts, { padding: [30, 30] });
-        }
-      }, { enableHighAccuracy: true, timeout: 10000 });
-    } else if (count > 0) {
+        state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      }, function() {}, { enableHighAccuracy: true, timeout: 10000 });
+    }
+    // Fit map to record points only
+    if (count > 0) {
       var allPts = trailPoints.concat(waterPoints);
       map.fitBounds(allPts, { padding: [30, 30] });
     }
