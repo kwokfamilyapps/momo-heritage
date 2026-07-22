@@ -675,6 +675,16 @@ function submitRecord() {
     persistPhotosForRecord(recordId).then(function() {
       console.log("📸 Photos saved to IndexedDB:", record.photoKeys.length);
     });
+    // 提前 capture GPS（喺用戶手勢入面，iOS 需要）
+    var pendingGps = null;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        pendingGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      }, function() {
+        // GPS unavailable - skip
+      }, { timeout: 8000, enableHighAccuracy: true });
+    }
+
     // Use add() for new records
     db.collection('records').add(record).then(function(docRef) {
       console.log("🔥 SYNC OK:", docRef.id);
@@ -682,23 +692,16 @@ function submitRecord() {
       if (state.records[0] && state.records[0].id === record.id) {
         state.records[0].id = docRef.id;
       }
-      // GPS capture — 用 Firestore 正確 ID
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(pos) {
-          var gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-          // Update Firestore
-          db.collection('records').doc(docRef.id).update({ gps: gps }).then(function() {
-            console.log("📌 GPS OK:", docRef.id);
-          }).catch(function(e) {
-            console.log("📌 GPS FAIL:", e.code, e.message);
-          });
-          // Update local state
-          if (state.records[0]) {
-            state.records[0].gps = gps;
-          }
-        }, function() {
-          console.log("📌 GPS timeout/error");
-        }, { timeout: 10000, enableHighAccuracy: true });
+      // GPS capture — 用 Firestore 正確 ID + pendingGps
+      if (pendingGps) {
+        db.collection('records').doc(docRef.id).update({ gps: pendingGps }).then(function() {
+          console.log("📌 GPS OK:", docRef.id);
+        }).catch(function(e) {
+          console.log("📌 GPS FAIL:", e.code, e.message);
+        });
+        if (state.records[0]) {
+          state.records[0].gps = pendingGps;
+        }
       }
     }).catch(function(e) {
       console.log("🔥 SYNC FAIL:", e.code, e.message);
