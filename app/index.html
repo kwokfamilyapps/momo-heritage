@@ -765,14 +765,11 @@ function handlePhotos(e) {
 }
 
 // When submitting a record: save photos to IndexedDB
-async function persistPhotosForRecord(recordId) {
-  const keys = [];
-  for (let i = 0; i < state.photos.length; i++) {
+async function persistPhotosForRecord(recordId, photos) {
+  for (let i = 0; i < photos.length; i++) {
     const key = recordId + '_' + i;
-    await savePhotoToDB(key, state.photos[i]);
-    keys.push(key);
+    await savePhotoToDB(key, photos[i]);
   }
-  return keys;
 }
 
 // When loading a record: restore photos from IndexedDB
@@ -903,10 +900,13 @@ function submitRecord() {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
     state.records.unshift(record);
-    // Persist photos to IndexedDB
-    persistPhotosForRecord(recordId).then(function() {
-      console.log("📸 Photos saved to IndexedDB:", record.photoKeys.length);
-    });
+    // Persist photos to IndexedDB (use copy to avoid race with state.photos=[])
+    var photosCopy = state.photos.slice();
+    if (photosCopy.length > 0) {
+      persistPhotosForRecord(recordId, photosCopy).then(function() {
+        console.log("📸 Photos saved to IndexedDB:", photosCopy.length);
+      });
+    }
     // Use live tracking GPS if available
     var gpsToSave = state.currentGps;
 
