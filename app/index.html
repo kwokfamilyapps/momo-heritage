@@ -375,7 +375,10 @@ let photoCount = 0;
 
 function renderForm() {
   const r = state.editId ? state.records.find(rec => rec.id === state.editId) : null;
-  const today = new Date().toISOString().split('T')[0];
+  // Use Hong Kong timezone for today's date
+  const hkNow = new Date();
+  const hkDate = new Date(hkNow.toLocaleString('en-US', { timeZone: 'Asia/Hong_Kong' }));
+  const today = hkDate.toISOString().split('T')[0];
 
   let html = `<div style="margin-bottom:0.6rem;">
     <div class="tabs">
@@ -885,7 +888,10 @@ function getAlbumName() {
 
 function savePhotoToDisk(filename, dataUrl) {
   const album = getAlbumName();
-  const ts = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
+  // Use Hong Kong timezone for filename
+  const hkNow2 = new Date();
+  const hkDate2 = new Date(hkNow2.toLocaleString('en-US', { timeZone: 'Asia/Hong_Kong' }));
+  const ts = hkDate2.toISOString().slice(0, 19).replace(/[T:]/g, '-');
   const friendlyName = album + '_' + ts + '.jpg';
   
   // Convert data URL to Blob
@@ -971,7 +977,7 @@ function submitRecord() {
     issues, solution, note: note || '',
     photoKeys: state.photos.length > 0 ? state.photos.map((_, i) => recordId + '_' + i) : [],
     createdBy: state.user.role,
-    createdAt: new Date().toISOString()
+    createdAt: new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Hong_Kong' })).toISOString()
   };
 
   if (state.editId) {
