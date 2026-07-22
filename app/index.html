@@ -1013,11 +1013,6 @@ function renderMap() {
         state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
       }, function() {}, { enableHighAccuracy: true, timeout: 10000 });
     }
-    // Fit map to record points only
-    if (count > 0) {
-      var allPts = trailPoints.concat(waterPoints);
-      map.fitBounds(allPts, { padding: [30, 30] });
-    }
   };
   document.body.appendChild(script);
 }
