@@ -565,7 +565,10 @@ async function deletePhotoFromDB(key) {
 window.viewPhoto = function(key) {
   if (!key) return;
   getPhotoFromDB(key).then(function(dataUrl) {
-    if (!dataUrl) return;
+    if (!dataUrl) {
+      alert('📸 相片尚未儲存到本機。請喺提交記錄時先影相。');
+      return;
+    }
     var ov = document.getElementById('photoOverlay');
     if (!ov) {
       ov = document.createElement('div');
@@ -575,7 +578,9 @@ window.viewPhoto = function(key) {
     }
     ov.innerHTML = '<div onclick="closePhoto()" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:pointer;"><img src="'+dataUrl+'" style="max-width:92%;max-height:92%;border-radius:8px;"><div style="position:absolute;top:0.5rem;right:0.8rem;font-size:1.2rem;color:#fff;background:rgba(0,0,0,0.5);padding:0.2rem 0.5rem;border-radius:8px;">✕</div></div>';
     ov.style.display = 'block';
-  }).catch(function() {});
+  }).catch(function(e) {
+    alert('無法載入相片: ' + e.message);
+  });
 };
 window.closePhoto = function() {
   var ov = document.getElementById('photoOverlay');
