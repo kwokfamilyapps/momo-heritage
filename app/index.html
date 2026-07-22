@@ -531,8 +531,24 @@ async function deletePhotoFromDB(key) {
 
 // ── GPS LIVE TRACKING ──
 function startGpsTracking() {
-  if (!navigator.geolocation) return;
+  if (!navigator.geolocation) {
+    var d = document.getElementById('gpsDisplay');
+    if (d) d.textContent = '瀏覽器唔支援 GPS';
+    return;
+  }
   if (state.watchId !== null) return;
+  // Check permission status
+  if (navigator.permissions && navigator.permissions.query) {
+    navigator.permissions.query({name:'geolocation'}).then(function(result) {
+      if (result.state === 'denied') {
+        var d = document.getElementById('gpsDisplay');
+        var s = document.getElementById('gpsStatus');
+        if (d) d.textContent = '⚠️ 請開啟定位權限：設定→Safari→定位→允許';
+        if (s) s.textContent = '🚫';
+        return;
+      }
+    }).catch(function(){});
+  }
   state.watchId = navigator.geolocation.watchPosition(function(pos) {
     state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
     var d = document.getElementById('gpsDisplay');
