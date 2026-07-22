@@ -293,6 +293,7 @@ function login(role) {
   document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'block' : 'none';
   renderForm();
   renderList();
+  startGpsTracking();
   // Load from Firestore
   loadRecords();
 }
