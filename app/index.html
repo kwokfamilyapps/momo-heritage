@@ -246,7 +246,8 @@ const firebaseConfig = {
     photos: [],
     editId: null,
     currentGps: null,
-    gpsLocked: false
+    gpsLocked: false,
+    watchId: null
   };
 
   // Load from Firestore on startup — only on first load, not overwrite local records
@@ -334,10 +335,10 @@ function switchTab(tab) {
   const btns = document.querySelectorAll('.nav-btn');
   const idx = ['form','list','admin','logout'].indexOf(tab);
   if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
-  if (tab === 'form') renderForm();
-  else if (tab === 'list') renderList();
-  else if (tab === 'map') renderMap();
-  else if (tab === 'admin') renderAdmin();
+  if (tab === 'form') { renderForm(); startGpsTracking(); }
+  else if (tab === 'list') { renderList(); stopGpsTracking(); }
+  else if (tab === 'map') { renderMap(); stopGpsTracking(); }
+  else if (tab === 'admin') { renderAdmin(); stopGpsTracking(); }
 }
 
 // ══════════════════════════════════════════════
@@ -431,16 +432,35 @@ function renderForm() {
     </div>`;
   }
 
-  // GPS status display (auto-captured when taking photos)
+  // GPS status display
   const isEditing = !!state.editId;
-  // Reset GPS lock for a new record
-  if (!isEditing) {
+  var gpsLabel, gpsIcon;
+  
+  if (isEditing) {
+    // Edit mode: show record's GPS or 冇坐標
+    var editRecord = state.editId ? state.records.find(function(r) { return r.id === state.editId; }) : null;
+    var editGps = editRecord && editRecord.gps ? editRecord.gps : null;
+    if (editGps) {
+      gpsLabel = editGps.lat.toFixed(4) + ', ' + editGps.lng.toFixed(4) + ' (相片坐標) 🔒';
+      gpsIcon = '🔒';
+    } else {
+      gpsLabel = '冇坐標';
+      gpsIcon = '❌';
+    }
+  } else {
+    // New record mode
     state.gpsLocked = false;
+    if (state.currentGps) {
+      gpsLabel = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
+      gpsIcon = '📍';
+    } else {
+      gpsLabel = '追蹤手機位置…';
+      gpsIcon = '⏳';
+    }
   }
-  var gpsLabel = state.currentGps ? state.currentGps.lat.toFixed(4)+', '+state.currentGps.lng.toFixed(4)+(state.gpsLocked?' 🔒':'') : '影相時自動 capture';
-  var gpsIcon = state.currentGps ? (state.gpsLocked ? '🔒' : '✅') : '📸';
+  
   html += `<div class="gps-box">
-    <span class="label">📍 拍攝位置</span>
+    <span class="label">📍 位置</span>
     <span class="coords" id="gpsDisplay">${gpsLabel}</span>
     <span class="status" id="gpsStatus">${gpsIcon}</span>
   </div>`;
@@ -536,30 +556,51 @@ async function deletePhotoFromDB(key) {
   });
 }
 
-// ── GPS CAPTURE (manual, triggered by user tap) ──
-function captureGpsOnce() {
+// ── GPS TRACKING ──
+var gpsWatchId = null;
+
+function startGpsTracking() {
+  if (!navigator.geolocation || gpsWatchId !== null) return;
+  gpsWatchId = navigator.geolocation.watchPosition(function(pos) {
+    if (!state.gpsLocked) {
+      state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      updateGpsDisplay(false);
+    }
+  }, function() {
+    // GPS error - silent
+  }, { enableHighAccuracy: true, timeout: 30000 });
+}
+
+function stopGpsTracking() {
+  if (gpsWatchId !== null) {
+    navigator.geolocation.clearWatch(gpsWatchId);
+    gpsWatchId = null;
+  }
+}
+
+function updateGpsDisplay(locked) {
   var d = document.getElementById('gpsDisplay');
   var s = document.getElementById('gpsStatus');
-  if (d) d.textContent = '定位中…';
-  if (s) s.textContent = '⏳';
-  if (!navigator.geolocation) {
-    if (d) d.textContent = '瀏覽器唔支援 GPS';
+  if (!d) return;
+  if (!state.currentGps) {
+    d.textContent = '跟蹤手機位置…';
+    if (s) s.textContent = '⏳';
     return;
   }
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-    if (d) d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
-    if (s) s.textContent = '✅';
-  }, function(err) {
-    if (err.code === 1) {
-      if (d) d.textContent = '⚠️ 已拒絕 — 請去 設定→私隱→定位服務→Safari→允許';
-    } else if (err.code === 2) {
-      if (d) d.textContent = '無法定位 (信號弱)';
-    } else {
-      if (d) d.textContent = 'GPS timeout (code ' + err.code + ')';
-    }
-    if (s) s.textContent = '🚫';
-  }, { enableHighAccuracy: true, timeout: 15000 });
+  d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4) + (locked ? ' 🔒 相片坐標' : '');
+  if (s) s.textContent = locked ? '🔒' : '📍';
+}
+
+function captureGpsOnce() {
+  // Used by photo capture - takes a precise GPS reading at the moment of the photo
+  return new Promise(function(resolve) {
+    if (!navigator.geolocation) { resolve(null); return; }
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    }, function() {
+      resolve(null);
+    }, { enableHighAccuracy: true, timeout: 15000 });
+  });
 }
 
 // Embed GPS EXIF into JPEG dataUrl
@@ -594,20 +635,20 @@ function handlePhotos(e) {
   const toAdd = files.slice(0, remaining);
   
   // GPS capture on photo
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(pos) {
-      var newGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      
-      if (!state.gpsLocked) {
-        // First photo: lock this GPS as the record's position
+  if (navigator.geolocation && !state.gpsLocked) {
+    // First photo: capture exact position
+    captureGpsOnce().then(function(newGps) {
+      if (newGps) {
         state.currentGps = newGps;
         state.gpsLocked = true;
-        var d = document.getElementById('gpsDisplay');
-        var s = document.getElementById('gpsStatus');
-        if (d) d.textContent = newGps.lat.toFixed(4) + ', ' + newGps.lng.toFixed(4) + ' 🔒';
-        if (s) s.textContent = '✅';
-      } else {
-        // Additional photos: check distance from locked GPS
+        stopGpsTracking();
+        updateGpsDisplay(true);
+      }
+    });
+  } else if (navigator.geolocation && state.gpsLocked) {
+    // Subsequent photos: check distance from locked GPS
+    captureGpsOnce().then(function(newGps) {
+      if (newGps && state.currentGps) {
         var R = 6371000;
         var dLat = (newGps.lat - state.currentGps.lat) * Math.PI / 180;
         var dLon = (newGps.lng - state.currentGps.lng) * Math.PI / 180;
@@ -616,14 +657,10 @@ function handlePhotos(e) {
                 Math.sin(dLon/2)*Math.sin(dLon/2);
         var dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         if (dist > 5) {
-          setTimeout(function() {
-            alert('⚠️ 已偏離記錄位置約 ' + Math.round(dist) + ' 米\\n請返回原位置或另開新記錄');
-          }, 100);
+          alert('⚠️ 已偏離記錄位置約 ' + Math.round(dist) + ' 米\n請返回原位置或另開新記錄');
         }
       }
-    }, function(err) {
-      console.log('📌 GPS err:', err.code);
-    }, { enableHighAccuracy: true, timeout: 15000 });
+    });
   }
 
   toAdd.forEach(file => {
