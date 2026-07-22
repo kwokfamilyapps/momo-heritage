@@ -261,7 +261,16 @@ const firebaseConfig = {
       const snap = await db.collection('records').orderBy('createdAt','desc').get();
       // 只有在當前無本地記錄時先 load（避免 overwrite 用戶剛輸入嘅記錄）
       if (state.records.length === 0) {
-        snap.forEach(doc => state.records.push({ id: doc.id, ...doc.data() }));
+        snap.forEach(doc => {
+    var data = { id: doc.id, ...doc.data() };
+    // Ensure _firestoreId is preserved (for delete operations)
+    data._firestoreId = doc.id;
+    if (data.id !== doc.id) {
+      data._localId = data.id;
+      data.id = doc.id;
+    }
+    state.records.push(data);
+  });
       }
       if (state.user) {
         if (state.tab === 'list') renderList();
@@ -1192,8 +1201,11 @@ function editRecord(id) {
 
 function deleteRecord(id) {
   if (!confirm('確定刪除此記錄？')) return;
-  state.records = state.records.filter(r => r.id !== id);
-  db.collection('records').doc(id).delete().catch(e => console.log("🔥", e));
+  // Find the record to get the correct Firestore document ID
+  var rec = state.records.find(function(r) { return r.id === id || r._firestoreId === id; });
+  var docId = rec ? (rec._firestoreId || id) : id;
+  state.records = state.records.filter(r => r.id !== id && r._firestoreId !== id);
+  db.collection('records').doc(docId).delete().catch(function(e) { console.log("🔥", e); });
   renderList();
 }
 
