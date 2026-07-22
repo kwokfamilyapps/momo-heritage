@@ -775,7 +775,7 @@ function submitRecord() {
           console.log("📌 GPS FAIL:", e.code, e.message);
         });
         if (state.records[0]) {
-          state.records[0].gps = pendingGps;
+          state.records[0].gps = gpsToSave;
         }
       }
     }).catch(function(e) {
