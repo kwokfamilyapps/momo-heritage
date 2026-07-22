@@ -465,9 +465,12 @@ function renderForm() {
     <span class="status" id="gpsStatus">${gpsIcon}</span>
   </div>`;
 
-  // Photos
+  // Determine photos array
+  var photos = [];
+
+  // Photos section
   if (!isEditing) {
-    const photos = r ? r.photos || [] : [];
+    photos = r ? r.photos || [] : [];
     html += `<div class="form-group">
       <label>📸 相片記錄（最多 3 張）</label>
       <div class="photo-zone" onclick="document.getElementById('photoInput').click()">
