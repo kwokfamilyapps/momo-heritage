@@ -293,8 +293,10 @@ function login(role) {
   document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'block' : 'none';
   renderForm();
   renderList();
-  // Load from Firestore
-  loadRecords();
+  // Load from Firestore, then show list tab
+  loadRecords().then(function() {
+    if (state.records.length > 0) switchTab('list');
+  }).catch(function() {});
 }
 
 function logout() {
