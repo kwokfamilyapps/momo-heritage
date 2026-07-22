@@ -33,59 +33,60 @@
 <body>
 
 <h1>鞍山探索館</h1>
-<p style="font-size:0.5rem;color:#888;margin-top:-0.2rem;">山徑與水道巡查記錄工具 · 使用手冊</p>
+<p style="font-size:0.5rem;color:#888;margin-top:-0.2rem;">山徑與水道巡查記錄 App · 使用手冊</p>
 
 <hr>
 
 <h2 id="start">開始使用</h2>
 
 <div class="step">
-  <strong>方法一：</strong>使用手機瀏覽器打開以下連結<br>
+  <strong>方法 1：</strong>用手機瀏覽器打開以下連結<br>
   <code>https://kwokfamilyapps.github.io/momo-heritage/app/index.html</code>
 </div>
 
 <div class="step">
-  <strong>方法二（推薦）：加入主畫面</strong><br>
-  Safari：分享按鈕 →「加入主畫面」<br>
-  Chrome：右上角三點 →「加入主畫面」
+  <strong>方法 2（推薦）：加入主畫面</strong><br>
+  Safari：分享掣 → 「加入主畫面」<br>
+  Chrome：右上角三點 → 「加入主畫面」<br>
+  <span style="font-size:0.45rem;color:#888;">之後可以好似一般 App 咁一撳就開</span>
 </div>
 
 <div class="warn">
-  <strong>注意：</strong>瀏覽器會詢問「是否允許取用位置？」，請點擊 <strong>允許</strong>，這樣地圖才能顯示 GPS 位置。建議使用 Safari 或 Chrome。
+  ⚠️ <strong>首次使用注意：</strong>瀏覽器會問「允許取用位置？」— 請㩒 <strong>允許</strong>，咁地圖先有 GPS。建議用 Safari 或 Chrome，唔好用微信/支付寶入面嘅瀏覽器。
 </div>
 
 <hr>
 
 <h2 id="login">登入系統</h2>
 
-<p>系統有兩種角色 — <strong>義工</strong> 和 <strong>管理員（Admin）</strong>，權限不同。</p>
+<p>App 有兩種角色：<strong>義工</strong> 同 <strong>Admin</strong>，權限唔同。</p>
 
 <table>
-  <tr><th>功能</th><th>義工</th><th>管理員</th></tr>
-  <tr><td>記錄問題</td><td>可</td><td>可</td></tr>
-  <tr><td>編輯／刪除自己的記錄</td><td>可</td><td>可</td></tr>
-  <tr><td>編輯／刪除任何人的記錄</td><td>不可</td><td>可</td></tr>
-  <tr><td>查看管理統計頁</td><td>不可</td><td>可</td></tr>
-  <tr><td>匯出 CSV 報表</td><td>不可</td><td>可</td></tr>
-  <tr><td>清除所有記錄</td><td>不可</td><td>可</td></tr>
+  <tr><th>功能</th><th>義工</th><th>Admin</th></tr>
+  <tr><td>記錄問題</td><td>✅</td><td>✅</td></tr>
+  <tr><td>編輯/刪除自己記錄</td><td>✅</td><td>✅</td></tr>
+  <tr><td>編輯/刪除任何人記錄</td><td>❌</td><td>✅</td></tr>
+  <tr><td>睇 Admin 統計頁</td><td>❌</td><td>✅</td></tr>
+  <tr><td>匯出 CSV 報表</td><td>❌</td><td>✅</td></tr>
+  <tr><td>清除所有記錄</td><td>❌</td><td>✅</td></tr>
 </table>
 
-<div class="step"><strong>義工登入：</strong>直接點擊「義工隊登入」，無需密碼</div>
-<div class="step"><strong>管理員登入：</strong>點擊「Admin 登入」，輸入密碼 <code>admin2024</code></div>
+<div class="step"><strong>義工登入：</strong>直接㩒「義工隊登入」，唔使密碼</div>
+<div class="step"><strong>Admin 登入：</strong>㩒「Admin 登入」，輸入密碼 <code>admin2024</code></div>
 
 <hr>
 
 <h2 id="nav">底部導航欄</h2>
 
-<p>登入後底部有 5 個功能按鈕：</p>
+<p>登入後底部有 5 個功能掣：</p>
 
 <table>
-  <tr><th>按鈕</th><th>功能</th></tr>
-  <tr><td>填寫</td><td>新增巡查記錄</td></tr>
-  <tr><td>查閱</td><td>瀏覽所有記錄</td></tr>
-  <tr><td>地圖</td><td>GPS 路線圖</td></tr>
-  <tr><td>管理</td><td>管理員專用統計（義工無法看見）</td></tr>
-  <tr><td>退出</td><td>登出並返回登入頁</td></tr>
+  <tr><th>Icon</th><th>名稱</th><th>功能</th></tr>
+  <tr><td>✏️</td><td>填寫</td><td>新増巡查記錄</td></tr>
+  <tr><td>📋</td><td>查閱</td><td>瀏覽所有記錄</td></tr>
+  <tr><td>🗺️</td><td>地圖</td><td>GPS 路線圖</td></tr>
+  <tr><td>⚙️</td><td>管理</td><td>Admin 專用統計（義工唔會見到）</td></tr>
+  <tr><td>🚪</td><td>退出</td><td>登出並返回登入頁</td></tr>
 </table>
 
 <hr>
@@ -93,8 +94,8 @@
 <h2 id="form">填寫記錄</h2>
 
 <div class="box">
-<h3>記錄類型</h3>
-<p>填寫頁頂部有兩個標籤：</p>
+<h3>切換記錄類型</h3>
+<p>填寫頁頂部有兩個 Tab：</p>
 <ul>
   <li><strong>山徑問題</strong> — 記錄山徑損壞、垃圾、侵蝕等</li>
   <li><strong>水道記錄</strong> — 記錄水道阻塞、損毀等</li>
@@ -102,118 +103,122 @@
 </div>
 
 <div class="box">
-<h3>GPS 定位</h3>
+<h3>GPS 位置系統</h3>
 <table>
-  <tr><th>情況</th><th>說明</th></tr>
-  <tr><td>尚未拍攝照片</td><td>自動追蹤手機即時位置，坐標隨移動更新</td></tr>
-  <tr><td>拍攝第一張照片</td><td>GPS 立即鎖定，以拍攝瞬間的位置為準，不再變更</td></tr>
-  <tr><td>拍攝後續照片（偏離 5 米以上）</td><td>系統彈出警告，請返回原位置或另開新記錄</td></tr>
-  <tr><td>修改記錄（有 GPS）</td><td>唯讀顯示，不可修改</td></tr>
-  <tr><td>修改記錄（無 GPS）</td><td>顯示「無坐標」</td></tr>
+  <tr><th>情況</th><th>GPS box 顯示</th><th>說明</th></tr>
+  <tr><td>未影相</td><td>📍 22.3351, 114.1402</td><td>跟蹤手機即時位置，坐標隨手機移動更新</td></tr>
+  <tr><td>影咗第 1 張相</td><td>🔒 22.3351, 114.1402 🔒 相片坐標</td><td>GPS 鎖死，以影相一刻嘅位置為準，唔會再變</td></tr>
+  <tr><td>影第 2/3 張相（偏離 >5米）</td><td>無變化（仍顯示鎖死坐標）</td><td>⚠️ 自動彈出警告：「已偏離記錄位置約 X 米」</td></tr>
+  <tr><td>修改記錄（有 GPS）</td><td>🔒 相片坐標 🔒</td><td>唯讀顯示，唔可以修改</td></tr>
+  <tr><td>修改記錄（冇 GPS）</td><td>❌ 冇坐標</td><td>舊記錄未有 GPS，無法補回</td></tr>
 </table>
 </div>
 
 <div class="box">
-<h3>相片</h3>
+<h3>相片系統</h3>
 <table>
-  <tr><th>項目</th><th>說明</th></tr>
-  <tr><td>解像度</td><td>自動壓縮至 1024px 最長邊，檔案約 200-300KB</td></tr>
-  <tr><td>GPS 嵌入</td><td>每張照片自動寫入 GPS 坐標至 EXIF 資訊</td></tr>
-  <tr><td>儲存位置</td><td>瀏覽器 IndexedDB（永久儲存）+ iOS 分享選單</td></tr>
-  <tr><td>修改模式</td><td>不可更換照片或修改 GPS，需刪除記錄重新建立</td></tr>
+  <tr><th>功能</th><th>說明</th></tr>
+  <tr><td>解像度</td><td>自動壓縮到 1024px 最長邊（JPEG 80%），檔案 ~200-300KB</td></tr>
+  <tr><td>GPS EXIF 嵌入</td><td>每張相會自動寫入 GPS 坐標到 EXIF 資料，用任何軟件開相都睇到位置</td></tr>
+  <tr><td>IndexedDB 儲存</td><td>相片永久儲存喺手機瀏覽器，熄 App 再開都喺度</td></tr>
+  <tr><td>iPhone 儲存</td><td>影相後彈出 iOS 分享選單，可揀「儲存到照片」或「儲存到檔案」</td></tr>
+  <tr><td>修改模式</td><td>唔可以更換相片或修改 GPS，如需更改請刪除記錄重新建立</td></tr>
 </table>
 </div>
 
 <div class="box">
 <h3>填寫步驟</h3>
 <ol>
-  <li>日期 — 預設為今日，可點擊修改</li>
-  <li>記錄人員 — 輸入您的姓名</li>
-  <li>山徑名稱 — 從下拉選單選擇路線</li>
-  <li>問題類型 — 勾選相關問題（可選多項）</li>
-  <li>建議處理 — 選擇建議處理方法</li>
-  <li>相片（可選）— 拍攝時自動嵌入 GPS 坐標</li>
-  <li>備註（可選）</li>
-  <li>點擊「提交記錄」</li>
+  <li><strong>📅 日期</strong> — 預設今日，可以㩒改日期</li>
+  <li><strong>👤 記錄人員</strong> — 輸入你嘅姓名</li>
+  <li><strong>🛤️ 山徑名稱</strong> — 下拉揀路線</li>
+  <li><strong>📍 GPS 即時位置</strong> — 填寫頁頂部有個 GPS box，顯示你當前坐標，會隨手機移動自動更新</li>
+  <li><strong>⚠️ 問題類型</strong> — 㩒 checkbox 揀問題（可選多項）</li>
+  <li><strong>🔧 建議處理</strong> — 揀建議方法</li>
+  <li><strong>📸 相片</strong> — 影相時會自動將 GPS 坐標嵌入相片 EXIF 資料</li>
+  <li><strong>📝 備註</strong>（可選）</li>
+  <li>㩒 <strong>✅ 提交記錄</strong></li>
 </ol>
 </div>
 
-<div class="tip">拍攝第一張照片後 GPS 便會鎖定，即使移動到其他地方，位置仍以第一張照片為準。後續照片若偏離超過 5 米，系統會彈出警告。</div>
+<div class="tip">💡 <strong>提示：</strong>影咗第 1 張相之後 GPS 會鎖死，就算你行開咗，位置都係以第 1 張相為準。影第 2/3 張相時如果偏離超過 5 米，系統會彈 Alert 通知你。</div>
 
 <hr>
 
 <h2 id="list">查閱記錄</h2>
 
-<p>點擊「查閱」可瀏覽所有巡查記錄，按時間倒序排列。每張卡片顯示日期、記錄人員、路線、問題類型、照片數量及 GPS 狀態。</p>
+<p>㩒「查閱」Tab 可以瀏覽所有巡查記錄，按時間倒序排列。</p>
+<p>每張記錄卡片顯示：日期、記錄人員、山徑名稱、問題類型、解決方案、相片數量、GPS 狀態。</p>
 
 <h3>修改記錄</h3>
-<p>點擊記錄卡片的「修改」可修改文字資料（日期、路線、問題、備註）。</p>
-<div class="warn"><strong>限制：</strong>修改模式不可更換照片或修改 GPS 坐標。如需更改請刪除記錄重新建立。</div>
+<p>㩒記錄卡片上嘅「✏️ 修改」，可以修改文字資料（日期、路線、問題、備註等）。</p>
+<div class="warn">⚠️ <strong>修改限制：</strong>修改模式唔可以更換相片或修改 GPS 坐標。如需更改請刪除記錄重新建立。</div>
 
 <h3>刪除記錄</h3>
-<p>點擊「刪除」可刪除記錄，刪除前有確認提示。</p>
+<p>㩒「🗑️ 刪除」可以刪除記錄。刪除前會有確認提示。</p>
 
 <h3>匯出 CSV</h3>
-<p>管理員可在查閱頁頂部點擊「匯出報表」，將所有記錄匯出為 CSV 檔案（可用 Excel 開啟）。</p>
+<p>Admin 喺查閱頁頂部可以㩒「📊 匯出報表 (CSV)」，將所有記錄匯出做 CSV 檔案（可以用 Excel 開）。</p>
 
 <hr>
 
 <h2 id="map">地圖路線圖</h2>
 
-<p>進入地圖頁面時，系統會自動記錄您當前的位置。地圖只顯示包含 GPS 坐標的記錄。</p>
+<p>㩒「地圖」Tab 時，系統會自動記錄你嘅位置，地圖會顯示所有有 GPS 嘅記錄點。</p>
 
 <table>
-  <tr><th>地圖元素</th><th>代表意義</th></tr>
-  <tr><td>綠色圓點</td><td>山徑問題記錄點</td></tr>
-  <tr><td>藍色圓點</td><td>水道記錄點</td></tr>
-  <tr><td style="color:#4a8a5a;">綠色虛線</td><td>山徑巡查路線</td></tr>
-  <tr><td style="color:#4080c0;">藍色虛線</td><td>水道巡查路線</td></tr>
+  <tr><th>地圖元素</th><th>意思</th></tr>
+  <tr><td>🟢 綠色圓點</td><td>山徑問題記錄點</td></tr>
+  <tr><td>🔵 藍色圓點</td><td>水道記錄點</td></tr>
+  <tr><td style="color:#4a8a5a;">- - - 綠色虛線</td><td>山徑巡查路線</td></tr>
+  <tr><td style="color:#4080c0;">- - - 藍色虛線</td><td>水道巡查路線</td></tr>
 </table>
 
 <ul>
-  <li>只有包含 GPS 坐標的記錄才會顯示在地圖上</li>
-  <li>點擊圓點可查看記錄詳情</li>
-  <li>地圖底部顯示記錄數量及圖例</li>
+  <li>只有有 GPS 坐標嘅記錄先會顯示喺地圖</li>
+  <li>㩒圓點可以睇記錄詳情</li>
+  <li>山徑用 🟢 綠色虛線，水道用 🔵 藍色虛線，唔會撈亂</li>
+  <li>地圖底有記錄數量同圖例</li>
 </ul>
 
 <hr>
 
-<h2 id="offline">離線操作</h2>
+<h2 id="offline">離線操作（冇信號區域）</h2>
 
 <h3>離線前準備</h3>
 <ol>
-  <li>出發前在有訊號的地方開啟一次應用程式並登入</li>
-  <li>系統會自動快取必要資料</li>
-  <li>請勿關閉瀏覽器標籤（可關閉螢幕，但不要滑走標籤）</li>
+  <li>出發前喺有信號嘅地方 <strong>開一次 App 並登入</strong></li>
+  <li>App 會自動快取必要資料</li>
+  <li>唔好關閉瀏覽器 Tab（可以熄 mon，但唔好滑走個 Tab）</li>
 </ol>
 
 <table>
   <tr><th>功能</th><th>離線</th><th>備註</th></tr>
-  <tr><td>記錄問題</td><td>可</td><td>暫存於手機，有訊號時自動同步</td></tr>
-  <tr><td>拍攝照片</td><td>可</td><td>儲存於 IndexedDB</td></tr>
-  <tr><td>GPS 記錄</td><td>可</td><td>手機 GPS 不需網絡</td></tr>
-  <tr><td>瀏覽已有記錄</td><td>可</td><td>先前載入過的記錄可查看</td></tr>
-  <tr><td>地圖</td><td>不可</td><td>地圖需要網絡</td></tr>
-  <tr><td>管理統計</td><td>不可</td><td>需要網絡連線</td></tr>
+  <tr><td>記錄問題</td><td>✅</td><td>暫存手機，有信號自動 sync</td></tr>
+  <tr><td>影相</td><td>✅</td><td>儲存喺 IndexedDB</td></tr>
+  <tr><td>GPS 記錄</td><td>✅</td><td>手機 GPS 唔使網絡</td></tr>
+  <tr><td>睇已有記錄</td><td>✅</td><td>之前 load 咗嘅記錄可以睇</td></tr>
+  <tr><td>地圖</td><td>❌</td><td>地圖 tiles 要網絡</td></tr>
+  <tr><td>Admin 統計</td><td>❌</td><td>要 Firestore 連線</td></tr>
 </table>
 
-<div class="warn"><strong>注意：</strong>離線時關閉標籤或重新整理頁面，未同步的記錄仍保存在手機中，不會流失。</div>
+<div class="warn">⚠️ <strong>注意：</strong>離線時關閉 Tab 或重新整理頁面，未 sync 嘅記錄仍然會保存喺 IndexedDB，唔會唔見。</div>
 
 <hr>
 
 <h2 id="faq">常見問題</h2>
 
-<h3>為什麼地圖上看不到記錄？</h3>
-<p>地圖只顯示包含 GPS 坐標的記錄。2026年7月22日之前建立的記錄因當時 GPS 功能尚未完善，未能記錄位置，因此不會顯示在地圖上。</p>
+<h3>點解地圖上睇唔到記錄？</h3>
+<p>地圖只顯示 <strong>有 GPS 坐標</strong> 嘅記錄。2026年7月22日之前入嘅記錄因為當時 GPS 功能未完善，冇記錄到位置，所以唔會顯示。之後新入嘅記錄全部會有 GPS。</p>
 
-<h3>為什麼 GPS 一直無法定位？</h3>
-<p>iOS 首次使用時 Safari 會彈出位置權限詢問，請點擊「允許」。若已拒絕，請前往：設定 → 私隱 → 定位服務 → Safari → 更改為「允許」。</p>
+<h3>點解 GPS 一直定唔到位？</h3>
+<p>iOS 第一次用會彈位置權限，請㩒「允許」。如果之前㩒咗「不允許」，要去：<strong>設定 → 私隱 → 定位服務 → Safari → 改為「允許」</strong>。</p>
 
-<h3>拍攝後照片儲存在哪裡？</h3>
-<p>照片儲存在瀏覽器 IndexedDB（永久儲存），並可透過 iOS 分享選單儲存至照片或檔案。</p>
+<h3>影咗嘅相儲存在邊？</h3>
+<p>相片儲存在 <strong>瀏覽器 IndexedDB</strong>（永久儲存，熄 App 再開都喺度），同埋可以透過 iOS 分享選單儲存到照片或檔案。</p>
 
-<h3>義工和管理員有什麼分別？</h3>
-<p>義工可記錄問題及編輯自己的記錄。管理員可編輯所有人的記錄、瀏覽統計、匯出 CSV 及清除所有資料。</p>
+<h3>義工同 Admin 有咩分別？</h3>
+<p>義工可以記錄問題同編輯自己嘅記錄。Admin 可以編輯任何人嘅記錄、睇統計頁、匯出 CSV 同清除所有資料。</p>
 
 <footer>
   <p>鞍山探索館 · 山徑與水道巡查記錄 App</p>
