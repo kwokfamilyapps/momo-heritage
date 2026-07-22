@@ -454,9 +454,50 @@ function setActivity(type) {
 }
 
 // ══════════════════════════════════════════════
-// PHOTOS
+// PHOTOS — IndexedDB persistent storage
 // ══════════════════════════════════════════════
-const MAX_PHOTO_PX = 1024; // 最長邊 max 1024px
+const MAX_PHOTO_PX = 1024;
+const DB_NAME = 'TrailPatrolPhotos';
+const STORE_NAME = 'photos';
+
+function openPhotoDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = () => req.result.createObjectStore(STORE_NAME);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function savePhotoToDB(key, dataUrl) {
+  const db = await openPhotoDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).put(dataUrl, key);
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
+
+async function getPhotoFromDB(key) {
+  const db = await openPhotoDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const req = tx.objectStore(STORE_NAME).get(key);
+    req.onsuccess = () => { db.close(); resolve(req.result); };
+    req.onerror = () => { db.close(); reject(req.error); };
+  });
+}
+
+async function deletePhotoFromDB(key) {
+  const db = await openPhotoDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).delete(key);
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
 
 function handlePhotos(e) {
   const files = Array.from(e.target.files);
@@ -467,7 +508,6 @@ function handlePhotos(e) {
     reader.onload = function(ev) {
       const img = new Image();
       img.onload = function() {
-        // Resize to max 1024px
         let w = img.width, h = img.height;
         if (w > MAX_PHOTO_PX || h > MAX_PHOTO_PX) {
           const ratio = Math.min(MAX_PHOTO_PX / w, MAX_PHOTO_PX / h);
@@ -475,16 +515,13 @@ function handlePhotos(e) {
           h = Math.round(h * ratio);
         }
         const canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        // Convert to compressed JPEG
-        const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-        state.photos.push(resizedDataUrl);
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const resized = canvas.toDataURL('image/jpeg', 0.8);
+        state.photos.push(resized);
         updatePhotoPreview();
-        // Save to Downloads folder
-        savePhotoToDisk(file.name || 'photo.jpg', resizedDataUrl);
+        // Save to device Downloads
+        savePhotoToDisk(file.name || 'photo.jpg', resized);
       };
       img.src = ev.target.result;
     };
@@ -493,30 +530,43 @@ function handlePhotos(e) {
   e.target.value = '';
 }
 
-// Detect device language for album folder name
+// When submitting a record: save photos to IndexedDB
+async function persistPhotosForRecord(recordId) {
+  const keys = [];
+  for (let i = 0; i < state.photos.length; i++) {
+    const key = recordId + '_' + i;
+    await savePhotoToDB(key, state.photos[i]);
+    keys.push(key);
+  }
+  return keys;
+}
+
+// When loading a record: restore photos from IndexedDB
+async function loadPhotosForRecord(photoKeys) {
+  const photos = [];
+  for (const key of (photoKeys || [])) {
+    const dataUrl = await getPhotoFromDB(key);
+    if (dataUrl) photos.push(dataUrl);
+  }
+  return photos;
+}
+
 function getAlbumName() {
   const lang = (navigator.language || navigator.userLanguage || 'en').slice(0, 2);
   const names = {
-    'zh': '山徑巡查',
-    'en': 'TrailPatrol',
-    'ja': 'トレイルパトロール',
-    'ko': '트레일순찰',
-    'es': 'PatrullaSendero',
-    'fr': 'PatrouilleSentier',
-    'pt': 'PatrulhaTrilha',
-    'default': 'TrailPatrol'
+    'zh': '山徑巡查', 'en': 'TrailPatrol', 'ja': 'トレイルパトロール',
+    'ko': '트레일순찰', 'es': 'PatrullaSendero', 'fr': 'PatrouilleSentier',
+    'pt': 'PatrulhaTrilha', 'default': 'TrailPatrol'
   };
   return names[lang] || names['default'];
 }
 
 function savePhotoToDisk(filename, dataUrl) {
-  // Create a download link and trigger it
   const link = document.createElement('a');
   link.href = dataUrl;
-  // Use album name as subfolder hint in filename
   const album = getAlbumName();
   const ts = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
-  link.download = `${album}/${ts}_${filename}`;
+  link.download = album + '/' + ts + '_' + filename;
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
@@ -563,13 +613,14 @@ function submitRecord() {
     document.querySelectorAll('.water-issue:checked').forEach(cb => issues.push(cb.value));
   }
 
+  const recordId = state.editId || Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
   const record = {
-    id: state.editId || Date.now().toString(36) + Math.random().toString(36).substr(2, 6),
+    id: recordId,
     date, recorder: recorder.trim(),
     trail: trail === '其他' ? (trailOther || '其他') : trail,
     activityType: state.activityType,
     issues, solution, note: note || '',
-    photoCount: state.photos.length,
+    photoKeys: state.photos.length > 0 ? state.photos.map((_, i) => recordId + '_' + i) : [],
     createdBy: state.user.role,
     createdAt: new Date().toISOString()
   };
@@ -592,6 +643,10 @@ function submitRecord() {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
     state.records.unshift(record);
+    // Persist photos to IndexedDB
+    persistPhotosForRecord(recordId).then(function() {
+      console.log("📸 Photos saved to IndexedDB:", record.photoKeys.length);
+    });
     // Use add() instead of doc().set() for better compatibility
     db.collection('records').add(record).then(function(docRef) {
       console.log("🔥 SYNC OK:", docRef.id);
@@ -660,7 +715,7 @@ function renderList() {
         ${r.solution ? `<div class="issues"><strong>建議：</strong>${r.solution}</div>` : ''}
         ${r.recorder ? `<div class="issues"><strong>記錄：</strong>${r.recorder}</div>` : ''}
         ${r.note ? `<div class="issues"><strong>備註：</strong>${r.note}</div>` : ''}
-        ${r.photoCount && r.photoCount > 0 ? `<div class="issues"><strong>相片：</strong>${r.photoCount} 張</div>` : ''}
+        ${r.photoKeys && r.photoKeys.length > 0 ? `<div class="issues"><strong>相片：</strong>${r.photoKeys.length} 張</div>` : ''}
         ${canEdit ? `<div style="margin-top:0.3rem;">
           <button class="btn btn-sm btn-secondary" onclick="editRecord('${r.id}')">✏️ 修改</button>
           <button class="btn btn-sm btn-danger" onclick="deleteRecord('${r.id}')">🗑️ 刪除</button>
@@ -713,12 +768,9 @@ function renderMap() {
 
         // Build popup content with photos
         let popupHtml = `<b>${r.trail}</b><br>${r.date}<br>${r.recorder || ''}<br>${(r.issues||[]).join('、')}`;
-        if (r.photos && r.photos.length > 0) {
-          popupHtml += '<br><div style="display:flex;gap:4px;margin-top:4px;">';
-          r.photos.forEach(p => {
-            popupHtml += `<img src="${p}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">`;
-          });
-          popupHtml += '</div>';
+        var pc = (r.photoKeys && r.photoKeys.length) || (r.photos && r.photos.length) || 0;
+        if (pc > 0) {
+          popupHtml += '<br><div style="font-size:0.5rem;color:#888;">📸 ' + pc + ' 張相片</div>';
         }
 
         L.circleMarker(latlng, {
@@ -820,7 +872,8 @@ function exportCSV() {
   let csv = "日期,記錄人員,山徑名稱,類別,問題,建議處理方法,備註,相片數\n";
   state.records.forEach(r => {
     const issues = (r.issues||[]).join(';');
-    csv += `"${r.date}","${r.recorder||''}","${r.trail}","${r.activityType==='trail'?'山徑':'水道'}","${issues}","${r.solution||''}","${r.note||''}","${r.photoCount||0}"\n`;
+    const pc = (r.photoKeys && r.photoKeys.length) || (r.photos && r.photos.length) || 0;
+    csv += `"${r.date}","${r.recorder||''}","${r.trail}","${r.activityType==='trail'?'山徑':'水道'}","${issues}","${r.solution||''}","${r.note||''}","${pc}"\n`;
   });
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
