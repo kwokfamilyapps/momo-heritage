@@ -245,8 +245,7 @@ const firebaseConfig = {
     records: [],
     photos: [],
     editId: null,
-    currentGps: null,
-    watchId: null
+    currentGps: null
   };
 
   // Load from Firestore on startup — only on first load, not overwrite local records
@@ -293,11 +292,8 @@ function login(role) {
   document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'block' : 'none';
   renderForm();
   renderList();
-  startGpsTracking();
-  // Load from Firestore, then switch to list tab
-  loadRecords().then(function() {
-    switchTab('list');
-  }).catch(function() {});
+  // Load from Firestore
+  loadRecords();
 }
 
 function logout() {
@@ -335,10 +331,10 @@ function switchTab(tab) {
   const btns = document.querySelectorAll('.nav-btn');
   const idx = ['form','list','admin','logout'].indexOf(tab);
   if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
-  if (tab === 'form') { renderForm(); startGpsTracking(); }
-  else if (tab === 'list') { renderList(); stopGpsTracking(); }
-  else if (tab === 'map') { renderMap(); stopGpsTracking(); }
-  else if (tab === 'admin') { renderAdmin(); stopGpsTracking(); }
+  if (tab === 'form') renderForm();
+  else if (tab === 'list') renderList();
+  else if (tab === 'map') renderMap();
+  else if (tab === 'admin') renderAdmin();
 }
 
 // ══════════════════════════════════════════════
@@ -432,12 +428,13 @@ function renderForm() {
     </div>`;
   }
 
-  // GPS live coordinate box
+  // GPS live coordinate box + manual capture button
   const isEditing = !!state.editId;
   html += `<div class="gps-box">
     <span class="label">📍 當前位置</span>
-    <span class="coords" id="gpsDisplay">${state.currentGps ? state.currentGps.lat.toFixed(4)+', '+state.currentGps.lng.toFixed(4) : '擷取中…'}</span>
+    <span class="coords" id="gpsDisplay">${state.currentGps ? state.currentGps.lat.toFixed(4)+', '+state.currentGps.lng.toFixed(4) : '未定位'}</span>
     <span class="status" id="gpsStatus">${state.currentGps ? '✅' : '⏳'}</span>
+    <button type="button" onclick="captureGpsOnce()" style="margin-left:0.3rem;padding:0.1rem 0.4rem;font-size:0.4rem;background:#1a4a3a;color:#80e0a0;border:1px solid #2a6a4a;border-radius:6px;">📍 獲取位置</button>
   </div>`;
 
   // Photos
@@ -531,53 +528,30 @@ async function deletePhotoFromDB(key) {
   });
 }
 
-// ── GPS LIVE TRACKING ──
-function startGpsTracking() {
+// ── GPS CAPTURE (manual, triggered by user tap) ──
+function captureGpsOnce() {
+  var d = document.getElementById('gpsDisplay');
+  var s = document.getElementById('gpsStatus');
+  if (d) d.textContent = '定位中…';
+  if (s) s.textContent = '⏳';
   if (!navigator.geolocation) {
-    var d = document.getElementById('gpsDisplay');
     if (d) d.textContent = '瀏覽器唔支援 GPS';
     return;
   }
-  if (state.watchId !== null) return;
-  // First try getCurrentPosition to trigger iOS permission prompt
   navigator.geolocation.getCurrentPosition(function(pos) {
     state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-    var d = document.getElementById('gpsDisplay');
-    var s = document.getElementById('gpsStatus');
     if (d) d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
     if (s) s.textContent = '✅';
   }, function(err) {
-    // Permission denied or unavailable - show hint
-    var d = document.getElementById('gpsDisplay');
-    var s = document.getElementById('gpsStatus');
     if (err.code === 1) {
-      if (d) d.textContent = '⚠️ 定位權限已拒絕 — 請去 設定→Safari→定位→允許';
+      if (d) d.textContent = '⚠️ 已拒絕 — 請去 設定→私隱→定位服務→Safari→允許';
+    } else if (err.code === 2) {
+      if (d) d.textContent = '無法定位 (信號弱)';
     } else {
-      if (d) d.textContent = 'GPS 信號弱 (code ' + err.code + ')';
+      if (d) d.textContent = 'GPS timeout (code ' + err.code + ')';
     }
     if (s) s.textContent = '🚫';
-  }, { enableHighAccuracy: false, timeout: 10000 });
-  // Then start continuous tracking
-  if (state.watchId !== null) { navigator.geolocation.clearWatch(state.watchId); }
-  state.watchId = navigator.geolocation.watchPosition(function(pos) {
-    state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-    var d = document.getElementById('gpsDisplay');
-    var s = document.getElementById('gpsStatus');
-    if (d) d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
-    if (s) s.textContent = '✅';
-  }, function(err) {
-    var d = document.getElementById('gpsDisplay');
-    var s = document.getElementById('gpsStatus');
-    if (d) d.textContent = 'GPS 無法使用 (code ' + err.code + ')';
-    if (s) s.textContent = '❌';
-  }, { enableHighAccuracy: true, timeout: 30000, maximumAge: 5000 });
-}
-
-function stopGpsTracking() {
-  if (state.watchId !== null) {
-    navigator.geolocation.clearWatch(state.watchId);
-    state.watchId = null;
-  }
+  }, { enableHighAccuracy: true, timeout: 15000 });
 }
 
 // Embed GPS EXIF into JPEG dataUrl
