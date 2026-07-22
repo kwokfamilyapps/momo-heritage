@@ -761,15 +761,20 @@ function renderMap() {
 
     // Add markers and route lines
     let count = 0;
-    const gpsPoints = [];
+    const trailPoints = [];
+    const waterPoints = [];
 
     state.records.forEach(r => {
       if (r.gps && r.gps.lat && r.gps.lng) {
         const color = r.activityType === 'trail' ? '#4a8a5a' : '#4080c0';
         const latlng = [r.gps.lat, r.gps.lng];
-        gpsPoints.push(latlng);
+        if (r.activityType === 'trail') {
+          trailPoints.push(latlng);
+        } else {
+          waterPoints.push(latlng);
+        }
 
-        // Build popup content with photos
+        // Build popup content
         let popupHtml = `<b>${r.trail}</b><br>${r.date}<br>${r.recorder || ''}<br>${(r.issues||[]).join('、')}`;
         var pc = (r.photoKeys && r.photoKeys.length) || (r.photos && r.photos.length) || 0;
         if (pc > 0) {
@@ -784,9 +789,9 @@ function renderMap() {
       }
     });
 
-    // Draw route line connecting GPS points in order
-    if (gpsPoints.length >= 2) {
-      L.polyline(gpsPoints.reverse(), {
+    // Draw trail route — green dashed line
+    if (trailPoints.length >= 2) {
+      L.polyline(trailPoints.reverse(), {
         color: '#4a8a5a',
         weight: 3,
         opacity: 0.6,
@@ -794,8 +799,26 @@ function renderMap() {
       }).addTo(map);
     }
 
-    document.getElementById('mapStatus').textContent =
-      count > 0 ? `📍 已顯示 ${count} 個有 GPS 嘅記錄` : '📌 暫無 GPS 記錄 — 填寫時系統會自動記錄位置';
+    // Draw water route — blue dashed line
+    if (waterPoints.length >= 2) {
+      L.polyline(waterPoints.reverse(), {
+        color: '#4080c0',
+        weight: 3,
+        opacity: 0.6,
+        dashArray: '8, 8'
+      }).addTo(map);
+    }
+
+    document.getElementById('mapStatus').innerHTML =
+      count > 0
+        ? '<div style="font-size:0.55rem;">📍 已顯示 ' + count + ' 個有 GPS 嘅記錄</div>'
+          + '<div style="font-size:0.45rem;color:#888;margin-top:0.2rem;">'
+          + '<span style="color:#4a8a5a;">🟢</span> 山徑 · '
+          + '<span style="color:#4080c0;">🔵</span> 水道 · '
+          + '<span style="color:#4a8a5a;">- - -</span> 山徑路線 · '
+          + '<span style="color:#4080c0;">- - -</span> 水道路線'
+          + '</div>'
+        : '📌 暫無 GPS 記錄 — 填寫時系統會自動記錄位置';
 
     // If no GPS records, try getting current position
     if (count === 0 && navigator.geolocation) {
