@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鞍山探索館 · 山徑巡查 App 使用手冊</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 32px; }
+  body {
+    font-family: -apple-system, "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background: #f0e8d8;
+    color: #1a1a16;
+    line-height: 2.0;
+    padding: 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  h1, h2, h3, h4 {
+    font-family: Georgia, "Noto Serif HK", serif;
+    color: #1a3a2a;
+    line-height: 1.4;
+  }
+  h1 { font-size: 1.6rem; margin-bottom: 0.5rem; border-bottom: 3px solid #4a8a5a; padding-bottom: 0.3rem; }
+  h2 { font-size: 1.2rem; margin: 1.5rem 0 0.6rem; color: #2a5a3a; }
+  h3 { font-size: 0.9rem; margin: 1rem 0 0.4rem; color: #3a6a4a; }
+  p { margin-bottom: 0.6rem; font-size: 0.7rem; }
+  .step { 
+    background: #e8dcc8; border-left: 4px solid #4a8a5a; 
+    padding: 0.6rem 0.8rem; margin: 0.6rem 0; border-radius: 0 8px 8px 0;
+  }
+  .step strong { color: #1a5a2a; }
+  code { 
+    background: #d8d0c0; padding: 0.1rem 0.3rem; border-radius: 4px;
+    font-size: 0.6rem; color: #3a3a2a;
+  }
+  .tip {
+    background: #d8e8d0; border: 1px solid #5a9a6a; border-radius: 8px;
+    padding: 0.6rem 0.8rem; margin: 0.8rem 0; font-size: 0.6rem;
+  }
+  .tip strong { color: #2a7a3a; }
+  .warn {
+    background: #e8d8c0; border: 1px solid #b08040; border-radius: 8px;
+    padding: 0.6rem 0.8rem; margin: 0.8rem 0; font-size: 0.6rem;
+  }
+  .warn strong { color: #8a6020; }
+  ol, ul { margin: 0.4rem 0 0.6rem 1.2rem; font-size: 0.7rem; }
+  li { margin-bottom: 0.3rem; }
+  .nav {
+    display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0.8rem 0;
+  }
+  .nav-btn {
+    background: #2a5a3a; color: #f0f8f0; padding: 0.3rem 0.6rem;
+    border-radius: 6px; font-size: 0.5rem; text-decoration: none; font-weight: 600;
+  }
+  footer {
+    margin-top: 2rem; padding-top: 0.6rem; border-top: 1px solid #c0b8a0;
+    font-size: 0.45rem; color: #888070; text-align: center;
+  }
+  hr { border: none; border-top: 1px solid #d0c8b0; margin: 1rem 0; }
+  @media (max-width: 600px) {
+    html { font-size: 28px; }
+    body { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🏞️ 鞍山探索館<br>山徑巡查 App 使用手冊</h1>
+
+<p style="color:#666;font-size:0.55rem;">版本：2026年7月 · 適用於 iOS / Android</p>
+
+<p>本 App 係鞍山探索館義工團隊用嚟記錄山徑同水道巡查嘅工具。每次巡查後記錄問題、影相、自動記錄 GPS 位置，所有資料會同步上雲端，義工之間可以共用。</p>
+
+<div class="nav">
+  <a class="nav-btn" href="#start">🚀 開始使用</a>
+  <a class="nav-btn" href="#record">📝 記錄問題</a>
+  <a class="nav-btn" href="#photo">📸 影相</a>
+  <a class="nav-btn" href="#map">🗺️ 地圖路線</a>
+  <a class="nav-btn" href="#list">📋 查閱記錄</a>
+  <a class="nav-btn" href="#admin">⚙️ 管理</a>
+</div>
+
+<hr>
+
+<!-- ═══════════ 開始使用 ═══════════ -->
+<h2 id="start">🚀 開始使用</h2>
+
+<div class="step">
+  <strong>步驟 1：</strong>用手機開以下連結<br>
+  <code>https://kwokfamilyapps.github.io/momo-heritage/app/index.html</code>
+</div>
+
+<div class="step">
+  <strong>步驟 2：</strong>㩒「義工隊登入」（唔使密碼）<br>
+  <span style="font-size:0.55rem;color:#888;">Admin 登入需要密碼，由館方管理</span>
+</div>
+
+<div class="step">
+  <strong>步驟 3：</strong>㩒「✏️ 填寫」開始記錄問題
+</div>
+
+<div class="tip">
+  💡 <strong>貼士：</strong>可以用 Safari 或 Chrome「加入主畫面」，將 App 變成獨立 icon，用起上嚟更方便。
+</div>
+
+<hr>
+
+<!-- ═══════════ 記錄問題 ═══════════ -->
+<h2 id="record">📝 記錄問題</h2>
+
+<h3>基本資料</h3>
+<ol>
+  <li><strong>日期</strong> — 預設今日，可以改</li>
+  <li><strong>記錄人員</strong> — 輸入你嘅名（義工姓名）</li>
+  <li><strong>山徑名稱</strong> — 揀你巡查嘅路線</li>
+</ol>
+
+<h3>山徑問題（可選多項）</h3>
+<p>揀你見到嘅問題：垃圾黑點、水土流失、路面擴闊、路面泥濘、樹根外露、複線化、捷徑、設施損壞、營火痕跡等。</p>
+
+<h3>建議處理方法</h3>
+<p>揀你認為需要嘅跟進行動：堵截捷徑、石籃修復、通知漁護署等。</p>
+
+<div class="step">
+  <strong>提交：</strong>填完之後㩒「✅ 提交記錄」<br>
+  <span style="font-size:0.5rem;color:#888;">提交後會自動跳去查閱頁，背景會記錄 GPS 位置</span>
+</div>
+
+<div class="tip">
+  💡 <strong>貼士：</strong>提交時請確保手機嘅定位（GPS）已開啟，咁地圖先會顯示到你嘅巡查路線。
+</div>
+
+<hr>
+
+<!-- ═══════════ 影相 ═══════════ -->
+<h2 id="photo">📸 影相</h2>
+
+<p>每個記錄最多可以影 <strong>3 張相</strong>。</p>
+
+<ol>
+  <li>喺填寫頁㩒「📸 拍攝相片」</li>
+  <li>揀「相機」即時影相，或揀「相片庫」選已有相片</li>
+  <li>系統會自動將相片壓縮到 <strong>1024px</strong>（夠清晰又唔會太大）</li>
+  <li>相片會自動儲存到手機嘅 Download 資料夾，檔案名包含路線分類</li>
+  <li>㩒相片上嘅「×」可以刪除</li>
+</ol>
+
+<div class="warn">
+  ⚠️ <strong>注意：</strong>相片只會儲存在你手機瀏覽器嘅本地資料庫（IndexedDB），唔會上載到雲端。如果你想備份相片，可以使用 Download 功能另存。
+</div>
+
+<hr>
+
+<!-- ═══════════ 地圖路線 ═══════════ -->
+<h2 id="map">🗺️ 地圖路線 — 重組山徑路線圖</h2>
+
+<p>呢個係 App 嘅核心功能！每次提交記錄時，系統會自動記錄你嘅 GPS 位置。所有 GPS 點會組合起來，形成你嘅巡查路線圖。</p>
+
+<h3>點樣用地圖</h3>
+
+<div class="step">
+  <strong>步驟 1：</strong>提交記錄時確保 GPS 已開啟<br>
+  <span style="font-size:0.5rem;color:#888;">提交後背景會自動 capture 位置（約 10 秒內）</span>
+</div>
+
+<div class="step">
+  <strong>步驟 2：</strong>㩒底部導航欄嘅「🗺️ 地圖」</div>
+
+<div class="step">
+  <strong>步驟 3：</strong>地圖上會顯示：<br>
+  <span style="font-size:0.6rem;">
+  🔵 <strong>綠色圓點</strong> — 山徑問題記錄點（㩒佢睇詳情）<br>
+  🔵 <strong>藍色圓點</strong> — 水道記錄點<br>
+  🔵 <strong>虛線</strong> — 連接各記錄點嘅路線，顯示你嘅巡查路徑
+  </span>
+</div>
+
+<h3>重組路線圖原理</h3>
+<p>每次提交記錄時，GPS 會記錄你嗰一刻嘅位置。如果你喺同一條山徑上多次記錄，系統會：</p>
+<ol>
+  <li>記錄每個問題點嘅 <strong>GPS 座標</strong></li>
+  <li>按時間順序 <strong>連接各點</strong>，形成巡查路線</li>
+  <li>喺地圖上顯示 <strong>虛線路徑</strong>，清楚展示你行過嘅路線</li>
+</ol>
+
+<div class="tip">
+  💡 <strong>路線重組貼士：</strong><br>
+  • 巡查時沿途記錄問題，每個問題點都會自動記低 GPS<br>
+  • 記錄越多，路線越完整<br>
+  • 可以對比唔同日子嘅路線，睇到山徑變化<br>
+  • 季節性對比：夏天同冬天的路線可以反映山徑侵蝕情況
+</div>
+
+<div class="warn">
+  ⚠️ <strong>注意事項：</strong><br>
+  • GPS 需要喺空曠地方先準確，密林或者礦洞入面可能 signal 弱<br>
+  • 第一次使用時瀏覽器會問「允許取用位置？」請㩒「允許」<br>
+  • 如果地圖冇顯示點，可以 check 下記錄係咪有 GPS 資料（查閱頁會顯示 📍 圖示）
+</div>
+
+<h3>地圖互動功能</h3>
+<ul>
+  <li><strong>放大縮小</strong> — 兩指撥動或雙擊</li>
+  <li><strong>㩒 GPS 點</strong> — 顯示該記錄嘅詳情（山徑名、日期、問題類型）</li>
+  <li><strong>拖曳地圖</strong> — 移動檢視範圍</li>
+  <li><strong>路線虛線</strong> — 跟隨記錄時間順序顯示巡查路徑</li>
+</ul>
+
+<hr>
+
+<!-- ═══════════ 查閱記錄 ═══════════ -->
+<h2 id="list">📋 查閱記錄</h2>
+
+<p>㩒底部「📋 查閱」可以睇返所有記錄，按時間倒序排列。</p>
+
+<p>每個記錄卡片顯示：</p>
+<ul>
+  <li>📅 日期 · 記錄者（Admin / 義工）</li>
+  <li>🛤️ 山徑名稱</li>
+  <li>⚠️ 問題類型</li>
+  <li>🔧 建議處理方法</li>
+  <li>📸 相片數量</li>
+  <li>✏️ 修改 / 🗑️ 刪除（自己嘅記錄可以編輯）</li>
+</ul>
+
+<div class="step">
+  <strong>匯出報表：</strong>Admin 用戶可以㩒「📊 匯出報表 (CSV)」，下載 Excel 格式嘅記錄表。
+</div>
+
+<hr>
+
+<!-- ═══════════ 管理 ═══════════ -->
+<h2 id="admin">⚙️ 管理（Admin 專用）</h2>
+
+<p>Admin 登入後可以㩒底部「⚙️ 管理」，睇到統計數據：</p>
+<ul>
+  <li>📊 總記錄數量</li>
+  <li>🪨 山徑問題數量</li>
+  <li>💧 水道記錄數量</li>
+  <li>👥 記錄人員數量</li>
+</ul>
+
+<p>Admin 亦可以睇到同修改所有記錄，以及匯出 CSV 報表。</p>
+
+<div class="warn">
+  ⚠️ <strong>清除記錄：</strong>Admin 頁面底部有「清除所有記錄」功能，小心使用，一經刪除無法復原。
+</div>
+
+<hr>
+
+<!-- ═══════════ 常見問題 ═══════════ -->
+<h2>❓ 常見問題</h2>
+
+<h3>Q: 記錄提交後去咗邊？</h3>
+<p>A: 記錄會同步上 Firebase 雲端資料庫，你熄 App 再開，記錄仍然喺度。</p>
+
+<h3>Q: 點解地圖冇顯示我嘅 GPS 點？</h3>
+<p>A: 可能原因：① 提交時 GPS 未開啟 ② 位置權限未允許 ③ 喺室內或密林 GPS 信號弱。可以去查閱頁 check 記錄有冇 📍 圖示。</p>
+
+<h3>Q: 義工同 Admin 有咩分別？</h3>
+<p>A: 義工可以記錄問題同編輯自己嘅記錄。Admin 可以查看所有記錄、匯出報表、修改/刪除任何記錄。</p>
+
+<h3>Q: 點解相片 Upload 咁慢？</h3>
+<p>A: App 會自動壓縮相片到 1024px，但如果用手機網絡，上載可能需要幾秒。相片只會儲存喺本地，唔會上雲端，所以唔使擔心流量。</p>
+
+<h3>Q: 可唔可以離線使用？</h3>
+<p>A: 可以。Firestore 有離線快取功能，冇網絡時記錄會暫存喺手機，有網絡時自動 sync。</p>
+
+<hr>
+
+<footer>
+  <p>由 無虛 (mvmv) 生成 · 鞍山探索館 山徑巡查 App · 2026年7月</p>
+  <p>Powered by Hermes Agent · Data: Firebase Firestore · Map: OpenStreetMap + Leaflet</p>
+</footer>
+
+</body>
+</html>
