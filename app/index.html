@@ -6,6 +6,7 @@
 <title>鞍山探索館 · 山徑與水道巡查記錄</title>
 <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/dist/piexif.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 36px; }
@@ -76,6 +77,15 @@
   }
   .form-group textarea { min-height: 3rem; resize: vertical; }
   .form-group .hint { font-size: 0.5rem; color: #666; margin-top: 0.15rem; }
+  /* GPS live box */
+  .gps-box {
+    background: #0c1418; border: 1px solid #2a4a3a; border-radius: 8px;
+    padding: 0.3rem 0.5rem; margin: 0.3rem 0; font-size: 0.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .gps-box .label { color: #60a080; }
+  .gps-box .coords { color: #80e0c0; font-family: monospace; }
+  .gps-box .status { color: #888; font-size: 0.4rem; }
 
   /* ── Checkbox Grid ── */
   .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
@@ -234,7 +244,9 @@ const firebaseConfig = {
     activityType: 'trail',
     records: [],
     photos: [],
-    editId: null
+    editId: null,
+    currentGps: null,
+    watchId: null
   };
 
   // Load from Firestore on startup — only on first load, not overwrite local records
@@ -320,10 +332,10 @@ function switchTab(tab) {
   const btns = document.querySelectorAll('.nav-btn');
   const idx = ['form','list','admin','logout'].indexOf(tab);
   if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
-  if (tab === 'form') renderForm();
-  else if (tab === 'list') renderList();
-  else if (tab === 'map') renderMap();
-  else if (tab === 'admin') renderAdmin();
+  if (tab === 'form') { renderForm(); startGpsTracking(); }
+  else if (tab === 'list') { renderList(); stopGpsTracking(); }
+  else if (tab === 'map') { renderMap(); stopGpsTracking(); }
+  else if (tab === 'admin') { renderAdmin(); stopGpsTracking(); }
 }
 
 // ══════════════════════════════════════════════
@@ -417,21 +429,36 @@ function renderForm() {
     </div>`;
   }
 
+  // GPS live coordinate box
+  const isEditing = !!state.editId;
+  html += `<div class="gps-box">
+    <span class="label">📍 當前位置</span>
+    <span class="coords" id="gpsDisplay">${state.currentGps ? state.currentGps.lat.toFixed(4)+', '+state.currentGps.lng.toFixed(4) : '擷取中…'}</span>
+    <span class="status" id="gpsStatus">${state.currentGps ? '✅' : '⏳'}</span>
+  </div>`;
+
   // Photos
-  const photos = r ? r.photos || [] : [];
-  html += `<div class="form-group">
-    <label>📸 相片記錄（最多 3 張）</label>
-    <div class="photo-zone" onclick="document.getElementById('photoInput').click()">
-      + 點擊新增相片
-    </div>
-    <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(event)">
-    <div class="photo-previews" id="photoPreviews">`;
-  photos.forEach((p, idx) => {
-    html += `<div class="thumb"><img src="${p}" alt="photo"><div class="del" onclick="removePhoto(${idx})">×</div></div>`;
-  });
-  html += `</div>
-    <div class="hint">每次最多 3 張，可於上載前更換相片</div>
-  </div>
+  if (!isEditing) {
+    const photos = r ? r.photos || [] : [];
+    html += `<div class="form-group">
+      <label>📸 相片記錄（最多 3 張）</label>
+      <div class="photo-zone" onclick="document.getElementById('photoInput').click()">
+        + 點擊新增相片
+      </div>
+      <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(event)">
+      <div class="photo-previews" id="photoPreviews">`;
+    photos.forEach((p, idx) => {
+      html += `<div class="thumb"><img src="${p}" alt="photo"><div class="del" onclick="removePhoto(${idx})">×</div></div>`;
+    });
+    html += `</div>
+      <div class="hint">每次最多 3 張，相片會自動加入 GPS 位置資料</div>
+    </div>`;
+  } else {
+    html += `<div class="form-group">
+      <label>📸 相片</label>
+      <div style="font-size:0.5rem;color:#666;padding:0.4rem;">修改記錄時不能更換相片。如需更改請刪除此記錄重新建立。</div>
+    </div>`;
+  }
 
   <div class="form-group">
     <label>📝 備註</label>
@@ -501,6 +528,57 @@ async function deletePhotoFromDB(key) {
   });
 }
 
+// ── GPS LIVE TRACKING ──
+function startGpsTracking() {
+  if (!navigator.geolocation) return;
+  if (state.watchId !== null) return;
+  state.watchId = navigator.geolocation.watchPosition(function(pos) {
+    state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    var d = document.getElementById('gpsDisplay');
+    var s = document.getElementById('gpsStatus');
+    if (d) d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
+    if (s) s.textContent = '✅';
+  }, function() {
+    var d = document.getElementById('gpsDisplay');
+    var s = document.getElementById('gpsStatus');
+    if (d) d.textContent = 'GPS 無法使用';
+    if (s) s.textContent = '❌';
+  }, { enableHighAccuracy: true, timeout: 10000 });
+}
+
+function stopGpsTracking() {
+  if (state.watchId !== null) {
+    navigator.geolocation.clearWatch(state.watchId);
+    state.watchId = null;
+  }
+}
+
+// Embed GPS EXIF into JPEG dataUrl
+function embedGpsExif(dataUrl, gps) {
+  if (!gps || !gps.lat || !gps.lng || typeof piexif === 'undefined') return dataUrl;
+  try {
+    var exifObj = piexif.load(dataUrl);
+    // Convert decimal degrees to EXIF rational format (deg, min, sec)
+    function toDms(deg) {
+      var d = Math.abs(deg) | 0;
+      var m = (Math.abs(deg) * 60) % 60 | 0;
+      var s = ((Math.abs(deg) * 3600) % 60) * 1000 | 0;
+      return [[d, 1], [m, 1], [s, 1000]];
+    }
+    exifObj.GPS = {
+      GPSLatitudeRef: gps.lat >= 0 ? 'N' : 'S',
+      GPSLatitude: toDms(gps.lat),
+      GPSLongitudeRef: gps.lng >= 0 ? 'E' : 'W',
+      GPSLongitude: toDms(gps.lng),
+      GPSVersionID: [2, 3, 0, 0]
+    };
+    return piexif.insert(exifObj, dataUrl);
+  } catch(e) {
+    console.log('📌 EXIF error:', e.message);
+    return dataUrl;
+  }
+}
+
 function handlePhotos(e) {
   const files = Array.from(e.target.files);
   const remaining = 3 - state.photos.length;
@@ -519,10 +597,13 @@ function handlePhotos(e) {
         const canvas = document.createElement('canvas');
         canvas.width = w; canvas.height = h;
         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        const resized = canvas.toDataURL('image/jpeg', 0.8);
+        var resized = canvas.toDataURL('image/jpeg', 0.8);
+        // Embed GPS EXIF into photo
+        if (state.currentGps) {
+          resized = embedGpsExif(resized, state.currentGps);
+        }
         state.photos.push(resized);
         updatePhotoPreview();
-        // Save to device Downloads
         savePhotoToDisk(file.name || 'photo.jpg', resized);
       };
       img.src = ev.target.result;
@@ -675,15 +756,8 @@ function submitRecord() {
     persistPhotosForRecord(recordId).then(function() {
       console.log("📸 Photos saved to IndexedDB:", record.photoKeys.length);
     });
-    // 提前 capture GPS（喺用戶手勢入面，iOS 需要）
-    var pendingGps = null;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(pos) {
-        pendingGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      }, function() {
-        // GPS unavailable - skip
-      }, { timeout: 8000, enableHighAccuracy: true });
-    }
+    // Use live tracking GPS if available
+    var gpsToSave = state.currentGps;
 
     // Use add() for new records
     db.collection('records').add(record).then(function(docRef) {
@@ -692,9 +766,9 @@ function submitRecord() {
       if (state.records[0] && state.records[0].id === record.id) {
         state.records[0].id = docRef.id;
       }
-      // GPS capture — 用 Firestore 正確 ID + pendingGps
-      if (pendingGps) {
-        db.collection('records').doc(docRef.id).update({ gps: pendingGps }).then(function() {
+      // GPS capture — 用 Firestore 正確 ID + live GPS
+      if (gpsToSave) {
+        db.collection('records').doc(docRef.id).update({ gps: gpsToSave }).then(function() {
           console.log("📌 GPS OK:", docRef.id);
         }).catch(function(e) {
           console.log("📌 GPS FAIL:", e.code, e.message);
