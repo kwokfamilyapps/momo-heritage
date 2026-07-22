@@ -854,32 +854,33 @@ function savePhotoToDisk(filename, dataUrl) {
   const ia = new Uint8Array(ab);
   for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
   const blob = new Blob([ab], { type: mimeType });
+  const url = URL.createObjectURL(blob);
   
-  // Try Share API first (works on iOS - can save to Files/Photos)
-  if (navigator.share && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-    navigator.share({
-      title: friendlyName,
-      text: album + ' 相片',
-      files: [new File([blob], friendlyName, { type: mimeType })]
-    }).catch(function() {
-      // User cancelled share - that's fine
-    });
-    return;
-  }
-  
-  // Fallback: download link (works on desktop Android)
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
+  // Method 1: Download link (works on modern iOS 14.5+ → saves to Downloads folder)
+  var link = document.createElement('a');
+  link.href = url;
   link.download = friendlyName;
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
-  setTimeout(function() {
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
-  }, 100);
+  document.body.removeChild(link);
+  
+  // Method 2: Share API (iOS → allows user to save to Photos)
+  if (navigator.share && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    setTimeout(function() {
+      navigator.share({
+        title: friendlyName,
+        text: album + ' 相片 — 已自動儲存到 Download 資料夾',
+        files: [new File([blob], friendlyName, { type: mimeType })]
+      }).catch(function() {});
+    }, 2000);
+  }
+  
+  // Clean up blob URL after a delay
+  setTimeout(function() { URL.revokeObjectURL(url); }, 10000);
 }
 
+// When submitting a record: save photos to IndexedDB
 function removePhoto(idx) {
   state.photos.splice(idx, 1);
   updatePhotoPreview();
