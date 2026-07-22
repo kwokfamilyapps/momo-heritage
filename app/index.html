@@ -456,6 +456,8 @@ function setActivity(type) {
 // ══════════════════════════════════════════════
 // PHOTOS
 // ══════════════════════════════════════════════
+const MAX_PHOTO_PX = 1024; // 最長邊 max 1024px
+
 function handlePhotos(e) {
   const files = Array.from(e.target.files);
   const remaining = 3 - state.photos.length;
@@ -463,12 +465,62 @@ function handlePhotos(e) {
   toAdd.forEach(file => {
     const reader = new FileReader();
     reader.onload = function(ev) {
-      state.photos.push(ev.target.result);
-      updatePhotoPreview();
+      const img = new Image();
+      img.onload = function() {
+        // Resize to max 1024px
+        let w = img.width, h = img.height;
+        if (w > MAX_PHOTO_PX || h > MAX_PHOTO_PX) {
+          const ratio = Math.min(MAX_PHOTO_PX / w, MAX_PHOTO_PX / h);
+          w = Math.round(w * ratio);
+          h = Math.round(h * ratio);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        // Convert to compressed JPEG
+        const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        state.photos.push(resizedDataUrl);
+        updatePhotoPreview();
+        // Save to Downloads folder
+        savePhotoToDisk(file.name || 'photo.jpg', resizedDataUrl);
+      };
+      img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
   });
   e.target.value = '';
+}
+
+// Detect device language for album folder name
+function getAlbumName() {
+  const lang = (navigator.language || navigator.userLanguage || 'en').slice(0, 2);
+  const names = {
+    'zh': '山徑巡查',
+    'en': 'TrailPatrol',
+    'ja': 'トレイルパトロール',
+    'ko': '트레일순찰',
+    'es': 'PatrullaSendero',
+    'fr': 'PatrouilleSentier',
+    'pt': 'PatrulhaTrilha',
+    'default': 'TrailPatrol'
+  };
+  return names[lang] || names['default'];
+}
+
+function savePhotoToDisk(filename, dataUrl) {
+  // Create a download link and trigger it
+  const link = document.createElement('a');
+  link.href = dataUrl;
+  // Use album name as subfolder hint in filename
+  const album = getAlbumName();
+  const ts = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
+  link.download = `${album}/${ts}_${filename}`;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function removePhoto(idx) {
