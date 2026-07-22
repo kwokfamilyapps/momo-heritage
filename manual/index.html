@@ -3,518 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>鞍山探索館 · 山徑巡查 App 完整使用手冊</title>
+<title>鞍山探索館 · 山徑巡查 App 使用手冊</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 32px; }
   body {
     font-family: -apple-system, "Noto Sans HK", "PingFang HK", "Microsoft JhengHei", sans-serif;
-    background: #f0e8d8;
-    color: #1a1a16;
-    line-height: 2.0;
-    padding: 1.5rem;
-    max-width: 700px;
-    margin: 0 auto;
+    background: #f0e8d8; color: #1a1a16; line-height: 2.0;
+    padding: 1rem; max-width: 900px; margin: 0 auto;
   }
-  h1, h2, h3, h4 {
-    font-family: Georgia, "Noto Serif HK", serif;
-    color: #1a3a2a;
-    line-height: 1.4;
-  }
-  h1 { font-size: 1.6rem; margin-bottom: 0.5rem; border-bottom: 3px solid #4a8a5a; padding-bottom: 0.3rem; }
-  h2 { font-size: 1.2rem; margin: 1.5rem 0 0.6rem; color: #2a5a3a; }
-  h3 { font-size: 0.9rem; margin: 1rem 0 0.4rem; color: #3a6a4a; }
-  p { margin-bottom: 0.6rem; font-size: 0.7rem; }
-  .step { 
-    background: #e8dcc8; border-left: 4px solid #4a8a5a; 
-    padding: 0.6rem 0.8rem; margin: 0.6rem 0; border-radius: 0 8px 8px 0;
-  }
-  .step strong { color: #1a5a2a; }
-  code { 
-    background: #d8d0c0; padding: 0.1rem 0.3rem; border-radius: 4px;
-    font-size: 0.6rem; color: #3a3a2a;
-  }
-  .tip {
-    background: #d8e8d0; border: 1px solid #5a9a6a; border-radius: 8px;
-    padding: 0.6rem 0.8rem; margin: 0.8rem 0; font-size: 0.6rem;
-  }
-  .tip strong { color: #2a7a3a; }
-  .warn {
-    background: #e8d8c0; border: 1px solid #b08040; border-radius: 8px;
-    padding: 0.6rem 0.8rem; margin: 0.8rem 0; font-size: 0.6rem;
-  }
-  .warn strong { color: #8a6020; }
-  ol, ul { margin: 0.4rem 0 0.6rem 1.2rem; font-size: 0.7rem; }
-  li { margin-bottom: 0.3rem; }
-  .nav {
-    display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0.8rem 0;
-  }
-  .nav-btn {
-    background: #2a5a3a; color: #f0f8f0; padding: 0.3rem 0.6rem;
-    border-radius: 6px; font-size: 0.5rem; text-decoration: none; font-weight: 600;
-  }
-  table {
-    width: 100%; border-collapse: collapse; margin: 0.6rem 0; font-size: 0.6rem;
-  }
-  th, td {
-    border: 1px solid #c0b8a0; padding: 0.3rem 0.5rem; text-align: left;
-  }
-  th { background: #d8d0c0; color: #1a3a2a; font-weight: 600; }
-  tr:nth-child(even) { background: #e8e0d0; }
-  footer {
-    margin-top: 2rem; padding-top: 0.6rem; border-top: 1px solid #c0b8a0;
-    font-size: 0.45rem; color: #888070; text-align: center;
-  }
-  hr { border: none; border-top: 1px solid #d0c8b0; margin: 1rem 0; }
-  @media (max-width: 600px) {
-    html { font-size: 28px; }
-    body { padding: 1rem; }
-  }
+  h1 { font-size: 1.2rem; color: #3a6a4a; margin: 0.8rem 0 0.3rem; font-family: Georgia, serif; border-bottom: 2px solid #3a6a4a; padding-bottom: 0.2rem; }
+  h2 { font-size: 0.9rem; color: #3a6a4a; margin: 0.8rem 0 0.3rem; font-family: Georgia, serif; }
+  h3 { font-size: 0.7rem; color: #4a8a5a; margin: 0.6rem 0 0.2rem; }
+  p, li { font-size: 0.55rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.5rem; }
+  th, td { border: 1px solid #c0b8a8; padding: 0.3rem 0.4rem; text-align: left; }
+  th { background: #3a6a4a; color: #fff; font-weight: 600; }
+  td { background: #faf4e8; }
+  code { background: #e0d8c8; padding: 0.05rem 0.2rem; border-radius: 4px; font-size: 0.5rem; }
+  .step { background: #e8e0d0; border-left: 4px solid #4a8a5a; padding: 0.4rem 0.6rem; margin: 0.4rem 0; border-radius: 0 8px 8px 0; }
+  .warn { background: #f0e0d0; border: 1px solid #c08060; border-radius: 8px; padding: 0.4rem 0.6rem; margin: 0.5rem 0; }
+  .tip { background: #e0f0e0; border: 1px solid #60a060; border-radius: 8px; padding: 0.4rem 0.6rem; margin: 0.5rem 0; }
+  footer { margin-top: 1.5rem; padding-top: 0.5rem; border-top: 1px solid #c0b8a8; font-size: 0.4rem; color: #888; text-align: center; }
+  hr { border: none; border-top: 1px solid #d0c8b8; margin: 1rem 0; }
+  @media (max-width: 600px) { html { font-size: 26px; } }
 </style>
 </head>
 <body>
 
-<h1>🏞️ 鞍山探索館<br>山徑巡查 App 完整使用手冊</h1>
+<h1>🏞️ 鞍山探索館</h1>
+<p style="font-size:0.5rem;color:#888;margin-top:-0.2rem;">山徑及水道巡查記錄工具</p>
 
-<p style="color:#666;font-size:0.55rem;">版本：2026年7月22日 · 涵蓋所有功能</p>
-
-<div class="nav">
-  <a class="nav-btn" href="#start">🚀 開始</a>
-  <a class="nav-btn" href="#login">🔐 登入</a>
-  <a class="nav-btn" href="#nav">🧭 導航</a>
-  <a class="nav-btn" href="#form">📝 填寫</a>
-  <a class="nav-btn" href="#photo">📸 相片</a>
-  <a class="nav-btn" href="#list">📋 查閱</a>
-  <a class="nav-btn" href="#map">🗺️ 地圖</a>
-  <a class="nav-btn" href="#admin">⚙️ 管理</a>
-  <a class="nav-btn" href="#faq">❓ FAQ</a>
-</div>
-
-<hr>
-
-<!-- ═══════════ 開始使用 ═══════════ -->
+<!-- ═══ 開始使用 ═══ -->
 <h2 id="start">🚀 開始使用</h2>
-
-<h3>開啟 App</h3>
 <div class="step">
-  <strong>方法 1：</strong>用手機瀏覽器打開以下連結<br>
+  <strong>方法一：</strong>使用手機瀏覽器開啟以下連結<br>
   <code>https://kwokfamilyapps.github.io/momo-heritage/app/index.html</code>
 </div>
 <div class="step">
-  <strong>方法 2（推薦）：加入主畫面</strong><br>
-  Safari：分享掣 → 「加入主畫面」<br>
-  Chrome：右上角三點 → 「加入主畫面」<br>
-  <span style="font-size:0.55rem;color:#888;">之後可以好似一般 App 咁一撳就開</span>
+  <strong>方法二（推薦）：加入主畫面</strong><br>
+  Safari：點擊分享按鈕 →「加入主畫面」<br>
+  Chrome：右上角三點 →「加入主畫面」<br>
+  <span style="font-size:0.45rem;color:#888;">之後可像一般應用程式般一鍵開啟</span>
+</div>
+<div class="warn">
+  ⚠️ <strong>首次使用注意：</strong>瀏覽器會詢問「是否允許取用位置？」— 請點擊 <strong>允許</strong>，地圖才能顯示 GPS 位置。建議使用 Safari 或 Chrome，不建議使用微信或支付寶內置瀏覽器。
 </div>
 
-<h3>首次使用注意</h3>
-<ul>
-  <li>瀏覽器會問「允許取用位置？」— 請㩒 <strong>允許</strong>，咁地圖先有 GPS</li>
-  <li>建議用 Safari 或 Chrome，唔好用微信/支付寶入面嘅瀏覽器</li>
-  <li>App 係 PWA（漸進式網頁應用程式），無需安裝，直接用到</li>
-</ul>
-
-<hr>
-
-<!-- ═══════════ 登入系統 ═══════════ -->
+<!-- ═══ 登入 ═══ -->
 <h2 id="login">🔐 登入系統</h2>
-
-<p>App 有兩種角色：<strong>義工</strong> 同 <strong>Admin</strong>，權限唔同。</p>
-
+<p>系統設有兩種角色：<strong>義工</strong> 及 <strong>管理員</strong>，權限如下。</p>
 <table>
-  <tr><th>功能</th><th>義工</th><th>Admin</th></tr>
+  <tr><th>功能</th><th>義工</th><th>管理員 Admin</th></tr>
   <tr><td>記錄問題</td><td>✅</td><td>✅</td></tr>
-  <tr><td>編輯/刪除自己記錄</td><td>✅</td><td>✅</td></tr>
-  <tr><td>編輯/刪除任何人記錄</td><td>❌</td><td>✅</td></tr>
-  <tr><td>睇 Admin 統計頁</td><td>❌</td><td>✅</td></tr>
+  <tr><td>編輯／刪除自己的記錄</td><td>✅</td><td>✅</td></tr>
+  <tr><td>編輯／刪除任何人的記錄</td><td>❌</td><td>✅</td></tr>
+  <tr><td>瀏覽管理統計頁</td><td>❌</td><td>✅</td></tr>
   <tr><td>匯出 CSV 報表</td><td>❌</td><td>✅</td></tr>
   <tr><td>清除所有記錄</td><td>❌</td><td>✅</td></tr>
 </table>
+<div class="step"><strong>義工登入：</strong>直接點擊「義工隊登入」，無需密碼</div>
+<div class="step"><strong>管理員登入：</strong>點擊「Admin 登入」，輸入密碼 <code>admin2024</code></div>
 
-<div class="step">
-  <strong>義工登入：</strong>直接㩒「👥 義工隊登入」，唔使密碼
-</div>
-<div class="step">
-  <strong>Admin 登入：</strong>㩒「👤 Admin 登入」→ 輸入密碼 <code>admin2024</code>
-</div>
-
-<div class="warn">
-  ⚠️ <strong>密碼可更改：</strong>如果想改 Admin 密碼，請通知 mvmv 幫手改。
-</div>
-
-<hr>
-
-<!-- ═══════════ 導航欄 ═══════════ -->
+<!-- ═══ 導航欄 ═══ -->
 <h2 id="nav">🧭 底部導航欄</h2>
-
-<p>登入後底部有 5 個功能掣：</p>
-
 <table>
-  <tr><th>Icon</th><th>名稱</th><th>功能</th></tr>
-  <tr><td>✏️</td><td>填寫</td><td>新増巡查記錄</td></tr>
+  <tr><th>圖示</th><th>名稱</th><th>功能</th></tr>
+  <tr><td>✏️</td><td>填寫</td><td>新增巡查記錄</td></tr>
   <tr><td>📋</td><td>查閱</td><td>瀏覽所有記錄</td></tr>
   <tr><td>🗺️</td><td>地圖</td><td>GPS 路線圖</td></tr>
-  <tr><td>⚙️</td><td>管理</td><td>Admin 專用統計（義工唔會見到）</td></tr>
+  <tr><td>⚙️</td><td>管理</td><td>管理員專用統計（義工無法看見）</td></tr>
   <tr><td>🚪</td><td>退出</td><td>登出並返回登入頁</td></tr>
 </table>
 
-<hr>
-
-<!-- ═══════════ 填寫記錄 ═══════════ -->
+<!-- ═══ 填寫 ═══ -->
 <h2 id="form">📝 填寫記錄</h2>
 
-<p>㩒底部導航欄嘅「✏️ 填寫」可以記錄山徑問題。</p>
-
 <h3>切換記錄類型</h3>
-<p>填寫頁頂部有兩個 Tab：</p>
+<p>填寫頁頂部有兩個標籤：</p>
 <ul>
-  <li><strong>🪨 山徑問題</strong> — 記錄山徑損壞、垃圾、侵蝕等</li>
-  <li><strong>💧 水道記錄</strong> — 記錄水道阻塞、損毀等</li>
-</ul>
-<p>㩒 Tab 切換，兩種類型嘅問題選項唔同。</p>
-
-<h3>📡 GPS 位置系統（重要更新）</h3>
-  <p>GPS 位置記錄係自動嘅，唔使㩒任何掣。</p>
-  <table>
-    <tr><th>情況</th><th>GPS box 顯示</th><th>說明</th></tr>
-    <tr><td>未影相</td><td>📍 22.3351, 114.1402</td><td>跟蹤手機即時位置，坐標隨手機移動更新</td></tr>
-    <tr><td>影咗第 1 張相</td><td>🔒 22.3351, 114.1402 🔒 相片坐標</td><td>GPS 鎖死，以影相一刻嘅位置為準，唔會再變</td></tr>
-    <tr><td>影第 2/3 張相（偏離 >5米）</td><td>無變化（仍顯示鎖死坐標）</td><td>⚠️ 自動彈出警告：「已偏離記錄位置約 X 米」</td></tr>
-    <tr><td>修改記錄（有 GPS）</td><td>🔒 相片坐標 🔒</td><td>唯讀顯示，唔可以修改</td></tr>
-    <tr><td>修改記錄（冇 GPS）</td><td>❌ 冇坐標</td><td>舊記錄未有 GPS，無法補回</td></tr>
-  </table>
-
-  <h3>📸 相片系統（重要更新）</h3>
-  <table>
-    <tr><th>功能</th><th>說明</th></tr>
-    <tr><td>解像度</td><td>自動壓縮到 1024px 最長邊（JPEG 80%），檔案 ~200-300KB</td></tr>
-    <tr><td>GPS EXIF 嵌入</td><td>每張相會自動寫入 GPS 坐標到 EXIF 資料，用任何軟件開相都睇到位置</td></tr>
-    <tr><td>IndexedDB 儲存</td><td>相片永久儲存喺手機瀏覽器，熄 App 再開都喺度</td></tr>
-    <tr><td>iPhone 儲存</td><td>影相後彈出 iOS 分享選單，可揀「儲存到照片」或「儲存到檔案」</td></tr>
-    <tr><td>修改模式</td><td>唔可以更換相片或修改 GPS，如需更改請刪除記錄重新建立</td></tr>
-  </table>
-
-  <h3>GPS 路線重組（地圖功能）</h3>
-  <ol>
-    <li>每次影相 submit 記錄，系統自動 capture 嗰一刻嘅 GPS 坐標</li>
-    <li>山徑記錄點用 🟢 綠色虛線連接，水道記錄點用 🔵 藍色虛線連接</li>
-    <li>地圖可同時顯示山徑同水道路線，唔會撈亂</li>
-    <li>記錄越多，路線越完整</li>
-  </ol>
-
-  <h3>填寫步驟</h3>
-  <ol>
-    <li><strong>📅 日期</strong> — 預設今日，可以㩒改日期</li>
-    <li><strong>👤 記錄人員</strong> — 輸入你嘅姓名</li>
-    <li><strong>🛤️ 山徑名稱</strong> — 下拉揀路線</li>
-  <li><strong>📍 GPS 即時位置</strong> — 填寫頁顶部有個 GPS box，顯示你當前坐標，會隨手機移動自動更新</li>
-  <li><strong>⚠️ 問題類型</strong> — 㩒 checkbox 揀問題（可選多項）</li>
-  <li><strong>🔧 建議處理</strong> — 揀建議方法</li>
-  <li><strong>📸 相片</strong> — 影相時會自動將 GPS 坐標嵌入相片 EXIF 資料</li>
-  <li><strong>📝 備註</strong>（可選）</li>
-  <li>㩒 <strong>✅ 提交記錄</strong></li>
-</ol>
-
-<h3>重複記錄偵測</h3>
-<p>如果同上一筆記錄好相似（同日、同路線、同問題），App 會彈警告確認，防止重覆輸入。</p>
-
-<h3>自動 GPS</h3>
-<p>提交後背景會自動 capture GPS 位置（約 10 秒內），之後地圖會顯示你嘅巡查點。</p>
-
-<div class="tip">
-  💡 <strong>貼士：</strong>巡查時沿途記錄，每行到一個問題點就 submit 一次，咁地圖上就會形成完整路線。
-</div>
-
-<hr>
-
-<!-- ═══════════ 相片 ═══════════ -->
-<h2 id="photo">📸 相片功能</h2>
-
-<h3>影相</h3>
-<ol>
-  <li>喺填寫頁㩒「📸 拍攝相片」區域</li>
-  <li>揀「相機」即時影相，或「相片庫」選已有相片</li>
-  <li>系統自動壓縮到 <strong>1024px</strong>（最長邊）JPEG 80%</li>
-  <li>相片顯示喺預覽區</li>
-</ol>
-
-<h3>相片限制</h3>
-<ul>
-  <li>每個記錄最多 <strong>3 張</strong>相</li>
-  <li>㩒相片上嘅「×」可以刪除</li>
+  <li><strong>山徑問題</strong> — 記錄山徑損壞、垃圾、侵蝕等</li>
+  <li><strong>水道記錄</strong> — 記錄水道阻塞、損毀等</li>
 </ul>
 
-<h3>相片儲存方式</h3>
-<p>相片會儲存喺兩個地方：</p>
-<ul>
-  <li><strong>📱 手機瀏覽器 IndexedDB</strong> — 永久儲存，熄 App 再開都喺度</li>
-  <li><strong>📤 分享/下載</strong> — 影相後會自動彈出分享選單（iOS）或下載（Android/桌面）</li>
-</ul>
-
-<h3>iPhone 儲存步驟</h3>
-<ol>
-  <li>影相後會彈出 iOS <strong>分享選單</strong></li>
-  <li>你可以揀：
-    <ul>
-      <li><strong>「儲存到照片」</strong> — 直接存入相機膠卷</li>
-      <li><strong>「儲存到檔案」</strong> — 可以揀 iCloud / 手機資料夾，自行建立「山徑巡查」folder</li>
-      <li><strong>AirDrop</strong> — 傳去其他裝置</li>
-    </ul>
-  </li>
-  <li>檔案名格式：<code>山徑巡查_2026-07-22_10-30-00.jpg</code></li>
-</ol>
-
-<div class="warn">
-  ⚠️ <strong>iOS 限制：</strong>iPhone Safari 唔支援自動儲存到特定 folder。每次都要手動揀「儲存到照片」或「儲存到檔案」。建議用「儲存到照片」，之後開 Photos app 就會見到。
-</div>
-
-<h3>相片資料夾命名（跟語言）</h3>
+<h3>📡 GPS 定位（簡化說明）</h3>
 <table>
-  <tr><th>手機語言</th><th>資料夾名稱</th></tr>
-  <tr><td>繁體中文</td><td>山徑巡查</td></tr>
-  <tr><td>English</td><td>TrailPatrol</td></tr>
-  <tr><td>日本語</td><td>トレイルパトロール</td></tr>
-  <tr><td>한국어</td><td>트레일순찰</td></tr>
-  <tr><td>Español</td><td>PatrullaSendero</td></tr>
+  <tr><th>步驟</th><th>GPS 狀態</th><th>說明</th></tr>
+  <tr><td>進入填寫頁</td><td>📍 自動追蹤</td><td>顯示手機即時位置，坐標隨移動更新</td></tr>
+  <tr><td>拍攝第一張照片</td><td>🔒 立即鎖定</td><td>以拍攝瞬間的位置為準，此後不再變更</td></tr>
+  <tr><td>拍攝後續照片</td><td>🔒 維持鎖定</td><td>若偏離原位置超過 5 米，系統會發出警告</td></tr>
+  <tr><td>修改記錄時</td><td>🔒 唯讀</td><td>如有 GPS 則顯示「相片坐標」，如無則顯示「無坐標」</td></tr>
 </table>
 
-<div class="warn">
-  ⚠️ <strong>注意：</strong>相片只存於手機本地，唔會上載到雲端。Firestore 只會記錄有幾多張相。
-</div>
+<h3>📸 相片說明</h3>
+<table>
+  <tr><th>項目</th><th>說明</th></tr>
+  <tr><td>解像度</td><td>自動壓縮至 1024px 最長邊（JPEG 80%），約 200-300KB</td></tr>
+  <tr><td>GPS 記錄</td><td>每張照片會自動嵌入 GPS 坐標至 EXIF 資訊</td></tr>
+  <tr><td>儲存位置</td><td>IndexedDB（瀏覽器永久儲存）+ iOS 分享選單</td></tr>
+  <tr><td>修改模式</td><td>不可更換照片或修改 GPS，需刪除記錄重新建立</td></tr>
+</table>
 
-<hr>
+<h3>填寫步驟</h3>
+<ol>
+  <li><strong>日期</strong> — 預設為今日，可按需要修改</li>
+  <li><strong>記錄人員</strong> — 輸入您的姓名</li>
+  <li><strong>山徑名稱</strong> — 從下拉選單選擇路線</li>
+  <li><strong>問題類型</strong> — 勾選相關問題（可選多項）</li>
+  <li><strong>建議處理方法</strong> — 選擇建議方案</li>
+  <li><strong>照片</strong>（可選）— 拍攝時自動嵌入 GPS 坐標</li>
+  <li><strong>備註</strong>（可選）</li>
+  <li>點擊 <strong>「提交記錄」</strong></li>
+</ol>
+<div class="tip">💡 <strong>提示：</strong>拍攝第一張照片後 GPS 便會鎖定，移動後位置不會更新。後續照片若偏離超過 5 米，系統會彈出警告。</div>
 
-<!-- ═══════════ 查閱記錄 ═══════════ -->
+<!-- ═══ 查閱 ═══ -->
 <h2 id="list">📋 查閱記錄</h2>
-
-<p>㩒底部「📋 查閱」可以睇所有記錄，按時間倒序排列（最新在最頂）。</p>
-
-<h3>記錄卡片內容</h3>
-<p>每張卡片顯示：</p>
-<ul>
-  <li>📅 日期 · 記錄者（Admin / 義工）</li>
-  <li>🛤️ 山徑名稱</li>
-  <li>🪨 / 💧 類型</li>
-  <li>⚠️ 所選問題</li>
-  <li>🔧 建議處理方法</li>
-  <li>👤 記錄人員</li>
-  <li>📝 備註</li>
-  <li>📸 相片數量</li>
-</ul>
+<p>點擊「查閱」標籤可瀏覽所有巡查記錄，按時間倒序排列。每張卡片顯示日期、記錄人員、路線、問題類型、照片數量及 GPS 狀態。</p>
 
 <h3>修改記錄</h3>
-<p>㩒記錄卡片上嘅「✏️ 修改」，可以修改該記錄嘅文字資料（日期、路線、問題、備註等）。</p>
-<div class="warn">
-  ⚠️ <strong>修改限制：</strong>修改模式唔可以更換相片或修改 GPS 坐標。如果需要更改相片或 GPS，請刪除該記錄重新建立。
-</div>
+<p>點擊記錄卡片的「✏️ 修改」可修改文字資料（日期、路線、問題、備註）。</p>
+<div class="warn">⚠️ <strong>限制：</strong>修改模式不可更換照片或修改 GPS 坐標。如需更改請刪除記錄重新建立。</div>
 
 <h3>刪除記錄</h3>
-<p>㩒「🗑️ 刪除」可以刪除記錄（權限同上）。刪除前會有確認提示。</p>
+<p>點擊「🗑️ 刪除」可刪除記錄，刪除前有確認提示。</p>
 
-<h3>匯出 CSV 報表（Admin 專用）</h3>
-<div class="step">
-  Admin 喺查閱頁底部㩒「📊 匯出報表 (CSV)」，會下載一個 Excel 相容嘅 CSV 檔，包含所有記錄嘅詳細資料。
-</div>
+<h3>匯出 CSV</h3>
+<p>管理員可在查閱頁頂部點擊「匯出報表 (CSV)」，將所有記錄匯出為 CSV 檔案（可用 Excel 開啟）。</p>
 
-<hr>
-
-<!-- ═══════════ 地圖路線 ═══════════ -->
-<h2 id="map">🗺️ 地圖 — 重組山徑路線</h2>
-
-<p>呢個係 App 嘅核心功能！每次提交記錄時系統會自動記錄 GPS 位置，所有 GPS 點會連接成你嘅巡查路線。</p>
-
-<h3>點解地圖冇顯示？</h3>
-<ol>
-  <li>檢查提交時 GPS 有冇開啟（手機頂部下拉 check 位置權限）</li>
-  <li>第一次用時瀏覽器會問「允許取用位置？」— 要㩒「允許」</li>
-  <li>喺室內或密林 GPS 信號弱，可以試出去空曠地方</li>
-  <li>提交後等約 10 秒（GPS 背景 capture）</li>
-</ol>
-
-<h3>地圖元素解說</h3>
+<!-- ═══ 地圖 ═══ -->
+<h2 id="map">🗺️ 地圖路線圖</h2>
+<p>進入地圖頁面時，系統會一次性擷取您當前的位置，並將地圖置中顯示所有記錄點及您的所在位置。</p>
 <table>
-  <tr><th>地圖元素</th><th>意思</th></tr>
+  <tr><th>地圖元素</th><th>代表意義</th></tr>
   <tr><td>🟢 綠色圓點</td><td>山徑問題記錄點</td></tr>
   <tr><td>🔵 藍色圓點</td><td>水道記錄點</td></tr>
-  <tr><td style="color:#4a8a5a;">- - - 綠色虛線</td><td>山徑巡查路線（連接各山徑記錄點）</td></tr>
-  <tr><td style="color:#4080c0;">- - - 藍色虛線</td><td>水道巡查路線（連接各水道記錄點）</td></tr>
+  <tr><td style="color:#4a8a5a;">- - - 綠色虛線</td><td>山徑巡查路線</td></tr>
+  <tr><td style="color:#4080c0;">- - - 藍色虛線</td><td>水道巡查路線</td></tr>
 </table>
-
-<h3>地圖互動</h3>
 <ul>
-  <li><strong>㩒 GPS 點</strong> — 彈出 Popup 顯示該記錄嘅詳情（山徑名、日期、問題、相片數）</li>
-  <li><strong>兩指撥動</strong> — 放大縮小</li>
-  <li><strong>拖曳</strong> — 移動地圖</li>
-  <li><strong>路線虛線</strong> — 綠色 = 山徑路線，藍色 = 水道路線，按記錄時間順序連接</li>
+  <li>只有包含 GPS 坐標的記錄才會顯示在地圖上</li>
+  <li>點擊圓點可查看記錄詳情</li>
+  <li>地圖底部顯示記錄數量及圖例</li>
 </ul>
 
-<h3>路線重組原理</h3>
-<ol>
-  <li>每次提交記錄，系統 capture 你嗰一刻嘅 GPS 座標</li>
-  <li>山徑記錄點用綠色虛線連接，水道記錄點用藍色虛線連接</li>
-  <li>地圖上可以同時顯示兩條路線，唔會撈亂</li>
-  <li>記錄越多，路線越完整</li>
-</ol>
-
-<div class="tip">
-  💡 <strong>季節對比：</strong>夏天同冬天行同一條路線，可以對比唔同季節嘅問題變化。Admin 可以匯出 CSV 分析趨勢。
-</div>
-
-<hr>
-
-<!-- ═══════════ 管理 ═══════════ -->
-<h2 id="admin">⚙️ 管理頁面（Admin 專用）</h2>
-
-<p>Admin 登入後先會見到「⚙️ 管理」Tab。</p>
-
-<h3>統計數據</h3>
-<p>管理頁顯示 4 個統計數字：</p>
-<ul>
-  <li><strong>總記錄</strong> — 全部記錄數量</li>
-  <li><strong>山徑問題</strong> — 山徑類型記錄數量</li>
-  <li><strong>水道記錄</strong> — 水道類型記錄數量</li>
-  <li><strong>記錄人員</strong> — 唔同記錄者人數</li>
-</ul>
-
-<h3>清除所有記錄</h3>
-<div class="warn">
-  ⚠️ <strong>不可復原！</strong>管理頁底部有「清除所有記錄」功能，㩒之前要兩次確認，一經刪除無法還原。
-</div>
-
-<hr>
-
-<!-- ═══════════ 資料同步 ═══════════ -->
-<h2 id="sync">☁️ 資料同步</h2>
-
-<h3>雲端儲存（Firebase Firestore）</h3>
-<ul>
-  <li>所有記錄（文字資料）會自動 sync 上 Firebase 雲端</li>
-  <li>義工同 Admin 用同一個資料庫，睇到嘅記錄係一樣</li>
-  <li>離線時記錄會暫存手機，有網絡時自動 sync</li>
-</ul>
-
-<h3>sync 失敗處理</h3>
-<p>如果 sync 失敗（例如網絡問題），App 會彈 Alert 話你知 error 原因。記錄仍然保留喺手機本地，唔會流失。</p>
-
-<h3>咩嘢唔會上雲端？</h3>
-<ul>
-  <li><strong>相片</strong> — 只存手機本地（IndexedDB），唔上雲端</li>
-  <li><strong>GPS 座標</strong> — 會上雲端（記錄入面有 gps 字段）</li>
-</ul>
-
-<hr>
-
-<!-- ═══════════ 退出 App ═══════════ -->
-<h2 id="exit">🚪 退出 App</h2>
-
-<ol>
-  <li>㩒底部導航欄「🚪 退出」</li>
-  <li>確認後會登出，返回登入頁</li>
-  <li>要再使用時㩒「義工隊登入」或「Admin 登入」</li>
-</ol>
-
-<div class="tip">
-  💡 就算唔㩒退出，直接熄 browser tab 都得，資料已經 sync 咗。
-</div>
-
-<hr>
-
-<!-- ═══════════ 離線操作 ═══════════ -->
-<h2 id="offline">📡 離線操作（冇信號區域）</h2>
-
-<p>鞍山山徑好多地方收唔到信號，App 設計咗離線功能，你可以照常操作。</p>
-
+<!-- ═══ 離線 ═══ -->
+<h2 id="offline">📡 離線操作（無訊號區域）</h2>
 <h3>離線前準備</h3>
 <ol>
-  <li>出發前喺有信號嘅地方 <strong>開一次 App 並登入</strong></li>
-  <li>App 會自動 cache 必要嘅資料</li>
-  <li>唔好關閉個 browser tab（可以熄 mon，但唔好 swipe 走個 tab）</li>
+  <li>出發前在有訊號的地方開啟一次應用程式並登入</li>
+  <li>系統會自動快取必要資料</li>
+  <li>請勿關閉瀏覽器標籤（可關閉螢幕，但不要滑走標籤）</li>
 </ol>
-
-<h3>離線時做到嘅事</h3>
 <table>
   <tr><th>功能</th><th>離線</th><th>備註</th></tr>
-  <tr><td>📝 記錄問題</td><td>✅</td><td>暫存手機，有信號時自動 sync</td></tr>
-  <tr><td>📸 影相</td><td>✅</td><td>存 IndexedDB + 分享選單</td></tr>
-  <tr><td>📍 GPS 記錄</td><td>✅</td><td>手機 GPS 唔使網絡</td></tr>
-  <tr><td>📋 睇已有記錄</td><td>✅</td><td>之前 load 過嘅記錄睇到</td></tr>
-  <tr><td>🗺️ 地圖</td><td>❌</td><td>地圖 tiles 需要網絡</td></tr>
-  <tr><td>Admin 統計</td><td>❌</td><td>需要 Firestore 連線</td></tr>
+  <tr><td>記錄問題</td><td>✅</td><td>暫存於手機，有訊號時自動同步</td></tr>
+  <tr><td>拍攝照片</td><td>✅</td><td>儲存於 IndexedDB</td></tr>
+  <tr><td>GPS 記錄</td><td>✅</td><td>手機 GPS 不需網絡</td></tr>
+  <tr><td>瀏覽已有記錄</td><td>✅</td><td>先前載入過的記錄可查看</td></tr>
+  <tr><td>地圖</td><td>❌</td><td>地圖需要網絡</td></tr>
+  <tr><td>管理統計</td><td>❌</td><td>需要 Firestore 連線</td></tr>
 </table>
+<div class="warn">⚠️ <strong>注意：</strong>離線時關閉標籤或重新整理頁面，未同步的記錄仍保存在 IndexedDB 中，不會流失。</div>
 
-<h3>離線操作步驟</h3>
-<ol>
-  <li>照常打開 App（如果之前開過，唔使重新整理）</li>
-  <li>㩒「義工隊登入」</li>
-  <li>填寫記錄、影相、提交 — 全部正常操作</li>
-  <li>記錄會暫存喺手機本地</li>
-</ol>
-
-<h3>返到有信號後</h3>
-<ol>
-  <li>App 會 <strong>自動 sync</strong> 離線期間嘅記錄上雲端</li>
-  <li>唔使㩒任何掣，Firestore SDK 背景自動處理</li>
-  <li>如果 sync 失敗會彈 Alert 通知你</li>
-</ol>
-
-<div class="tip">
-  💡 <strong>貼士：</strong>
-  <ul>
-    <li>離線時記錄 sync 唔到上雲端，但唔會流失</li>
-    <li>返到市區開 App，等幾秒就會自動 sync</li>
-    <li>建議每日完成巡查後，喺有信號嘅地方開一開 App 確認 sync 成功</li>
-    <li>地圖離線用唔到，但 GPS 仍然會記錄位置，有信號後地圖就會顯示返</li>
-  </ul>
-</div>
-
-<div class="warn">
-  ⚠️ <strong>重要：</strong>如果喺離線時 swipe 關閉 browser tab 或重新整理頁面，未 sync 嘅記錄仍然喺 IndexedDB 入面，唔會流失。但重新開 App 時需要網絡連線先 load 到最新資料。
-</div>
-
-<hr>
-
-<!-- ═══════════ 常見問題 ═══════════ -->
+<!-- ═══ 常見問題 ═══ -->
 <h2 id="faq">❓ 常見問題</h2>
 
-<h3>Q: 記錄提交後去咗邊？</h3>
-<p>A: 即時 sync 上 Firebase 雲端。你熄 App 再開，資料仍然喺度。</p>
+<h3>為什麼地圖上看不到記錄？</h3>
+<p>地圖只顯示包含 GPS 坐標的記錄。在 2026年7月22日 GPS 功能修正之前建立的記錄沒有 GPS，因此不會顯示。新記錄會自動包含 GPS。</p>
 
-<h3>Q: 點解地圖冇顯示我嘅 GPS 點？</h3>
-<p>A: 可能原因：① 提交時 GPS 未開啟 ② 位置權限未允許 ③ 喺室內或密林 GPS 信號弱。可以去查閱頁睇記錄有冇自動 capture 到位置。</p>
+<h3>為什麼 GPS 一直無法定位？</h3>
+<p>iOS 首次使用時 Safari 會彈出位置權限詢問，請點擊「允許」。若已拒絕，請前往：<strong>設定 → 私隱 → 定位服務 → Safari → 改為「允許」</strong>。</p>
 
-<h3>Q: 義工同 Admin 有咩分別？</h3>
-<p>A: 義工可以記錄問題、編輯自己嘅記錄。Admin 可以睇所有記錄、匯出報表、編輯/刪除任何記錄、清除全部記錄。</p>
+<h3>拍攝後照片儲存在哪裡？</h3>
+<p>照片儲存在瀏覽器 IndexedDB（永久儲存），並可透過 iOS 分享選單儲存至照片或檔案。</p>
 
-<h3>Q: 可唔可以離線使用？</h3>
-<p>A: 可以。Firestore 有離線快取功能，冇網絡時記錄會暫存手機，有網絡時自動 sync。</p>
-
-<h3>Q: 點解影相咁慢？</h3>
-<p>A: App 會自動壓縮相片到 1024px（約 200-300KB），但如果用手機網絡下載，速度取決於你嘅連線。</p>
-
-<h3>Q: 相片會唔會 sync 上雲端？</h3>
-<p>A: 唔會。相片只儲存喺手機本地（IndexedDB）同自動下載到 Download 資料夾。</p>
-
-<h3>Q: 點解 Submit 時彈 Alert 話 sync 失敗？</h3>
-<p>A: 可能係網絡問題。記錄仍然留喺手機本地，唔會流失。等網絡穩定後再試就得。</p>
-
-<h3>Q: 點解登入 Admin 時話密碼錯誤？</h3>
-<p>A: 預設 Admin 密碼係 <code>admin2024</code>。如果想改密碼，通知 mvmv 幫手。</p>
-
-<h3>Q: 點解㩒「清除所有記錄」都刪唔到？</h3>
-<p>A: 需要兩次確認先會執行，防止誤刪。如果真係想清除，㩒兩次確認就得。</p>
-
-<h3>Q: 點樣匯出報表？</h3>
-<p>A: Admin 登入後，㩒「📋 查閱」頁，底部有「📊 匯出報表 (CSV)」掣。㩒之後會下載 CSV 檔，可以用 Excel 打開。</p>
-
-<h3>Q: 我可唔可以改密碼？</h3>
-<p>A: Admin 密碼目前係固定嘅 <code>admin2024</code>。如果想改，話俾 mvmv 知，可以幫手改。</p>
-
-<hr>
+<h3>義工和管理員有什麼分別？</h3>
+<p>義工可記錄問題及編輯自己的記錄。管理員可編輯所有人的記錄、瀏覽統計、匯出 CSV 及清除所有資料。</p>
 
 <footer>
   <p>鞍山探索館 · 山徑與水道巡查記錄 App</p>
   <p>由 無虛 (mvmv) 生成 · 策劃人：Ming Kwok · 2026年7月22日</p>
-  <p>Powered by Firebase Firestore · OpenStreetMap + Leaflet · Hermes Agent</p>
 </footer>
 
 </body>
