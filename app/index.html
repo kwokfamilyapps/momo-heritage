@@ -294,8 +294,10 @@ function login(role) {
   renderForm();
   renderList();
   startGpsTracking();
-  // Load from Firestore
-  loadRecords();
+  // Load from Firestore, then switch to list tab
+  loadRecords().then(function() {
+    switchTab('list');
+  }).catch(function() {});
 }
 
 function logout() {
@@ -537,18 +539,26 @@ function startGpsTracking() {
     return;
   }
   if (state.watchId !== null) return;
-  // Check permission status
-  if (navigator.permissions && navigator.permissions.query) {
-    navigator.permissions.query({name:'geolocation'}).then(function(result) {
-      if (result.state === 'denied') {
-        var d = document.getElementById('gpsDisplay');
-        var s = document.getElementById('gpsStatus');
-        if (d) d.textContent = '⚠️ 請開啟定位權限：設定→Safari→定位→允許';
-        if (s) s.textContent = '🚫';
-        return;
-      }
-    }).catch(function(){});
-  }
+  // First try getCurrentPosition to trigger iOS permission prompt
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    var d = document.getElementById('gpsDisplay');
+    var s = document.getElementById('gpsStatus');
+    if (d) d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
+    if (s) s.textContent = '✅';
+  }, function(err) {
+    // Permission denied or unavailable - show hint
+    var d = document.getElementById('gpsDisplay');
+    var s = document.getElementById('gpsStatus');
+    if (err.code === 1) {
+      if (d) d.textContent = '⚠️ 定位權限已拒絕 — 請去 設定→Safari→定位→允許';
+    } else {
+      if (d) d.textContent = 'GPS 信號弱 (code ' + err.code + ')';
+    }
+    if (s) s.textContent = '🚫';
+  }, { enableHighAccuracy: false, timeout: 10000 });
+  // Then start continuous tracking
+  if (state.watchId !== null) { navigator.geolocation.clearWatch(state.watchId); }
   state.watchId = navigator.geolocation.watchPosition(function(pos) {
     state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
     var d = document.getElementById('gpsDisplay');
