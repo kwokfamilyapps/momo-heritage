@@ -563,15 +563,41 @@ function getAlbumName() {
 }
 
 function savePhotoToDisk(filename, dataUrl) {
-  const link = document.createElement('a');
-  link.href = dataUrl;
   const album = getAlbumName();
   const ts = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
-  link.download = album + '/' + ts + '_' + filename;
+  const friendlyName = album + '_' + ts + '.jpg';
+  
+  // Convert data URL to Blob
+  const byteString = atob(dataUrl.split(',')[1]);
+  const mimeType = 'image/jpeg';
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+  const blob = new Blob([ab], { type: mimeType });
+  
+  // Try Share API first (works on iOS - can save to Files/Photos)
+  if (navigator.share && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    navigator.share({
+      title: friendlyName,
+      text: album + ' 相片',
+      files: [new File([blob], friendlyName, { type: mimeType })]
+    }).catch(function() {
+      // User cancelled share - that's fine
+    });
+    return;
+  }
+  
+  // Fallback: download link (works on desktop Android)
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = friendlyName;
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
+  setTimeout(function() {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  }, 100);
 }
 
 function removePhoto(idx) {
