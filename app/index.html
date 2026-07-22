@@ -587,6 +587,46 @@ window.closePhoto = function() {
   if (ov) { ov.style.display = 'none'; }
 };
 
+// View photo from base64 data (stored in Firestore)
+window.viewPhotoData = function(dataUrl) {
+  if (!dataUrl) return;
+  var ov = document.getElementById('photoOverlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'photoOverlay';
+    ov.style.display = 'none';
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML = '<div onclick="closePhoto()" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:pointer;"><img src="'+dataUrl+'" style="max-width:92%;max-height:92%;border-radius:8px;"><div style="position:absolute;top:0.5rem;right:0.8rem;font-size:1.2rem;color:#fff;background:rgba(0,0,0,0.5);padding:0.2rem 0.5rem;border-radius:8px;">✕</div></div>';
+  ov.style.display = 'block';
+};
+
+// ── PHOTO RECOVERY: push IndexedDB photos to Firestore ──
+async function recoverPhotosToFirestore() {
+  var totalRecovered = 0, totalFailed = 0;
+  for (var ri = 0; ri < state.records.length; ri++) {
+    var r = state.records[ri];
+    var keys = r.photoKeys || [];
+    if (keys.length === 0) continue;
+    for (var ki = 0; ki < keys.length; ki++) {
+      var key = keys[ki];
+      try {
+        var dataUrl = await getPhotoFromDB(key);
+        if (dataUrl) {
+          // Update Firestore record with photo data
+          await db.collection('records').doc(r.id).update({
+            ['photosData.' + ki]: dataUrl
+          });
+          totalRecovered++;
+        }
+      } catch(e) {
+        totalFailed++;
+      }
+    }
+  }
+  alert('✅ 恢復完成！成功: ' + totalRecovered + ' 張, 失敗: ' + totalFailed + ' 張\n請重新整理頁面睇效果。');
+}
+
 // ── GPS TRACKING ──
 var gpsWatchId = null;
 
@@ -1030,7 +1070,14 @@ function renderMap() {
         if (note) popupHtml += '<br>📝 ' + note;
         if (pc > 0) {
           popupHtml += '<br><span style="color:#888;">📸 ';
-          if (r.photoKeys && r.photoKeys.length) {
+          // Check if photos are stored in Firestore (recovered) or IndexedDB
+          if (r.photosData) {
+            for (var pi in r.photosData) {
+              if (r.photosData.hasOwnProperty(pi)) {
+                popupHtml += '<a onclick="viewPhotoData(\'' + r.photosData[pi] + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
+              }
+            }
+          } else if (r.photoKeys && r.photoKeys.length) {
             r.photoKeys.forEach(function(k) {
               popupHtml += '<a onclick="viewPhoto(\'' + k + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
             });
@@ -1130,6 +1177,10 @@ function renderAdmin() {
       <div style="font-size:1.2rem;color:#c08080;">${uniqueRecorders.length}</div>
       <div style="font-size:0.45rem;color:#888;">記錄人員</div>
     </div>
+  </div>
+  <div style="margin-top:0.8rem;display:flex;gap:0.3rem;">
+    <button class="btn btn-full" onclick="recoverPhotosToFirestore()" style="background:#1a3a3a;color:#60c080;">📸 恢復相片到雲端</button>
+    <button class="btn btn-full" onclick="clearAllRecords()" style="background:#3a1a1a;color:#c06060;">🗑️ 清除所有記錄</button>
   </div>`;
   document.getElementById('tabContent').innerHTML = html;
 }
