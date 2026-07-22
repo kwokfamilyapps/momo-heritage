@@ -1007,12 +1007,25 @@ function renderMap() {
           + '</div>'
         : '📌 暫無 GPS 記錄 — 填寫時系統會自動記錄位置';
 
-    // If no GPS records, try getting current position
-    if (count === 0 && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        map.setView([pos.coords.latitude, pos.coords.longitude], 15);
-        document.getElementById('mapStatus').textContent = '📍 顯示你目前位置';
-      }, () => {});
+    // Show current location on map (one-time)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        var myLoc = [pos.coords.latitude, pos.coords.longitude];
+        // Add a pulsing blue dot for current position
+        L.circleMarker(myLoc, {
+          radius: 10, color: '#4080ff', fillColor: '#80b0ff',
+          fillOpacity: 0.5, weight: 3
+        }).addTo(map)
+          .bindPopup('<b>📍 你嘅位置</b><br>' + pos.coords.latitude.toFixed(4) + ', ' + pos.coords.longitude.toFixed(4));
+        // Auto-fit map to include current position if no GPS records
+        if (count === 0) {
+          map.setView(myLoc, 15);
+          document.getElementById('mapStatus').innerHTML =
+            '<div style="font-size:0.55rem;">📍 顯示你目前位置（未有 GPS 記錄）</div>';
+        }
+      }, function() {
+        // GPS unavailable - ignore
+      }, { enableHighAccuracy: true, timeout: 10000 });
     }
   };
   document.body.appendChild(script);
