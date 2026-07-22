@@ -428,13 +428,12 @@ function renderForm() {
     </div>`;
   }
 
-  // GPS live coordinate box + manual capture button
+  // GPS status display (auto-captured when taking photos)
   const isEditing = !!state.editId;
   html += `<div class="gps-box">
-    <span class="label">📍 當前位置</span>
-    <span class="coords" id="gpsDisplay">${state.currentGps ? state.currentGps.lat.toFixed(4)+', '+state.currentGps.lng.toFixed(4) : '未定位'}</span>
-    <span class="status" id="gpsStatus">${state.currentGps ? '✅' : '⏳'}</span>
-    <button type="button" onclick="captureGpsOnce()" style="margin-left:0.3rem;padding:0.1rem 0.4rem;font-size:0.4rem;background:#1a4a3a;color:#80e0a0;border:1px solid #2a6a4a;border-radius:6px;">📍 獲取位置</button>
+    <span class="label">📍 拍攝位置</span>
+    <span class="coords" id="gpsDisplay">${state.currentGps ? state.currentGps.lat.toFixed(4)+', '+state.currentGps.lng.toFixed(4) : '影相時自動 capture'}</span>
+    <span class="status" id="gpsStatus">${state.currentGps ? '✅' : '📸'}</span>
   </div>`;
 
   // Photos
@@ -584,6 +583,18 @@ function handlePhotos(e) {
   const files = Array.from(e.target.files);
   const remaining = 3 - state.photos.length;
   const toAdd = files.slice(0, remaining);
+  // Auto-capture GPS when taking photos (iOS user gesture context)
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      var d = document.getElementById('gpsDisplay');
+      var s = document.getElementById('gpsStatus');
+      if (d) d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
+      if (s) s.textContent = '✅';
+    }, function(err) {
+      console.log('📌 GPS capture err:', err.code);
+    }, { enableHighAccuracy: true, timeout: 15000 });
+  }
   toAdd.forEach(file => {
     const reader = new FileReader();
     reader.onload = function(ev) {
