@@ -247,7 +247,9 @@ const firebaseConfig = {
     editId: null,
     currentGps: null,
     gpsLocked: false,
-    watchId: null
+    watchId: null,
+    lastMapCenter: null,
+    userLocation: null
   };
 
   // Load from Firestore on startup — only on first load, not overwrite local records
@@ -940,7 +942,36 @@ function renderMap() {
   const script = document.createElement('script');
   script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
   script.onload = function() {
-    const map = L.map('mapContainer').setView([22.403, 114.245], 14);
+    // Determine initial map view
+    var initLat = 22.403, initLng = 114.245, initZoom = 14;
+    if (state.lastMapCenter) {
+      initLat = state.lastMapCenter.lat;
+      initLng = state.lastMapCenter.lng;
+      initZoom = state.lastMapCenter.zoom;
+    } else if (state.userLocation) {
+      initLat = state.userLocation.lat;
+      initLng = state.userLocation.lng;
+      initZoom = 15;
+    }
+    const map = L.map('mapContainer').setView([initLat, initLng], initZoom);
+    
+    // Save map view whenever user moves/zooms
+    map.on('moveend', function() {
+      var c = map.getCenter();
+      state.lastMapCenter = { lat: c.lat, lng: c.lng, zoom: map.getZoom() };
+    });
+    
+    // One-time GPS capture on first map open
+    if (!state.userLocation && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        state.userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        // Only center if user hasn't moved map yet
+        if (!state.lastMapCenter) {
+          map.setView([state.userLocation.lat, state.userLocation.lng], 15);
+        }
+      }, function() {}, { enableHighAccuracy: true, timeout: 10000 });
+    }
+    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap',
       maxZoom: 18
@@ -1007,12 +1038,6 @@ function renderMap() {
           + '</div>'
         : '📌 暫無 GPS 記錄 — 填寫時系統會自動記錄位置';
 
-    // Silently capture current location (no zoom, no marker)
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(pos) {
-        state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      }, function() {}, { enableHighAccuracy: true, timeout: 10000 });
-    }
   };
   document.body.appendChild(script);
 }
