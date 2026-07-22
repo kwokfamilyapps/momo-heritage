@@ -539,12 +539,12 @@ function startGpsTracking() {
     var s = document.getElementById('gpsStatus');
     if (d) d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
     if (s) s.textContent = '✅';
-  }, function() {
+  }, function(err) {
     var d = document.getElementById('gpsDisplay');
     var s = document.getElementById('gpsStatus');
-    if (d) d.textContent = 'GPS 無法使用';
+    if (d) d.textContent = 'GPS 無法使用 (code ' + err.code + ')';
     if (s) s.textContent = '❌';
-  }, { enableHighAccuracy: true, timeout: 10000 });
+  }, { enableHighAccuracy: true, timeout: 30000, maximumAge: 5000 });
 }
 
 function stopGpsTracking() {
