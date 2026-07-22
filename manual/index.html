@@ -298,22 +298,23 @@
   <tr><th>地圖元素</th><th>意思</th></tr>
   <tr><td>🟢 綠色圓點</td><td>山徑問題記錄點</td></tr>
   <tr><td>🔵 藍色圓點</td><td>水道記錄點</td></tr>
-  <tr><td>- - - 虛線</td><td>連接各記錄點嘅巡查路線</td></tr>
+  <tr><td style="color:#4a8a5a;">- - - 綠色虛線</td><td>山徑巡查路線（連接各山徑記錄點）</td></tr>
+  <tr><td style="color:#4080c0;">- - - 藍色虛線</td><td>水道巡查路線（連接各水道記錄點）</td></tr>
 </table>
 
 <h3>地圖互動</h3>
 <ul>
-  <li><strong>㩒 GPS 點</strong> — 彈出 Popup 顯示該記錄嘅詳情（山徑名、日期、問題）</li>
+  <li><strong>㩒 GPS 點</strong> — 彈出 Popup 顯示該記錄嘅詳情（山徑名、日期、問題、相片數）</li>
   <li><strong>兩指撥動</strong> — 放大縮小</li>
   <li><strong>拖曳</strong> — 移動地圖</li>
-  <li><strong>路線虛線</strong> — 按記錄時間順序連接，顯示你巡查嘅路徑</li>
+  <li><strong>路線虛線</strong> — 綠色 = 山徑路線，藍色 = 水道路線，按記錄時間順序連接</li>
 </ul>
 
 <h3>路線重組原理</h3>
 <ol>
   <li>每次提交記錄，系統 capture 你嗰一刻嘅 GPS 座標</li>
-  <li>所有座標按時間順序排列</li>
-  <li>地圖上用虛線連接各點，形成路線</li>
+  <li>山徑記錄點用綠色虛線連接，水道記錄點用藍色虛線連接</li>
+  <li>地圖上可以同時顯示兩條路線，唔會撈亂</li>
   <li>記錄越多，路線越完整</li>
 </ol>
 
