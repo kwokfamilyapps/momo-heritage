@@ -993,11 +993,17 @@ function renderMap() {
         }
 
         // Build popup content
-        let popupHtml = `<b>${r.trail}</b><br>${r.date}<br>${r.recorder || ''}<br>${(r.issues||[]).join('、')}`;
+        var sol = r.solution || '';
+        var note = r.note || '';
         var pc = (r.photoKeys && r.photoKeys.length) || (r.photos && r.photos.length) || 0;
-        if (pc > 0) {
-          popupHtml += '<br><div style="font-size:0.5rem;color:#888;">📸 ' + pc + ' 張相片</div>';
-        }
+        let popupHtml = '<div style="font-size:0.45rem;line-height:1.6;">';
+        popupHtml += '<b>' + r.trail + '</b><br>';
+        popupHtml += (r.issues||[]).join('、') + '<br>';
+        popupHtml += '<span style="color:#888;">📅 ' + r.date + ' · ' + (r.recorder||'') + '</span>';
+        if (sol) popupHtml += '<br>🔧 ' + sol;
+        if (note) popupHtml += '<br>📝 ' + note;
+        if (pc > 0) popupHtml += '<br><span style="color:#888;">📸 ' + pc + ' 張</span>';
+        popupHtml += '</div>';
 
         L.circleMarker(latlng, {
           radius: 14, color: color, fillColor: color, fillOpacity: 0.7
