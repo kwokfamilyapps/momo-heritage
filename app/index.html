@@ -647,12 +647,30 @@ function submitRecord() {
     persistPhotosForRecord(recordId).then(function() {
       console.log("📸 Photos saved to IndexedDB:", record.photoKeys.length);
     });
-    // Use add() instead of doc().set() for better compatibility
+    // Use add() for new records
     db.collection('records').add(record).then(function(docRef) {
       console.log("🔥 SYNC OK:", docRef.id);
       // Update local record with Firestore-generated ID
       if (state.records[0] && state.records[0].id === record.id) {
         state.records[0].id = docRef.id;
+      }
+      // GPS capture — 用 Firestore 正確 ID
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          var gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          // Update Firestore
+          db.collection('records').doc(docRef.id).update({ gps: gps }).then(function() {
+            console.log("📌 GPS OK:", docRef.id);
+          }).catch(function(e) {
+            console.log("📌 GPS FAIL:", e.code, e.message);
+          });
+          // Update local state
+          if (state.records[0]) {
+            state.records[0].gps = gps;
+          }
+        }, function() {
+          console.log("📌 GPS timeout/error");
+        }, { timeout: 10000, enableHighAccuracy: true });
       }
     }).catch(function(e) {
       console.log("🔥 SYNC FAIL:", e.code, e.message);
@@ -666,22 +684,6 @@ function submitRecord() {
   state.activityType = 'trail';
   switchTab('list');
   renderList();
-
-  // 背景 Capture GPS（唔阻住畫面）
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(pos => {
-      if (state.records[0]) {
-        state.records[0].gps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        db.collection('records').doc(state.records[0].id).update({
-          gps: state.records[0].gps
-        }).then(function() {
-          console.log("🔥 GPS SYNC OK");
-        }).catch(function(e) {
-          console.log("🔥 GPS SYNC FAIL:", e.code, e.message);
-        });
-      }
-    }, () => {}, { timeout: 8000, enableHighAccuracy: true });
-  }
 }
 
 // ══════════════════════════════════════════════
