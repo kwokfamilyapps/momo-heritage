@@ -398,6 +398,60 @@
 
 <hr>
 
+<!-- ═══════════ 離線操作 ═══════════ -->
+<h2 id="offline">📡 離線操作（冇信號區域）</h2>
+
+<p>鞍山山徑好多地方收唔到信號，App 設計咗離線功能，你可以照常操作。</p>
+
+<h3>離線前準備</h3>
+<ol>
+  <li>出發前喺有信號嘅地方 <strong>開一次 App 並登入</strong></li>
+  <li>App 會自動 cache 必要嘅資料</li>
+  <li>唔好關閉個 browser tab（可以熄 mon，但唔好 swipe 走個 tab）</li>
+</ol>
+
+<h3>離線時做到嘅事</h3>
+<table>
+  <tr><th>功能</th><th>離線</th><th>備註</th></tr>
+  <tr><td>📝 記錄問題</td><td>✅</td><td>暫存手機，有信號時自動 sync</td></tr>
+  <tr><td>📸 影相</td><td>✅</td><td>存 IndexedDB + 分享選單</td></tr>
+  <tr><td>📍 GPS 記錄</td><td>✅</td><td>手機 GPS 唔使網絡</td></tr>
+  <tr><td>📋 睇已有記錄</td><td>✅</td><td>之前 load 過嘅記錄睇到</td></tr>
+  <tr><td>🗺️ 地圖</td><td>❌</td><td>地圖 tiles 需要網絡</td></tr>
+  <tr><td>Admin 統計</td><td>❌</td><td>需要 Firestore 連線</td></tr>
+</table>
+
+<h3>離線操作步驟</h3>
+<ol>
+  <li>照常打開 App（如果之前開過，唔使重新整理）</li>
+  <li>㩒「義工隊登入」</li>
+  <li>填寫記錄、影相、提交 — 全部正常操作</li>
+  <li>記錄會暫存喺手機本地</li>
+</ol>
+
+<h3>返到有信號後</h3>
+<ol>
+  <li>App 會 <strong>自動 sync</strong> 離線期間嘅記錄上雲端</li>
+  <li>唔使㩒任何掣，Firestore SDK 背景自動處理</li>
+  <li>如果 sync 失敗會彈 Alert 通知你</li>
+</ol>
+
+<div class="tip">
+  💡 <strong>貼士：</strong>
+  <ul>
+    <li>離線時記錄 sync 唔到上雲端，但唔會流失</li>
+    <li>返到市區開 App，等幾秒就會自動 sync</li>
+    <li>建議每日完成巡查後，喺有信號嘅地方開一開 App 確認 sync 成功</li>
+    <li>地圖離線用唔到，但 GPS 仍然會記錄位置，有信號後地圖就會顯示返</li>
+  </ul>
+</div>
+
+<div class="warn">
+  ⚠️ <strong>重要：</strong>如果喺離線時 swipe 關閉 browser tab 或重新整理頁面，未 sync 嘅記錄仍然喺 IndexedDB 入面，唔會流失。但重新開 App 時需要網絡連線先 load 到最新資料。
+</div>
+
+<hr>
+
 <!-- ═══════════ 常見問題 ═══════════ -->
 <h2 id="faq">❓ 常見問題</h2>
 
