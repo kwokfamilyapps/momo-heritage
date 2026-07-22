@@ -245,7 +245,8 @@ const firebaseConfig = {
     records: [],
     photos: [],
     editId: null,
-    currentGps: null
+    currentGps: null,
+    gpsLocked: false
   };
 
   // Load from Firestore on startup — only on first load, not overwrite local records
@@ -430,10 +431,16 @@ function renderForm() {
 
   // GPS status display (auto-captured when taking photos)
   const isEditing = !!state.editId;
+  // Reset GPS lock for a new record
+  if (!isEditing) {
+    state.gpsLocked = false;
+  }
+  var gpsLabel = state.currentGps ? state.currentGps.lat.toFixed(4)+', '+state.currentGps.lng.toFixed(4)+(state.gpsLocked?' 🔒':'') : '影相時自動 capture';
+  var gpsIcon = state.currentGps ? (state.gpsLocked ? '🔒' : '✅') : '📸';
   html += `<div class="gps-box">
     <span class="label">📍 拍攝位置</span>
-    <span class="coords" id="gpsDisplay">${state.currentGps ? state.currentGps.lat.toFixed(4)+', '+state.currentGps.lng.toFixed(4) : '影相時自動 capture'}</span>
-    <span class="status" id="gpsStatus">${state.currentGps ? '✅' : '📸'}</span>
+    <span class="coords" id="gpsDisplay">${gpsLabel}</span>
+    <span class="status" id="gpsStatus">${gpsIcon}</span>
   </div>`;
 
   // Photos
@@ -583,18 +590,40 @@ function handlePhotos(e) {
   const files = Array.from(e.target.files);
   const remaining = 3 - state.photos.length;
   const toAdd = files.slice(0, remaining);
-  // Auto-capture GPS when taking photos (iOS user gesture context)
+  
+  // GPS capture on photo
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(pos) {
-      state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      var d = document.getElementById('gpsDisplay');
-      var s = document.getElementById('gpsStatus');
-      if (d) d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
-      if (s) s.textContent = '✅';
+      var newGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      
+      if (!state.gpsLocked) {
+        // First photo: lock this GPS as the record's position
+        state.currentGps = newGps;
+        state.gpsLocked = true;
+        var d = document.getElementById('gpsDisplay');
+        var s = document.getElementById('gpsStatus');
+        if (d) d.textContent = newGps.lat.toFixed(4) + ', ' + newGps.lng.toFixed(4) + ' 🔒';
+        if (s) s.textContent = '✅';
+      } else {
+        // Additional photos: check distance from locked GPS
+        var R = 6371000;
+        var dLat = (newGps.lat - state.currentGps.lat) * Math.PI / 180;
+        var dLon = (newGps.lng - state.currentGps.lng) * Math.PI / 180;
+        var a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+                Math.cos(state.currentGps.lat*Math.PI/180)*Math.cos(newGps.lat*Math.PI/180)*
+                Math.sin(dLon/2)*Math.sin(dLon/2);
+        var dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        if (dist > 5) {
+          setTimeout(function() {
+            alert('⚠️ 已偏離記錄位置約 ' + Math.round(dist) + ' 米\\n請返回原位置或另開新記錄');
+          }, 100);
+        }
+      }
     }, function(err) {
-      console.log('📌 GPS capture err:', err.code);
+      console.log('📌 GPS err:', err.code);
     }, { enableHighAccuracy: true, timeout: 15000 });
   }
+
   toAdd.forEach(file => {
     const reader = new FileReader();
     reader.onload = function(ev) {
