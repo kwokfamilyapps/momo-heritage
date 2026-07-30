@@ -413,11 +413,7 @@ function completeLogin(role) {
   }).catch(function() {});
 }
 
-function exitApp() {
-  if (confirm('確定退出？')) {
-    logout();
-  }
-}
+function exitApp() { window._modalCb = function() { closeModal(); logout(); }; showModal('確定退出？','<p style=color:#c0a060;font-size:0.65rem;margin:0.5rem 0;>返回登入畫面</p>'); }
 
 function exitLogin() {
   document.getElementById('screenLogin').innerHTML = '<div class="login-box" style="text-align:center;"><h2>👋 已退出</h2><p style="color:#888;margin:1rem 0;">👤 已登出</p><p style="color:#666;font-size:0.55rem;">你可以關閉此分頁或重新登入</p><button class="login-btn vol" onclick="location.reload()" style="margin-top:0.5rem;">🔄 重新啟動</button></div>';
