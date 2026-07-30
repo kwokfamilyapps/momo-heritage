@@ -219,6 +219,22 @@ const TRAIL_SOLUTIONS = [
 const WATER_SOLUTIONS = [
   "義工清理水道", "通知漁護署維修", "暫不用處理", "另行再議（需跟進）", "其他"
 ];
+const WATER_CHANNELS = [
+  "1-2","3-4","5-6","7","8-9","9-10","10-11","12","12-13","13-14",
+  "14","15-16","17-18","19","20-21","22-23","24","25","26","27"
+];
+
+const CLEANING_TYPES = [
+  {value:"before", label:"清理前 🟠"},
+  {value:"after", label:"清理後 🟢"},
+  {value:"both", label:"清理前+後 🔵"}
+];
+
+const REPORT_TYPES = [
+  {value:"html", label:"📄 HTML 分析報告"},
+  {value:"pdf", label:"📕 PDF 保育報告"}
+];
+
 
 // ══════════════════════════════════════════════
 // FIREBASE INIT
@@ -244,7 +260,10 @@ const firebaseConfig = {
     activityType: 'trail',
     records: [],
     photos: [],
-    editId: null,
+        waterChannel: '',
+    cleaningType: 'before',
+    reportGenerating: false,
+    reportLinks: [],editId: null,
     currentGps: null,
     gpsLocked: false,
     watchId: null,
@@ -499,7 +518,24 @@ function renderForm() {
       <div class="hint">每次最多 3 張，相片會自動加入 GPS 位置資料</div>
     </div>`;
   } else {
-    html += `<div class="form-group">
+    html += `
+    <div class="form-group" id="waterChannelGroup" style="display:none">
+      <label>🔢 水道編號</label>
+      <select id="fWaterChannel">
+        <option value="">-- 請選擇 --</option>
+        ${WATER_CHANNELS.map(ch => `<option value="${ch}" ${r && r.waterChannel===ch?'selected':''}>水道 ${ch}</option>`).join('')}
+      </select>
+    </div>
+    <div class="form-group" id="cleaningTypeGroup" style="display:none">
+      <label>📸 記錄類型</label>
+      <div style="display:flex;gap:0.4rem;">
+        ${CLEANING_TYPES.map(ct => `
+          <label style="flex:1;display:flex;align-items:center;gap:0.3rem;font-size:0.6rem;color:#aaa;padding:0.4rem;background:#0c0c14;border-radius:8px;border:1px solid ${(r&&r.cleaningType===ct.value)||(!r&&ct.value==='before')?'#40a060':'#1a1a2a'};">
+            <input type="radio" name="cleaningType" value="${ct.value}" ${(r&&r.cleaningType===ct.value)||(!r&&ct.value==='before')?'checked':''} onchange="document.querySelectorAll('input[name=cleaningType]').forEach(el=>el.closest('label').style.borderColor='#1a1a2a');this.closest('label').style.borderColor='#40a060'">
+            ${ct.label}
+          </label>`).join('')}
+      </div>
+    </div><div class="form-group">
       <label>📸 相片</label>
       <div style="font-size:0.5rem;color:#666;padding:0.4rem;">修改記錄時不能更換相片。如需更改請刪除此記錄重新建立。</div>
     </div>`;
@@ -520,27 +556,16 @@ function renderForm() {
   state.photos = photos;
 }
 
+
 function setActivity(type) {
   state.activityType = type;
-  state.editId = null;
-  state.photos = [];
-  renderForm();
-}
-
-// ══════════════════════════════════════════════
-// PHOTOS — IndexedDB persistent storage
-// ══════════════════════════════════════════════
-const MAX_PHOTO_PX = 1024;
-const DB_NAME = 'TrailPatrolPhotos';
-const STORE_NAME = 'photos';
-
-function openPhotoDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = () => req.result.createObjectStore(STORE_NAME);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
+  document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+  const tabs = document.querySelectorAll('.tabs .tab');
+  if (type === 'trail' && tabs[0]) tabs[0].classList.add('active');
+  if (type === 'water' && tabs[1]) tabs[1].classList.add('active');
+  document.getElementById('waterChannelGroup').style.display = type === 'water' ? 'block' : 'none';
+  document.getElementById('cleaningTypeGroup').style.display = type === 'water' ? 'block' : 'none';
+});
 }
 
 async function savePhotoToDB(key, dataUrl) {
@@ -973,7 +998,7 @@ function submitRecord() {
     id: recordId,
     date, recorder: recorder.trim(),
     trail: trail === '其他' ? (trailOther || '其他') : trail,
-    activityType: state.activityType,
+    activityType:
     issues, solution, note: note || '',
     photoKeys: state.photos.length > 0 ? state.photos.map((_, i) => recordId + '_' + i) : [],
     createdBy: state.user.role,
@@ -1302,17 +1327,25 @@ function deleteRecord(id) {
 // ══════════════════════════════════════════════
 // ADMIN
 // ══════════════════════════════════════════════
+
 function renderAdmin() {
   if (state.user.role !== 'admin') {
     document.getElementById('tabContent').innerHTML = '<p style="text-align:center;color:#c06060;margin-top:3rem;">⚠️ 僅限 Admin 使用</p>';
     return;
   }
+  
   const total = state.records.length;
   const trailCount = state.records.filter(r => r.activityType === 'trail').length;
   const waterCount = state.records.filter(r => r.activityType === 'water').length;
   const uniqueRecorders = [...new Set(state.records.map(r => r.recorder))].filter(Boolean);
+  
+  // Get unique trails from records
+  const usedTrails = [...new Set(state.records.filter(r => r.trail).map(r => r.trail))];
+  const allTrails = TRAILS.filter(t => usedTrails.includes(t) || t === '其他');
+  const displayTrails = allTrails.length > 0 ? allTrails : TRAILS;
 
-  let html = `<h2 style="font-size:0.8rem;color:#60c080;">⚙️ 管理</h2>
+  let html = `<h2 style="font-size:0.8rem;color:#60c080;margin-bottom:0.5rem;">⚙️ Admin 管理</h2>
+  
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin:0.5rem 0;">
     <div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;">
       <div style="font-size:1.2rem;color:#60c080;">${total}</div>
@@ -1331,13 +1364,118 @@ function renderAdmin() {
       <div style="font-size:0.45rem;color:#888;">記錄人員</div>
     </div>
   </div>
-  <div style="margin-top:0.8rem;display:flex;gap:0.3rem;">
-    <button class="btn btn-full" onclick="uploadAndMatchPhotos()" style="background:#1a3a3a;color:#60c080;">📸 上載相片·GPS配對恢復</button>
-    <button class="btn btn-full" onclick="clearAllRecords()" style="background:#3a1a1a;color:#c06060;">🗑️ 清除所有記錄</button>
+
+  <div style="background:#0a1520;border-radius:10px;padding:0.6rem;margin:0.6rem 0;border:1px solid #1a3a5a;">
+    <div style="font-size:0.65rem;color:#60a0c0;margin-bottom:0.4rem;font-weight:600;">📊 一鍵生成報告</div>
+    
+    <div class="form-group" style="margin-bottom:0.4rem;">
+      <label style="font-size:0.55rem;color:#80a0b0;">📍 選擇路線</label>
+      <select id="reportTrailSelect" style="background:#0c0c14;color:#e0e0e0;border:1px solid #1a3a5a;border-radius:8px;padding:0.5rem;width:100%;font-size:0.6rem;">
+        ${displayTrails.map(t => '<option value="'+t+'">'+t+'</option>').join('')}
+      </select>
+    </div>
+
+    <div style="display:flex;gap:0.4rem;">
+      <button class="btn btn-sm" onclick="generateReport('html')" style="flex:1;background:#1a3a2a;color:#60c080;padding:0.6rem;font-size:0.55rem;">
+        📄 生成 HTML 分析報告
+      </button>
+      <button class="btn btn-sm" onclick="generateReport('pdf')" style="flex:1;background:#2a1a3a;color:#c080e0;padding:0.6rem;font-size:0.55rem;">
+        📕 生成 PDF 保育報告
+      </button>
+    </div>
+    <div id="reportStatus" style="font-size:0.45rem;color:#888;margin-top:0.3rem;text-align:center;"></div>
+  </div>
+
+  <div style="margin-top:0.6rem;">
+    <div style="font-size:0.55rem;color:#888;margin-bottom:0.3rem;">📋 最近報告記錄</div>
+    <div id="reportHistory" style="font-size:0.45rem;color:#666;">
+      ${state.reportLinks && state.reportLinks.length > 0 
+        ? state.reportLinks.slice(0).reverse().map(r => '<div style="padding:0.2rem 0;border-bottom:1px solid #1a1a2a;">📄 '+r.trail+' · '+r.date+' · <a href="'+r.url+'" target="_blank" style="color:#60c080;">'+r.type.toUpperCase()+'</a></div>').join('')
+        : '<div style="color:#555;padding:0.3rem 0;">尚未生成報告</div>'}
+    </div>
+  </div>
+
+  <hr style="border-color:#1a1a2a;margin:0.8rem 0;">
+  
+  <div style="display:flex;gap:0.3rem;">
+    <button class="btn btn-sm" onclick="exportCSV()" style="flex:1;background:#1a2a1a;color:#80c080;">📥 匯出 CSV</button>
+    <button class="btn btn-sm" onclick="clearAllRecords()" style="flex:1;background:#2a1a1a;color:#c06060;">🗑️ 清除記錄</button>
   </div>`;
+
   document.getElementById('tabContent').innerHTML = html;
 }
 
+// ══════════════════════════════════════════════
+// REPORT GENERATION FUNCTIONS
+// ══════════════════════════════════════════════
+async function generateReport(type) {
+  const trail = document.getElementById('reportTrailSelect')?.value || '馬鞍山郊遊徑';
+  const statusEl = document.getElementById('reportStatus');
+  if (!statusEl) return;
+  
+  statusEl.innerHTML = '⏳ 正在準備數據...';
+  
+  // Filter records for this trail
+  const trailRecords = state.records.filter(r => r.trail === trail && r.activityType === 'water');
+  if (trailRecords.length === 0) {
+    statusEl.innerHTML = '⚠️ 所選路線未有水道記錄';
+    return;
+  }
+  
+  statusEl.innerHTML = '📤 正在傳送數據俾 mvmv 生成報告...';
+  
+  try {
+    // Save report request to Firestore for mvmv to pick up
+    const reportRef = await db.collection('report_requests').add({
+      trail: trail,
+      type: type,
+      recordCount: trailRecords.length,
+      dateRange: {
+        from: trailRecords[trailRecords.length-1].date,
+        to: trailRecords[0].date
+      },
+      recordIds: trailRecords.map(r => r.id),
+      status: 'pending',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      requestedBy: state.user?.role || 'admin'
+    });
+    
+    statusEl.innerHTML = '✅ 請求已提交！mvmv 正在生成報告，請稍候...';
+    
+    // Poll for completion
+    let attempts = 0;
+    const checkReport = setInterval(async () => {
+      attempts++;
+      const snap = await reportRef.get();
+      const data = snap.data();
+      
+      if (data && data.status === 'completed') {
+        clearInterval(checkReport);
+        statusEl.innerHTML = '✅ 報告已完成！<br><a href="'+data.reportUrl+'" target="_blank" style="color:#60c080;font-size:0.6rem;font-weight:bold;">📄 下載報告</a>';
+        
+        // Add to report history
+        if (!state.reportLinks) state.reportLinks = [];
+        state.reportLinks.push({
+          trail: trail,
+          type: type,
+          date: new Date().toISOString().split('T')[0],
+          url: data.reportUrl
+        });
+        renderAdmin();
+      } else if (data && data.status === 'error') {
+        clearInterval(checkReport);
+        statusEl.innerHTML = '❌ 生成失敗：'+ (data.error || '未知錯誤');
+      } else if (attempts > 30) {
+        clearInterval(checkReport);
+        statusEl.innerHTML = '⏰ 請求超時，請稍後再試或通知 mvmv';
+      }
+    }, 2000); // Check every 2 seconds
+    
+  } catch(e) {
+    statusEl.innerHTML = '❌ 錯誤：'+e.message;
+    console.log('🔥 Report error:', e);
+  }
+}
 function clearAllRecords() {
   if (!confirm('確定清除所有記錄？此操作不可復原！')) return;
   if (!confirm(`再次確認：清除全部 ${state.records.length} 項記錄？`)) return;
