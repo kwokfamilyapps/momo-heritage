@@ -4,9 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>鞍山探索館 · 山徑與水道巡查記錄</title>
-<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/piexifjs/1.0.6/piexif.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js">
+// Fix mobile onclick issue - add listeners
+document.addEventListener('DOMContentLoaded', function() {
+  var btns = document.querySelectorAll('.login-btn');
+  btns.forEach(function(btn) {
+    if (btn.textContent.includes('Admin')) {
+      btn.onclick = function(e) { e.preventDefault(); login('admin'); };
+    } else if (btn.textContent.includes('義工')) {
+      btn.onclick = function(e) { e.preventDefault(); login('vol'); };
+    }
+  });
+  // Close modal on Enter
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      var m = document.getElementById('customModal');
+      if (m && m.style.display === 'flex') confirmModal();
+    }
+  });
+});
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js">
+// Fix mobile onclick issue - add listeners
+document.addEventListener('DOMContentLoaded', function() {
+  var btns = document.querySelectorAll('.login-btn');
+  btns.forEach(function(btn) {
+    if (btn.textContent.includes('Admin')) {
+      btn.onclick = function(e) { e.preventDefault(); login('admin'); };
+    } else if (btn.textContent.includes('義工')) {
+      btn.onclick = function(e) { e.preventDefault(); login('vol'); };
+    }
+  });
+  // Close modal on Enter
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      var m = document.getElementById('customModal');
+      if (m && m.style.display === 'flex') confirmModal();
+    }
+  });
+});
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/piexifjs/1.0.6/piexif.min.js">
+// Fix mobile onclick issue - add listeners
+document.addEventListener('DOMContentLoaded', function() {
+  var btns = document.querySelectorAll('.login-btn');
+  btns.forEach(function(btn) {
+    if (btn.textContent.includes('Admin')) {
+      btn.onclick = function(e) { e.preventDefault(); login('admin'); };
+    } else if (btn.textContent.includes('義工')) {
+      btn.onclick = function(e) { e.preventDefault(); login('vol'); };
+    }
+  });
+  // Close modal on Enter
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      var m = document.getElementById('customModal');
+      if (m && m.style.display === 'flex') confirmModal();
+    }
+  });
+});
+
+</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 36px; }
@@ -167,8 +227,8 @@
 <div class="screen active" id="screenLogin">
   <div class="login-box">
     <h2>🔐 登入</h2>
-    <button class="login-btn admin" onclick="login('admin')">👤 Admin 登入</button>
-    <button class="login-btn vol" onclick="login('vol')">👥 義工隊登入</button>
+    <button class="login-btn admin">👤 Admin 登入</button>
+    <button class="login-btn vol">👥 義工隊登入</button>
     <div style="text-align:center;margin-top:1.5rem;">
       <button class="btn btn-secondary btn-full" onclick="exitLogin()">🚪 離開</button>
     </div>
@@ -1426,6 +1486,26 @@ document.addEventListener('change', function(e) {
     if (otherInput) otherInput.style.display = e.target.value === '其他' ? 'block' : 'none';
   }
 });
+
+// Fix mobile onclick issue - add listeners
+document.addEventListener('DOMContentLoaded', function() {
+  var btns = document.querySelectorAll('.login-btn');
+  btns.forEach(function(btn) {
+    if (btn.textContent.includes('Admin')) {
+      btn.onclick = function(e) { e.preventDefault(); login('admin'); };
+    } else if (btn.textContent.includes('義工')) {
+      btn.onclick = function(e) { e.preventDefault(); login('vol'); };
+    }
+  });
+  // Close modal on Enter
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      var m = document.getElementById('customModal');
+      if (m && m.style.display === 'flex') confirmModal();
+    }
+  });
+});
+
 </script>
 
 </body>
