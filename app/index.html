@@ -1438,17 +1438,114 @@ function generateReport(type) {
   var trail = (document.getElementById("reportTrailSelect")||{}).value || "馬鞍山郊遊徑";
   var st = document.getElementById("reportStatus");
   if (!st) return;
-  var count = state.records.filter(function(r){return r.trail===trail && r.activityType==="water";}).length;
-  st.innerHTML = "⏳ 選擇路線: "+trail+" ("+count+"條水道記錄)<br>📤 mvmv 正在生成 "+type.toUpperCase()+" 報告...";
-  db.collection("report_requests").add({
-    trail: trail, type: type, count: count,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    status: "pending"
-  }).then(function(ref) {
-    st.innerHTML = "✅ 請求已提交！<br>📎 報告準備好後會顯示係度";
-  }).catch(function(e) {
-    st.innerHTML = "❌ 錯誤: "+e.message;
+  
+  var trailRecords = state.records.filter(function(r){ return r.trail === trail && r.activityType === "water"; });
+  if (trailRecords.length === 0) {
+    st.innerHTML = "⚠️ 所選路線未有水道記錄";
+    return;
+  }
+  
+  st.innerHTML = "⏳ 正在生成 "+type.toUpperCase()+" 報告... ("+trailRecords.length+"條記錄)";
+  
+  if (type === "html") {
+    generateHTMLReport(trail, trailRecords, st);
+  } else {
+    generatePDFReport(trail, trailRecords, st);
+  }
+}
+
+function generateHTMLReport(trail, records, st) {
+  // Build GPS data for map
+  var gpsData = records.filter(function(r){ return r.gpsLat && r.gpsLng; }).map(function(r){
+    return { lat: r.gpsLat, lng: r.gpsLng, name: r.waterChannel, freq: 1 };
   });
+  
+  // Build checkpoint table rows
+  var tableRows = records.map(function(r) {
+    var d = r.date || "";
+    var wc = r.waterChannel || "";
+    var ct = r.cleaningType || "";
+    var gl = r.gpsLat ? r.gpsLat.toFixed(6) : "";
+    var gn = r.gpsLng ? r.gpsLng.toFixed(6) : "";
+    return "<tr><td>"+d+"</td><td>"+wc+"</td><td>"+ct+"</td><td>"+gl+", "+gn+"</td></tr>";
+  }).join("");
+  
+  // Count by water channel for frequency analysis
+  var freqMap = {};
+  records.forEach(function(r){
+    var ch = r.waterChannel || "other";
+    freqMap[ch] = (freqMap[ch] || 0) + 1;
+  });
+  var sortedCh = Object.keys(freqMap).sort(function(a,b){ return freqMap[b] - freqMap[a]; });
+  var freqRows = sortedCh.map(function(ch){
+    return "<tr><td>水道 "+ch+"</td><td>"+freqMap[ch]+" 次</td></tr>";
+  }).join("");
+  
+  var now = new Date();
+  var dateStr = now.getFullYear()+"-"+(now.getMonth()+1).toString().padStart(2,"0")+"-"+now.getDate().toString().padStart(2,"0");
+  
+  var html = '<!DOCTYPE html><html lang="zh-HK"><head><meta charset="UTF-8">';
+  html += '<meta name="viewport" content="width=device-width,initial-scale=1.0">';
+  html += '<title>'+trail+' 巡查分析報告</title>';
+  html += '<style>*{margin:0;padding:0;box-sizing:border-box}';
+  html += 'html{font-size:28px;background:#f0e8d8;color:#1a1a16}';
+  html += 'body{max-width:1100px;margin:0 auto;padding:20px;font-family:sans-serif}';
+  html += 'h1{font-size:1.3rem;color:#2d5a27;margin-bottom:5px}';
+  html += 'h2{font-size:0.9rem;color:#3a7a33;margin:20px 0 10px;border-bottom:2px solid #c4b89a}';
+  html += 'table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.5rem}';
+  html += 'th,td{border:1px solid #c4b89a;padding:4px 6px;text-align:left}';
+  html += 'th{background:#2d5a27;color:#fff}td{background:rgba(255,255,240,0.5)}';
+  html += '.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}';
+  html += '.stat div{background:#fff;border:1px solid #d4c8aa;border-radius:6px;padding:10px;text-align:center}';
+  html += '.stat .num{font-size:1.2rem;font-weight:700;color:#2d5a27}';
+  html += '.stat .lbl{font-size:0.4rem;color:#666}';
+  html += '@media(max-width:600px){html{font-size:22px}}</style></head><body>';
+  
+  // Header
+  html += '<h1>🏞️ '+trail+' 巡查分析報告</h1>';
+  html += '<p style="color:#666;font-size:0.5rem;margin-bottom:15px">生成日期: '+dateStr+' | 由 鞍山探索館 App 自動生成</p>';
+  
+  // Stats
+  html += '<div class="stat">';
+  html += '<div><div class="num">'+records.length+'</div><div class="lbl">巡查記錄</div></div>';
+  html += '<div><div class="num">'+Object.keys(freqMap).length+'</div><div class="lbl">水道檢查點</div></div>';
+  html += '<div><div class="num">'+new Set(records.map(function(r){return r.date;})).size+'</div><div class="lbl">巡查日期</div></div>';
+  html += '<div><div class="num">'+Math.max.apply(null, Object.values(freqMap))+'</div><div class="lbl">最多清理次數</div></div>';
+  html += '</div>';
+  
+  // Frequency table
+  html += '<h2>📍 水道清理頻率</h2>';
+  html += '<table><tr><th>水道</th><th>清理次數</th></tr>'+freqRows+'</table>';
+  
+  // All records table
+  html += '<h2>📋 完整巡查記錄</h2>';
+  html += '<table><tr><th>日期</th><th>水道編號</th><th>類型</th><th>GPS坐標</th></tr>'+tableRows+'</table>';
+  
+  html += '<p style="margin-top:20px;color:#888;font-size:0.4rem;text-align:center">由 鞍山探索館 App V1.2 自動生成</p>';
+  html += '</body></html>';
+  
+  // Download or share
+  st.innerHTML = "✅ 報告已生成！";
+  downloadReport(html, trail+"_巡查報告_"+dateStr+".html", "text/html");
+}
+
+function generatePDFReport(trail, records, st) {
+  // For PDF, first generate HTML, then use print
+  st.innerHTML = "⏳ 正在生成 PDF...";
+  generateHTMLReport(trail, records, st);
+  st.innerHTML = "✅ PDF 可透過瀏覽器「列印→另存PDF」功能儲存";
+}
+
+function downloadReport(content, filename, mimeType) {
+  var blob = new Blob([content], {type: mimeType + ";charset=utf-8"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 function clearAllRecords() {
   if (!confirm('確定清除所有記錄？此操作不可復原！')) return;
