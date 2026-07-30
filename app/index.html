@@ -4,9 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>鞍山探索館 · 山徑與水道巡查記錄</title>
-<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/piexifjs/1.0.6/piexif.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js">
+// Close modal on Enter key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('customModal').style.display === 'flex') {
+    confirmModal();
+  }
+});
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js">
+// Close modal on Enter key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('customModal').style.display === 'flex') {
+    confirmModal();
+  }
+});
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/piexifjs/1.0.6/piexif.min.js">
+// Close modal on Enter key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('customModal').style.display === 'flex') {
+    confirmModal();
+  }
+});
+
+</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 36px; }
@@ -173,7 +197,21 @@
       <button class="btn btn-secondary btn-full" onclick="exitLogin()">🚪 離開</button>
     </div>
   </div>
-</div>
+
+<!-- ═══ CUSTOM MODAL ═══ -->
+<div id="customModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;justify-content:center;align-items:center;">
+  <div style="background:#10181a;border:1px solid #2a4a3a;border-radius:14px;padding:1.2rem;width:85%;max-width:350px;text-align:center;">
+    <div id="modalTitle" style="font-size:0.8rem;color:#60c080;margin-bottom:0.6rem;font-weight:600;">🔐 登入</div>
+    <div id="modalBody">
+      <input type="password" id="modalPassword" placeholder="請輸入 Admin 密碼" style="width:100%;padding:0.6rem;border:1px solid #2a4a3a;border-radius:8px;background:#0c0c14;color:#e0e0e0;font-size:0.7rem;text-align:center;">
+    </div>
+    <div id="modalError" style="color:#c06060;font-size:0.5rem;margin:0.3rem 0;display:none;">❌ 密碼錯誤</div>
+    <div style="display:flex;gap:0.4rem;margin-top:0.6rem;">
+      <button onclick="closeModal()" style="flex:1;padding:0.5rem;border:none;border-radius:8px;background:#2a2a3a;color:#c0c0e0;font-size:0.6rem;cursor:pointer;">取消</button>
+      <button id="modalConfirmBtn" onclick="confirmModal()" style="flex:1;padding:0.5rem;border:none;border-radius:8px;background:#2a4a6a;color:#c0e0ff;font-size:0.6rem;font-weight:600;cursor:pointer;">確定</button>
+    </div>
+  </div>
+</div></div>
 
 <!-- ═══ SCREEN: MAIN ═══ -->
 <div class="screen" id="screenMain">
@@ -308,15 +346,60 @@ const PASSWORDS = {
   admin: 'admin2024'
 };
 
+
+// ══════════════════════════════════════════════
+// CUSTOM MODAL (replaces prompt/alert for mobile)
+// ══════════════════════════════════════════════
+let modalCallback = null;
+
+function showModal(title, bodyHtml, confirmCallback, showInput) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  document.getElementById('modalError').style.display = 'none';
+  document.getElementById('customModal').style.display = 'flex';
+  modalCallback = confirmCallback;
+  if (showInput) {
+    setTimeout(() => document.getElementById('modalPassword')?.focus(), 100);
+  }
+}
+
+function closeModal() {
+  document.getElementById('customModal').style.display = 'none';
+  modalCallback = null;
+}
+
+function confirmModal() {
+  if (modalCallback) modalCallback();
+}
+
+// Override prompt for admin login
+function showPasswordPrompt(callback) {
+  showModal('🔐 Admin 登入',
+    '<input type="password" id="modalPassword" placeholder="請輸入 Admin 密碼" style="width:100%;padding:0.6rem;border:1px solid #2a4a3a;border-radius:8px;background:#0c0c14;color:#e0e0e0;font-size:0.7rem;text-align:center;">',
+    function() {
+      var pwd = document.getElementById('modalPassword')?.value || '';
+      if (!pwd) return;
+      if (pwd !== PASSWORDS.admin) {
+        document.getElementById('modalError').style.display = 'block';
+        return;
+      }
+      closeModal();
+      callback();
+    }, true);
+}
+
+// Replace login function
 function login(role) {
   if (role === 'admin') {
-    const pwd = prompt('請輸入 Admin 密碼：');
-    if (!pwd) return;
-    if (pwd !== PASSWORDS.admin) {
-      alert('❌ 密碼錯誤');
-      return;
-    }
+    showPasswordPrompt(function() {
+      completeLogin(role);
+    });
+    return;
   }
+  completeLogin(role);
+}
+
+function completeLogin(role) {
   state.user = { role };
   document.getElementById('userBadge').textContent = role === 'admin' ? '👤 Admin' : '👥 義工隊';
   document.getElementById('screenLogin').classList.remove('active');
@@ -324,18 +407,10 @@ function login(role) {
   document.getElementById('adminTabBtn').style.display = role === 'admin' ? 'block' : 'none';
   renderForm();
   renderList();
-  // Load from Firestore, then show list tab
   loadRecords().then(function() {
     if (state.records.length > 0) switchTab('list');
   }).catch(function() {});
 }
-
-function logout() {
-  state.user = null;
-  document.getElementById('screenMain').classList.remove('active');
-  document.getElementById('screenLogin').classList.add('active');
-  document.getElementById('userBadge').textContent = '未登入';
-  document.getElementById('adminTabBtn').style.display = 'none';
 }
 
 function exitApp() {
@@ -1512,6 +1587,14 @@ document.addEventListener('change', function(e) {
     if (otherInput) otherInput.style.display = e.target.value === '其他' ? 'block' : 'none';
   }
 });
+
+// Close modal on Enter key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('customModal').style.display === 'flex') {
+    confirmModal();
+  }
+});
+
 </script>
 
 </body>
