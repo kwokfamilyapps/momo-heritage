@@ -4,33 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>鞍山探索館 · 山徑與水道巡查記錄</title>
-<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js">
-// Close modal on Enter key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && document.getElementById('customModal').style.display === 'flex') {
-    confirmModal();
-  }
-});
-
-</script>
-<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js">
-// Close modal on Enter key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && document.getElementById('customModal').style.display === 'flex') {
-    confirmModal();
-  }
-});
-
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/piexifjs/1.0.6/piexif.min.js">
-// Close modal on Enter key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && document.getElementById('customModal').style.display === 'flex') {
-    confirmModal();
-  }
-});
-
-</script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/piexifjs/1.0.6/piexif.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 36px; }
@@ -197,21 +173,7 @@ document.addEventListener('keydown', function(e) {
       <button class="btn btn-secondary btn-full" onclick="exitLogin()">🚪 離開</button>
     </div>
   </div>
-
-<!-- ═══ CUSTOM MODAL ═══ -->
-<div id="customModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;justify-content:center;align-items:center;">
-  <div style="background:#10181a;border:1px solid #2a4a3a;border-radius:14px;padding:1.2rem;width:85%;max-width:350px;text-align:center;">
-    <div id="modalTitle" style="font-size:0.8rem;color:#60c080;margin-bottom:0.6rem;font-weight:600;">🔐 登入</div>
-    <div id="modalBody">
-      <input type="password" id="modalPassword" placeholder="請輸入 Admin 密碼" style="width:100%;padding:0.6rem;border:1px solid #2a4a3a;border-radius:8px;background:#0c0c14;color:#e0e0e0;font-size:0.7rem;text-align:center;">
-    </div>
-    <div id="modalError" style="color:#c06060;font-size:0.5rem;margin:0.3rem 0;display:none;">❌ 密碼錯誤</div>
-    <div style="display:flex;gap:0.4rem;margin-top:0.6rem;">
-      <button onclick="closeModal()" style="flex:1;padding:0.5rem;border:none;border-radius:8px;background:#2a2a3a;color:#c0c0e0;font-size:0.6rem;cursor:pointer;">取消</button>
-      <button id="modalConfirmBtn" onclick="confirmModal()" style="flex:1;padding:0.5rem;border:none;border-radius:8px;background:#2a4a6a;color:#c0e0ff;font-size:0.6rem;font-weight:600;cursor:pointer;">確定</button>
-    </div>
-  </div>
-</div></div>
+</div>
 
 <!-- ═══ SCREEN: MAIN ═══ -->
 <div class="screen" id="screenMain">
@@ -263,16 +225,10 @@ const WATER_CHANNELS = [
 ];
 
 const CLEANING_TYPES = [
-  {value:"before", label:"清理前 🟠"},
-  {value:"after", label:"清理後 🟢"},
-  {value:"both", label:"清理前+後 🔵"}
+  {value:"before", label:"清理前"},
+  {value:"after", label:"清理後"},
+  {value:"both", label:"清理前+後"}
 ];
-
-const REPORT_TYPES = [
-  {value:"html", label:"📄 HTML 分析報告"},
-  {value:"pdf", label:"📕 PDF 保育報告"}
-];
-
 
 // ══════════════════════════════════════════════
 // FIREBASE INIT
@@ -298,10 +254,9 @@ const firebaseConfig = {
     activityType: 'trail',
     records: [],
     photos: [],
-        waterChannel: '',
-    cleaningType: 'before',
-    reportGenerating: false,
-    reportLinks: [],editId: null,
+    editId: null,
+    waterChannel: "",
+    cleaningType: "before",
     currentGps: null,
     gpsLocked: false,
     watchId: null,
@@ -346,61 +301,45 @@ const PASSWORDS = {
   admin: 'admin2024'
 };
 
-
-// ══════════════════════════════════════════════
-// CUSTOM MODAL (replaces prompt/alert for mobile)
-// ══════════════════════════════════════════════
-let modalCallback = null;
-
-function showModal(title, bodyHtml, confirmCallback, showInput) {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalBody').innerHTML = bodyHtml;
-  document.getElementById('modalError').style.display = 'none';
-  document.getElementById('customModal').style.display = 'flex';
-  modalCallback = confirmCallback;
-  if (showInput) {
-    setTimeout(() => document.getElementById('modalPassword')?.focus(), 100);
+function showModal(title, msg) {
+  var modal = document.getElementById('customModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'customModal';
+    modal.innerHTML = '<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;justify-content:center;align-items:center;"><div style="background:#10181a;border:1px solid #2a4a3a;border-radius:14px;padding:1.2rem;width:85%;max-width:350px;text-align:center;"><div id="modalTitle" style="font-size:0.8rem;color:#60c080;margin-bottom:0.6rem;"></div><div id="modalBody"></div><div id="modalError" style="color:#c06060;font-size:0.5rem;margin:0.3rem 0;display:none;"></div><div style="display:flex;gap:0.4rem;margin-top:0.6rem;"><button onclick="closeModal()" style="flex:1;padding:0.5rem;border:none;border-radius:8px;background:#2a2a3a;color:#c0c0e0;font-size:0.6rem;cursor:pointer;">取消</button><button id="modalConfirmBtn" onclick="confirmModal()" style="flex:1;padding:0.5rem;border:none;border-radius:8px;background:#2a4a6a;color:#c0e0ff;font-size:0.6rem;font-weight:600;cursor:pointer;">確定</button></div></div></div>';
+    document.body.appendChild(modal);
   }
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = msg;
+  document.getElementById('modalError').style.display = 'none';
+  modal.style.display = 'flex';
 }
+function closeModal() { var m = document.getElementById('customModal'); if(m) m.style.display = 'none'; }
+function confirmModal() { if(window._modalCb) window._modalCb(); }
 
-function closeModal() {
-  document.getElementById('customModal').style.display = 'none';
-  modalCallback = null;
-}
-
-function confirmModal() {
-  if (modalCallback) modalCallback();
-}
-
-// Override prompt for admin login
-function showPasswordPrompt(callback) {
-  showModal('🔐 Admin 登入',
-    '<input type="password" id="modalPassword" placeholder="請輸入 Admin 密碼" style="width:100%;padding:0.6rem;border:1px solid #2a4a3a;border-radius:8px;background:#0c0c14;color:#e0e0e0;font-size:0.7rem;text-align:center;">',
-    function() {
-      var pwd = document.getElementById('modalPassword')?.value || '';
+function login(role) {
+  if (role === 'admin') {
+    window._modalCb = function() {
+      var pwd = document.getElementById('modalPassword') ? document.getElementById('modalPassword').value : '';
       if (!pwd) return;
       if (pwd !== PASSWORDS.admin) {
+        document.getElementById('modalError').textContent = '❌ 密碼錯誤';
         document.getElementById('modalError').style.display = 'block';
         return;
       }
       closeModal();
-      callback();
-    }, true);
-}
-
-// Replace login function
-function login(role) {
-  if (role === 'admin') {
-    showPasswordPrompt(function() {
-      completeLogin(role);
-    });
+      doLogin(role);
+    };
+    showModal('🔐 Admin 登入', '<input type="password" id="modalPassword" placeholder="請輸入 Admin 密碼" style="width:100%;padding:0.6rem;border:1px solid #2a4a3a;border-radius:8px;background:#0c0c14;color:#e0e0e0;font-size:0.7rem;text-align:center;">');
+    setTimeout(function() { var el = document.getElementById("modalPassword"); if(el) el.focus(); }, 100);
+    document.onkeydown = function(e) { if(e.key === "Enter" && document.getElementById("customModal").style.display === "flex") confirmModal(); };
     return;
   }
-  completeLogin(role);
+  doLogin(role);
 }
 
-function completeLogin(role) {
-  state.user = { role };
+function doLogin(role) {
+  state.user = { role: role };
   document.getElementById('userBadge').textContent = role === 'admin' ? '👤 Admin' : '👥 義工隊';
   document.getElementById('screenLogin').classList.remove('active');
   document.getElementById('screenMain').classList.add('active');
@@ -412,9 +351,1082 @@ function completeLogin(role) {
   }).catch(function() {});
 }
 
+function logout() {
+  state.user = null;
+  document.getElementById('screenMain').classList.remove('active');
+  document.getElementById('screenLogin').classList.add('active');
+  document.getElementById('userBadge').textContent = '未登入';
+  document.getElementById('adminTabBtn').style.display = 'none';
+}
+
 function exitApp() {
   if (confirm('確定退出 App？')) {
     logout();
   }
 }
 
+function exitLogin() {
+  if (confirm('確定離開？')) {
+    // Show a message that they can close the tab
+    document.getElementById('screenLogin').innerHTML = `
+      <div class="login-box" style="text-align:center;">
+        <h2>👋 感謝使用</h2>
+        <p style="color:#888;margin:1rem 0;">你可以關閉此分頁</p>
+        <button class="login-btn vol" onclick="location.reload()">🔄 重新啟動</button>
+      </div>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// TAB SWITCH
+// ══════════════════════════════════════════════
+function switchTab(tab) {
+  state.tab = tab;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const btns = document.querySelectorAll('.nav-btn');
+  const idx = ['form','list','admin','logout'].indexOf(tab);
+  if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
+  if (tab === 'form') { renderForm(); startGpsTracking(); }
+  else if (tab === 'list') { renderList(); stopGpsTracking(); }
+  else if (tab === 'map') { renderMap(); stopGpsTracking(); }
+  else if (tab === 'admin') { renderAdmin(); stopGpsTracking(); }
+}
+
+// ══════════════════════════════════════════════
+// CLOUD SYNC (disabled - using localStorage only)
+// ══════════════════════════════════════════════
+async function syncToCloud(record) {
+  // Firestore auto-sync handles this
+  console.log("🔥 Synced:", record.id);
+}
+
+async function loadFromCloud() {
+  // Use loadRecords for Firestore
+  loadRecords();
+}
+
+// LOAD DATA ON STARTUP - done at top of script
+// No duplicate DOMContentLoaded handler needed
+
+// ══════════════════════════════════════════════
+// RENDER FORM
+// ══════════════════════════════════════════════
+let photoCount = 0;
+
+function renderForm() {
+  const r = state.editId ? state.records.find(rec => rec.id === state.editId) : null;
+  // Use Hong Kong timezone for today's date
+  const hkNow = new Date();
+  const hkDate = new Date(hkNow.toLocaleString('en-US', { timeZone: 'Asia/Hong_Kong' }));
+  const today = hkDate.toISOString().split('T')[0];
+
+  let html = `<div style="margin-bottom:0.6rem;">
+    <div class="tabs">
+      <div class="tab ${state.activityType==='trail'?'active':''}" onclick="setActivity('trail')">🪨 山徑問題</div>
+      <div class="tab ${state.activityType==='water'?'active':''}" onclick="setActivity('water')">💧 水道記錄</div>
+    </div>
+  </div>
+  <form id="recordForm">
+    <div class="form-group">
+      <label>📅 日期</label>
+      <input type="date" id="fDate" value="${r ? r.date : today}">
+    </div>
+    <div class="form-group">
+      <label>👤 記錄人員</label>
+      <input type="text" id="fRecorder" value="${r ? r.recorder : ''}" placeholder="姓名">
+    </div>
+    <div class="form-group">
+      <label>🛤️ 山徑名稱</label>
+      <select id="fTrail">`;
+
+  TRAILS.forEach(t => {
+    const sel = r && r.trail === t ? 'selected' : '';
+    html += `<option value="${t}" ${sel}>${t}</option>`;
+  });
+
+  html += `</select>
+      <input type="text" id="fTrailOther" placeholder="其他山徑名稱" style="margin-top:0.3rem;display:${r && r.trail === '其他' ? 'block' : 'none'};">
+    </div>`;
+
+  if (state.activityType === 'trail') {
+    html += `<div class="form-group">
+      <label>⚠️ 山徑問題（可選多項）</label>
+      <div class="check-grid">`;
+    TRAIL_ISSUES.forEach(issue => {
+      const checked = r && r.issues && r.issues.includes(issue) ? 'checked' : '';
+      html += `<label><input type="checkbox" class="trail-issue" value="${issue}" ${checked}>${issue}</label>`;
+    });
+    html += `</div></div>
+    <div class="form-group">
+      <label>🔧 建議處理方法</label>
+      <select id="fSolution">`;
+    TRAIL_SOLUTIONS.forEach(s => {
+      const sel = r && r.solution === s ? 'selected' : '';
+      html += `<option value="${s}" ${sel}>${s}</option>`;
+    });
+    html += `</select>
+    </div>`;
+  } else {
+    html += `<div class="form-group">
+      <label>💧 水道狀況（可選多項）</label>
+      <div class="check-grid">`;
+    WATER_ISSUES.forEach(issue => {
+      const checked = r && r.issues && r.issues.includes(issue) ? 'checked' : '';
+      html += `<label><input type="checkbox" class="water-issue" value="${issue}" ${checked}>${issue}</label>`;
+    });
+    html += `</div></div>
+    <div class="form-group">
+      <label>🔧 建議處理方法</label>
+      <select id="fSolution">`;
+    WATER_SOLUTIONS.forEach(s => {
+      const sel = r && r.solution === s ? 'selected' : '';
+      html += `<option value="${s}" ${sel}>${s}</option>`;
+    });
+    html += `</select>
+    </div>`;
+  }
+
+  // GPS status display
+  const isEditing = !!state.editId;
+  var gpsLabel, gpsIcon;
+  
+  if (isEditing) {
+    // Edit mode: show record's GPS or 冇坐標
+    var editRecord = state.editId ? state.records.find(function(r) { return r.id === state.editId; }) : null;
+    var editGps = editRecord && editRecord.gps ? editRecord.gps : null;
+    if (editGps) {
+      gpsLabel = editGps.lat.toFixed(4) + ', ' + editGps.lng.toFixed(4) + ' (相片坐標) 🔒';
+      gpsIcon = '🔒';
+    } else {
+      gpsLabel = '冇坐標';
+      gpsIcon = '❌';
+    }
+  } else {
+    // New record mode
+    state.gpsLocked = false;
+    if (state.currentGps) {
+      gpsLabel = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4);
+      gpsIcon = '📍';
+    } else {
+      gpsLabel = '追蹤手機位置…';
+      gpsIcon = '⏳';
+    }
+  }
+  
+  html += `<div class="gps-box">
+    <span class="label">📍 位置</span>
+    <span class="coords" id="gpsDisplay">${gpsLabel}</span>
+    <span class="status" id="gpsStatus">${gpsIcon}</span>
+  </div>`;
+
+  // Determine photos array
+  var photos = [];
+
+  // Photos section
+  if (!isEditing) {
+    photos = r ? r.photos || [] : [];
+    html += `<div class="form-group">
+      <label>📸 相片記錄（最多 3 張）</label>
+      <div class="photo-zone" onclick="document.getElementById('photoInput').click()">
+        + 點擊新增相片
+      </div>
+      <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(event)">
+      <div class="photo-previews" id="photoPreviews">`;
+    photos.forEach((p, idx) => {
+      html += `<div class="thumb"><img src="${p}" alt="photo"><div class="del" onclick="removePhoto(${idx})">×</div></div>`;
+    });
+    html += `</div>
+      <div class="hint">每次最多 3 張，相片會自動加入 GPS 位置資料</div>
+    </div>`;
+  } else {
+    html += `<div class="form-group">
+      <label>📸 相片</label>
+      <div style="font-size:0.5rem;color:#666;padding:0.4rem;">修改記錄時不能更換相片。如需更改請刪除此記錄重新建立。</div>
+    </div>`;
+  }
+
+  html += `<div class="form-group">
+    <label>📝 備註</label>
+    <textarea id="fNote" placeholder="其他補充…">${r ? (r.note||'') : ''}</textarea>
+  </div>
+
+  <div style="display:flex;gap:0.3rem;">
+    <button type="button" class="btn btn-primary btn-full" onclick="submitRecord()">${state.editId ? '📝 更新記錄' : '✅ 提交記錄'}</button>
+    ${state.editId ? `<button type="button" class="btn btn-secondary btn-full" onclick="cancelEdit()">取消</button>` : ''}
+  </div>
+  </form>`;
+
+  document.getElementById('tabContent').innerHTML = html;
+  state.photos = photos;
+}
+
+function setActivity(type) {
+  state.activityType = type;
+  state.editId = null;
+  state.photos = [];
+  renderForm();
+}
+
+// ══════════════════════════════════════════════
+// PHOTOS — IndexedDB persistent storage
+// ══════════════════════════════════════════════
+const MAX_PHOTO_PX = 1024;
+const DB_NAME = 'TrailPatrolPhotos';
+const STORE_NAME = 'photos';
+
+function openPhotoDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = () => req.result.createObjectStore(STORE_NAME);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function savePhotoToDB(key, dataUrl) {
+  const db = await openPhotoDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).put(dataUrl, key);
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
+
+async function getPhotoFromDB(key) {
+  const db = await openPhotoDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const req = tx.objectStore(STORE_NAME).get(key);
+    req.onsuccess = () => { db.close(); resolve(req.result); };
+    req.onerror = () => { db.close(); reject(req.error); };
+  });
+}
+
+async function deletePhotoFromDB(key) {
+  const db = await openPhotoDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).delete(key);
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
+
+// Global photo viewer for map popups
+window.viewPhoto = function(key) {
+  if (!key) return;
+  getPhotoFromDB(key).then(function(dataUrl) {
+    if (!dataUrl) {
+      alert('📸 相片尚未儲存到本機。請喺提交記錄時先影相。');
+      return;
+    }
+    var ov = document.getElementById('photoOverlay');
+    if (!ov) {
+      ov = document.createElement('div');
+      ov.id = 'photoOverlay';
+      ov.style.display = 'none';
+      document.body.appendChild(ov);
+    }
+    ov.innerHTML = '<div onclick="closePhoto()" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:pointer;"><img src="'+dataUrl+'" style="max-width:92%;max-height:92%;border-radius:8px;"><div style="position:absolute;top:0.5rem;right:0.8rem;font-size:1.2rem;color:#fff;background:rgba(0,0,0,0.5);padding:0.2rem 0.5rem;border-radius:8px;">✕</div></div>';
+    ov.style.display = 'block';
+  }).catch(function(e) {
+    alert('無法載入相片: ' + e.message);
+  });
+};
+window.closePhoto = function() {
+  var ov = document.getElementById('photoOverlay');
+  if (ov) { ov.style.display = 'none'; }
+};
+
+// Map popup: click compact record to see full details
+window.mapClickRecord = function(id) {
+  var nr = state.records.find(function(r) { return r.id === id || r._firestoreId === id; });
+  if (!nr) return;
+  var popupHtml = '<div style="font-size:0.45rem;line-height:1.5;">';
+  popupHtml += '<b>' + nr.trail + '</b><br>';
+  popupHtml += (nr.issues||[]).join('、') + '<br>';
+  popupHtml += '<span style="color:#888;">📅 ' + nr.date + ' · ' + (nr.recorder||'') + '</span>';
+  if (nr.solution) popupHtml += '<br>🔧 ' + nr.solution;
+  if (nr.note) popupHtml += '<br>📝 ' + nr.note;
+  var pc = (nr.photoKeys && nr.photoKeys.length) || (nr.photos && nr.photos.length) || 0;
+  if (pc > 0) {
+    popupHtml += '<br><span style="color:#888;">📸 ';
+    if (nr.photosData) {
+      for (var pi in nr.photosData)
+        if (nr.photosData.hasOwnProperty(pi))
+          popupHtml += '<a onclick="viewPhotoData(\'' + nr.photosData[pi] + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
+    } else if (nr.photoKeys && nr.photoKeys.length) {
+      nr.photoKeys.forEach(function(k) {
+        popupHtml += '<a onclick="viewPhoto(\'' + k + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
+      });
+    } else { popupHtml += pc + ' 張'; }
+    popupHtml += '</span>';
+  }
+  popupHtml += '</div>';
+  // Close current popup and show near the point
+  var latlng = nr.gps ? [nr.gps.lat, nr.gps.lng] : null;
+  if (latlng) {
+    L.popup().setLatLng(latlng).setContent(popupHtml).openOn(window._map);
+  }
+};
+
+// View photo from base64 data (stored in Firestore)
+window.viewPhotoData = function(dataUrl) {
+  if (!dataUrl) return;
+  var ov = document.getElementById('photoOverlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'photoOverlay';
+    ov.style.display = 'none';
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML = '<div onclick="closePhoto()" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:pointer;"><img src="'+dataUrl+'" style="max-width:92%;max-height:92%;border-radius:8px;"><div style="position:absolute;top:0.5rem;right:0.8rem;font-size:1.2rem;color:#fff;background:rgba(0,0,0,0.5);padding:0.2rem 0.5rem;border-radius:8px;">✕</div></div>';
+  ov.style.display = 'block';
+};
+
+// ── PHOTO RECOVERY: upload + GPS match to rebuild relations ──
+function uploadAndMatchPhotos() {
+  var input = document.createElement('input');
+  input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
+  input.onchange = async function(e) {
+    var files = Array.from(e.target.files);
+    var matched = 0, unmatched = 0;
+    for (var fi = 0; fi < files.length; fi++) {
+      var file = files[fi];
+      var photoGps = await readExifGpsFromFile(file);
+      if (!photoGps) { unmatched++; continue; }
+      var best = null, bestDist = Infinity;
+      for (var ri = 0; ri < state.records.length; ri++) {
+        var r = state.records[ri];
+        if (!r.gps || !r.gps.lat) continue;
+        var d = calcDistance(photoGps.lat, photoGps.lng, r.gps.lat, r.gps.lng);
+        if (d < bestDist) { bestDist = d; best = r; }
+      }
+      if (best && bestDist < 100) {
+        var b64 = await fileToDataUrl(file);
+        var existing = best.photoKeys || [];
+        var newIdx = existing.length;
+        try {
+          await db.collection('records').doc(best.id).update({
+            ['photosData.' + newIdx]: b64
+          });
+          matched++;
+        } catch(e) { unmatched++; }
+      } else { unmatched++; }
+    }
+    alert('✅ 配對完成！成功: ' + matched + ' 張, 無法匹配: ' + unmatched + ' 張\\n請 refresh 睇效果');
+  };
+  input.click();
+}
+
+function readExifGpsFromFile(file) {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var exif = piexif.load(ev.target.result);
+        var gps = exif && exif.GPS;
+        if (gps && gps.GPSLatitude && gps.GPSLongitude) {
+          var lat = gps.GPSLatitude[0][0]/gps.GPSLatitude[0][1] +
+                    gps.GPSLatitude[1][0]/gps.GPSLatitude[1][1]/60 +
+                    gps.GPSLatitude[2][0]/gps.GPSLatitude[2][1]/3600;
+          var lng = gps.GPSLongitude[0][0]/gps.GPSLongitude[0][1] +
+                    gps.GPSLongitude[1][0]/gps.GPSLongitude[1][1]/60 +
+                    gps.GPSLongitude[2][0]/gps.GPSLongitude[2][1]/3600;
+          if (gps.GPSLatitudeRef === 'S') lat = -lat;
+          if (gps.GPSLongitudeRef === 'W') lng = -lng;
+          resolve({ lat: lat, lng: lng });
+        } else { resolve(null); }
+      } catch(e) { resolve(null); }
+    };
+    reader.onerror = function() { resolve(null); };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function fileToDataUrl(file) {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onload = function(ev) { resolve(ev.target.result); };
+    reader.readAsDataURL(file);
+  });
+}
+
+function calcDistance(lat1, lng1, lat2, lng2) {
+  var R = 6371000;
+  var dLat = (lat2-lat1)*Math.PI/180, dLng = (lng2-lng1)*Math.PI/180;
+  var a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+          Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ── GPS TRACKING ──
+var gpsWatchId = null;
+
+function startGpsTracking() {
+  if (!navigator.geolocation || gpsWatchId !== null) return;
+  gpsWatchId = navigator.geolocation.watchPosition(function(pos) {
+    if (!state.gpsLocked) {
+      state.currentGps = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      updateGpsDisplay(false);
+    }
+  }, function() {
+    // GPS error - silent
+  }, { enableHighAccuracy: true, timeout: 30000 });
+}
+
+function stopGpsTracking() {
+  if (gpsWatchId !== null) {
+    navigator.geolocation.clearWatch(gpsWatchId);
+    gpsWatchId = null;
+  }
+}
+
+function updateGpsDisplay(locked) {
+  var d = document.getElementById('gpsDisplay');
+  var s = document.getElementById('gpsStatus');
+  if (!d) return;
+  if (!state.currentGps) {
+    d.textContent = '跟蹤手機位置…';
+    if (s) s.textContent = '⏳';
+    return;
+  }
+  d.textContent = state.currentGps.lat.toFixed(4) + ', ' + state.currentGps.lng.toFixed(4) + (locked ? ' 🔒 相片坐標' : '');
+  if (s) s.textContent = locked ? '🔒' : '📍';
+}
+
+function captureGpsOnce() {
+  // Used by photo capture - takes a precise GPS reading at the moment of the photo
+  return new Promise(function(resolve) {
+    if (!navigator.geolocation) { resolve(null); return; }
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    }, function() {
+      resolve(null);
+    }, { enableHighAccuracy: true, timeout: 15000 });
+  });
+}
+
+// Embed GPS EXIF into JPEG dataUrl
+function embedGpsExif(dataUrl, gps) {
+  if (!gps || !gps.lat || !gps.lng || typeof piexif === 'undefined') return dataUrl;
+  try {
+    var exifObj = piexif.load(dataUrl);
+    // Convert decimal degrees to EXIF rational format (deg, min, sec)
+    function toDms(deg) {
+      var d = Math.abs(deg) | 0;
+      var m = (Math.abs(deg) * 60) % 60 | 0;
+      var s = ((Math.abs(deg) * 3600) % 60) * 1000 | 0;
+      return [[d, 1], [m, 1], [s, 1000]];
+    }
+    exifObj.GPS = {
+      GPSLatitudeRef: gps.lat >= 0 ? 'N' : 'S',
+      GPSLatitude: toDms(gps.lat),
+      GPSLongitudeRef: gps.lng >= 0 ? 'E' : 'W',
+      GPSLongitude: toDms(gps.lng),
+      GPSVersionID: [2, 3, 0, 0]
+    };
+    return piexif.insert(exifObj, dataUrl);
+  } catch(e) {
+    console.log('📌 EXIF error:', e.message);
+    return dataUrl;
+  }
+}
+
+function handlePhotos(e) {
+  const files = Array.from(e.target.files);
+  const remaining = 3 - state.photos.length;
+  const toAdd = files.slice(0, remaining);
+  
+  // GPS capture on photo
+  if (navigator.geolocation && !state.gpsLocked) {
+    // First photo: capture exact position
+    captureGpsOnce().then(function(newGps) {
+      if (newGps) {
+        state.currentGps = newGps;
+        state.gpsLocked = true;
+        stopGpsTracking();
+        updateGpsDisplay(true);
+      }
+    });
+  } else if (navigator.geolocation && state.gpsLocked) {
+    // Subsequent photos: check distance from locked GPS
+    captureGpsOnce().then(function(newGps) {
+      if (newGps && state.currentGps) {
+        var R = 6371000;
+        var dLat = (newGps.lat - state.currentGps.lat) * Math.PI / 180;
+        var dLon = (newGps.lng - state.currentGps.lng) * Math.PI / 180;
+        var a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+                Math.cos(state.currentGps.lat*Math.PI/180)*Math.cos(newGps.lat*Math.PI/180)*
+                Math.sin(dLon/2)*Math.sin(dLon/2);
+        var dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        if (dist > 5) {
+          alert('⚠️ 已偏離記錄位置約 ' + Math.round(dist) + ' 米\n請返回原位置或另開新記錄');
+        }
+      }
+    });
+  }
+
+  toAdd.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const img = new Image();
+      img.onload = function() {
+        let w = img.width, h = img.height;
+        if (w > MAX_PHOTO_PX || h > MAX_PHOTO_PX) {
+          const ratio = Math.min(MAX_PHOTO_PX / w, MAX_PHOTO_PX / h);
+          w = Math.round(w * ratio);
+          h = Math.round(h * ratio);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        var resized = canvas.toDataURL('image/jpeg', 0.8);
+        // Embed GPS EXIF into photo
+        if (state.currentGps) {
+          resized = embedGpsExif(resized, state.currentGps);
+        }
+        state.photos.push(resized);
+        updatePhotoPreview();
+        savePhotoToDisk(file.name || 'photo.jpg', resized);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+}
+
+// When submitting a record: save photos to IndexedDB
+async function persistPhotosForRecord(recordId, photos) {
+  for (let i = 0; i < photos.length; i++) {
+    const key = recordId + '_' + i;
+    await savePhotoToDB(key, photos[i]);
+  }
+}
+
+// When loading a record: restore photos from IndexedDB
+async function loadPhotosForRecord(photoKeys) {
+  const photos = [];
+  for (const key of (photoKeys || [])) {
+    const dataUrl = await getPhotoFromDB(key);
+    if (dataUrl) photos.push(dataUrl);
+  }
+  return photos;
+}
+
+function getAlbumName() {
+  const lang = (navigator.language || navigator.userLanguage || 'en').slice(0, 2);
+  const names = {
+    'zh': '山徑巡查', 'en': 'TrailPatrol', 'ja': 'トレイルパトロール',
+    'ko': '트레일순찰', 'es': 'PatrullaSendero', 'fr': 'PatrouilleSentier',
+    'pt': 'PatrulhaTrilha', 'default': 'TrailPatrol'
+  };
+  return names[lang] || names['default'];
+}
+
+function savePhotoToDisk(filename, dataUrl) {
+  const album = getAlbumName();
+  // Use Hong Kong timezone for filename
+  const hkNow2 = new Date();
+  const hkDate2 = new Date(hkNow2.toLocaleString('en-US', { timeZone: 'Asia/Hong_Kong' }));
+  const ts = hkDate2.toISOString().slice(0, 19).replace(/[T:]/g, '-');
+  const friendlyName = album + '_' + ts + '.jpg';
+  
+  // Convert data URL to Blob
+  const byteString = atob(dataUrl.split(',')[1]);
+  const mimeType = 'image/jpeg';
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+  const blob = new Blob([ab], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  
+  // Method 1: Download link (works on modern iOS 14.5+ → saves to Downloads folder)
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = friendlyName;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  // Method 2: Share API (iOS → allows user to save to Photos)
+  if (navigator.share && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    setTimeout(function() {
+      navigator.share({
+        title: friendlyName,
+        text: album + ' 相片 — 已自動儲存到 Download 資料夾',
+        files: [new File([blob], friendlyName, { type: mimeType })]
+      }).catch(function() {});
+    }, 2000);
+  }
+  
+  // Clean up blob URL after a delay
+  setTimeout(function() { URL.revokeObjectURL(url); }, 10000);
+}
+
+// When submitting a record: save photos to IndexedDB
+function removePhoto(idx) {
+  state.photos.splice(idx, 1);
+  updatePhotoPreview();
+}
+
+function updatePhotoPreview() {
+  const container = document.getElementById('photoPreviews');
+  if (!container) return;
+  container.innerHTML = '';
+  state.photos.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = 'thumb';
+    div.innerHTML = `<img src="${p}" alt="photo"><div class="del" onclick="removePhoto(${idx})">×</div>`;
+    container.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════════════════
+function submitRecord() {
+  const date = document.getElementById('fDate')?.value;
+  const recorder = document.getElementById('fRecorder')?.value;
+  const trail = document.getElementById('fTrail')?.value;
+  const trailOther = document.getElementById('fTrailOther')?.value;
+  const solution = document.getElementById('fSolution')?.value;
+  const note = document.getElementById('fNote')?.value;
+
+  if (!date || !recorder || !recorder.trim()) {
+    alert('⚠️ 請填寫日期和記錄人員');
+    return;
+  }
+
+  let issues = [];
+  if (state.activityType === 'trail') {
+    document.querySelectorAll('.trail-issue:checked').forEach(cb => issues.push(cb.value));
+  } else {
+    document.querySelectorAll('.water-issue:checked').forEach(cb => issues.push(cb.value));
+  }
+
+  const recordId = state.editId || Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
+  const record = {
+    id: recordId,
+    date, recorder: recorder.trim(),
+    trail: trail === '其他' ? (trailOther || '其他') : trail,
+    activityType: state.activityType,
+    issues, solution, note: note || '',
+    photoKeys: state.photos.length > 0 ? state.photos.map((_, i) => recordId + '_' + i) : [],
+    createdBy: state.user.role,
+    createdAt: new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Hong_Kong' })).toISOString()
+  };
+
+  if (state.editId) {
+    const idx = state.records.findIndex(r => r.id === state.editId);
+    if (idx >= 0) {
+      state.records[idx] = record;
+      db.collection('records').doc(record.id).set(record).then(function() {
+        console.log("🔥 SYNC OK:", record.id);
+      }).catch(function(e) {
+        console.log("🔥 SYNC FAIL:", record.id, e.code, e.message);
+        alert("⚠️ 記錄未能同步到雲端: " + e.message);
+      });
+    }
+  } else {
+    const last = state.records[0];
+    if (last && last.date === record.date && last.recorder === record.recorder &&
+        last.trail === record.trail && JSON.stringify(last.issues) === JSON.stringify(record.issues)) {
+      if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
+    }
+    state.records.unshift(record);
+    // Persist photos to IndexedDB (use copy to avoid race with state.photos=[])
+    var photosCopy = state.photos.slice();
+    if (photosCopy.length > 0) {
+      persistPhotosForRecord(recordId, photosCopy).then(function() {
+        console.log("📸 Photos saved to IndexedDB:", photosCopy.length);
+      });
+    }
+    // Use live tracking GPS if available
+    var gpsToSave = state.currentGps;
+
+    // Use add() for new records
+    db.collection('records').add(record).then(function(docRef) {
+      console.log("🔥 SYNC OK:", docRef.id);
+      // Update local record with Firestore-generated ID
+      if (state.records[0] && state.records[0].id === record.id) {
+        state.records[0].id = docRef.id;
+      }
+      // GPS capture — 用 Firestore 正確 ID + live GPS
+      if (gpsToSave) {
+        db.collection('records').doc(docRef.id).update({ gps: gpsToSave }).then(function() {
+          console.log("📌 GPS OK:", docRef.id);
+        }).catch(function(e) {
+          console.log("📌 GPS FAIL:", e.code, e.message);
+        });
+        if (state.records[0]) {
+          state.records[0].gps = gpsToSave;
+        }
+      }
+    }).catch(function(e) {
+      console.log("🔥 SYNC FAIL:", e.code, e.message);
+      alert("⚠️ 記錄未能同步到雲端\\n" + e.code + ": " + e.message);
+    });
+  }
+
+  // 即時跳去查閱頁（唔等 GPS）
+  state.editId = null;
+  state.photos = [];
+  state.activityType = 'trail';
+  switchTab('list');
+  renderList();
+}
+
+// ══════════════════════════════════════════════
+// CANCEL EDIT
+// ══════════════════════════════════════════════
+function cancelEdit() {
+  state.editId = null;
+  state.photos = [];
+  renderForm();
+}
+
+// ══════════════════════════════════════════════
+// LIST
+// ══════════════════════════════════════════════
+function renderList() {
+  let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+    <h2 style="font-size:0.8rem;color:#60c080;">📋 巡查紀錄</h2>
+    <span style="font-size:0.55rem;color:#888;">共 ${state.records.length} 項</span>
+  </div>`;
+
+  if (state.records.length === 0) {
+    html += `<p style="text-align:center;color:#555;margin-top:3rem;">暫無記錄</p>`;
+  } else {
+    state.records.forEach(r => {
+      const canEdit = state.user.role === 'admin' || r.createdBy === 'vol';
+      html += `<div class="record-card">
+        <div class="date">${r.date} · ${r.createdBy === 'admin' ? 'Admin' : '義工'}</div>
+        <div class="trail">${r.trail}</div>
+        <div class="type">${r.activityType === 'trail' ? '🪨 山徑' : '💧 水道'}</div>
+        <div class="issues"><strong>問題：</strong>${(r.issues||['']).join('、')}</div>
+        ${r.solution ? `<div class="issues"><strong>建議：</strong>${r.solution}</div>` : ''}
+        ${r.recorder ? `<div class="issues"><strong>記錄：</strong>${r.recorder}</div>` : ''}
+        ${r.note ? `<div class="issues"><strong>備註：</strong>${r.note}</div>` : ''}
+        ${r.photoKeys && r.photoKeys.length > 0 ? `<div class="issues"><strong>相片：</strong>${r.photoKeys.length} 張</div>` : ''}
+        ${canEdit ? `<div style="margin-top:0.3rem;">
+          <button class="btn btn-sm btn-secondary" onclick="editRecord('${r.id}')">✏️ 修改</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteRecord('${r.id}')">🗑️ 刪除</button>
+        </div>` : ''}
+      </div>`;
+    });
+  }
+
+  // Export
+  if (state.user.role === 'admin') {
+    html += `<div style="margin-top:1rem;">
+      <button class="btn btn-primary btn-full" onclick="exportCSV()">📊 匯出報表 (CSV)</button>
+    </div>`;
+  }
+
+  document.getElementById('tabContent').innerHTML = html;
+}
+
+// ── MAP VIEW ──
+function renderMap() {
+  let html = `<h2 style="font-size:0.8rem;color:#60c080;margin-bottom:0.5rem;">🗺️ 巡查地圖</h2>
+  <div id="mapContainer" style="height:55vh;border-radius:12px;overflow:hidden;border:1px solid #2a3a2a;background:#0c0c14;"></div>
+  <div style="margin-top:0.5rem;font-size:0.55rem;color:#888;" id="mapStatus">載入地圖中…</div>`;
+  document.getElementById('tabContent').innerHTML = html;
+
+  // Load Leaflet
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(link);
+
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.onload = function() {
+    // Determine initial map view
+    var initLat = 22.403, initLng = 114.245, initZoom = 14;
+    if (state.lastMapCenter) {
+      initLat = state.lastMapCenter.lat;
+      initLng = state.lastMapCenter.lng;
+      initZoom = state.lastMapCenter.zoom;
+    } else if (state.userLocation) {
+      initLat = state.userLocation.lat;
+      initLng = state.userLocation.lng;
+      initZoom = 15;
+    }
+    const map = L.map('mapContainer').setView([initLat, initLng], initZoom);
+    window._map = map; // save for mapClickRecord
+    
+    // Save map view whenever user moves/zooms
+    map.on('moveend', function() {
+      var c = map.getCenter();
+      state.lastMapCenter = { lat: c.lat, lng: c.lng, zoom: map.getZoom() };
+    });
+    
+    // One-time GPS capture on first map open
+    if (!state.userLocation && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        state.userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        // Only center if user hasn't moved map yet
+        if (!state.lastMapCenter) {
+          map.setView([state.userLocation.lat, state.userLocation.lng], 15);
+        }
+      }, function() {}, { enableHighAccuracy: true, timeout: 10000 });
+    }
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Add markers and route lines
+    let count = 0;
+    const trailPoints = [];
+    const waterPoints = [];
+
+    state.records.forEach(r => {
+      if (r.gps && r.gps.lat && r.gps.lng) {
+        const color = r.activityType === 'trail' ? '#4a8a5a' : '#4080c0';
+        const latlng = [r.gps.lat, r.gps.lng];
+        if (r.activityType === 'trail') {
+          trailPoints.push(latlng);
+        } else {
+          waterPoints.push(latlng);
+        }
+
+        // Build popup content
+        var sol = r.solution || '';
+        var note = r.note || '';
+        var pc = (r.photoKeys && r.photoKeys.length) || (r.photos && r.photos.length) || 0;
+        let popupHtml = '<div style="font-size:0.45rem;line-height:1.6;">';
+        popupHtml += '<b>' + r.trail + '</b><br>';
+        popupHtml += (r.issues||[]).join('、') + '<br>';
+        popupHtml += '<span style="color:#888;">📅 ' + r.date + ' · ' + (r.recorder||'') + '</span>';
+        if (sol) popupHtml += '<br>🔧 ' + sol;
+        if (note) popupHtml += '<br>📝 ' + note;
+        if (pc > 0) {
+          popupHtml += '<br><span style="color:#888;">📸 ';
+          // Check if photos are stored in Firestore (recovered) or IndexedDB
+          if (r.photosData) {
+            for (var pi in r.photosData) {
+              if (r.photosData.hasOwnProperty(pi)) {
+                popupHtml += '<a onclick="viewPhotoData(\'' + r.photosData[pi] + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
+              }
+            }
+          } else if (r.photoKeys && r.photoKeys.length) {
+            r.photoKeys.forEach(function(k) {
+              popupHtml += '<a onclick="viewPhoto(\'' + k + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
+            });
+          } else {
+            popupHtml += pc + ' 張';
+          }
+          popupHtml += '</span>';
+        }
+        popupHtml += '</div>';
+
+        L.circleMarker(latlng, {
+          radius: 14, color: color, fillColor: color, fillOpacity: 0.7
+        }).addTo(map)
+          .on('click', function(e) {
+            // Find nearby records (within 30m)
+            var nearby = state.records.filter(function(nr) {
+              if (!nr.gps || !nr.gps.lat || nr.id === r.id) return false;
+              var dLat = (nr.gps.lat - r.gps.lat) * 111320;
+              var dLng = (nr.gps.lng - r.gps.lng) * 111320 * Math.cos(r.gps.lat * Math.PI / 180);
+              return Math.sqrt(dLat*dLat + dLng*dLng) < 30;
+            });
+            var allNearby = [r].concat(nearby);
+            var popupHtml = '';
+            // Check how many records to prevent header on single
+            if (allNearby.length > 1) {
+              popupHtml += '<div style="font-size:0.45rem;color:#888;margin-bottom:0.2rem;">📍 附近 ' + allNearby.length + ' 個記錄</div>';
+            }
+            allNearby.forEach(function(nr, i) {
+              var nc = nr.activityType === 'trail' ? '#4a8a5a' : '#4080c0';
+              if (i > 0) popupHtml += '<div style="border-top:1px solid #2a3a2a;margin:0.15rem 0;"></div>';
+              // Single record: show full details
+              if (allNearby.length === 1) {
+                popupHtml += '<div style="font-size:0.45rem;line-height:1.5;">';
+                popupHtml += '<b>' + nr.trail + '</b><br>';
+                popupHtml += (nr.issues||[]).join('、') + '<br>';
+                popupHtml += '<span style="color:#888;">📅 ' + nr.date + ' · ' + (nr.recorder||'') + '</span>';
+                if (nr.solution) popupHtml += '<br>🔧 ' + nr.solution;
+                var pc = (nr.photoKeys && nr.photoKeys.length) || (nr.photos && nr.photos.length) || 0;
+                if (pc > 0) {
+                  popupHtml += '<br><span style="color:#888;">📸 ';
+                  if (nr.photosData) {
+                    for (var pi in nr.photosData) {
+                      if (nr.photosData.hasOwnProperty(pi))
+                        popupHtml += '<a onclick="viewPhotoData(\'' + nr.photosData[pi] + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
+                    }
+                  } else if (nr.photoKeys && nr.photoKeys.length) {
+                    nr.photoKeys.forEach(function(k) {
+                      popupHtml += '<a onclick="viewPhoto(\'' + k + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
+                    });
+                  } else { popupHtml += pc + ' 張'; }
+                  popupHtml += '</span>';
+                }
+                popupHtml += '</div>';
+              } else {
+                // Multiple records: compact format
+                var icon = nr.activityType === 'trail' ? '🪨' : '💧';
+                popupHtml += '<div style="font-size:0.45rem;line-height:1.4;border-left:3px solid ' + nc + ';padding-left:0.3rem;cursor:pointer;" onclick="mapClickRecord(\'' + nr.id + '\')">';
+                popupHtml += icon + ' <b>' + nr.trail + '</b> · ' + nr.date + ' · ' + nr.recorder;
+                var pc2 = (nr.photoKeys && nr.photoKeys.length) || (nr.photos && nr.photos.length) || 0;
+                if (pc2 > 0) popupHtml += ' 📸' + pc2;
+                popupHtml += '</div>';
+              }
+            });
+            this.bindPopup(popupHtml).openPopup();
+          });
+        count++;
+      }
+    });
+
+    // Draw trail route — green dashed line
+    if (trailPoints.length >= 2) {
+      L.polyline(trailPoints.reverse(), {
+        color: '#4a8a5a',
+        weight: 5,
+        opacity: 0.7,
+        dashArray: '10, 10'
+      }).addTo(map);
+    }
+
+    // Draw water route — blue dashed line
+    if (waterPoints.length >= 2) {
+      L.polyline(waterPoints.reverse(), {
+        color: '#4080c0',
+        weight: 5,
+        opacity: 0.7,
+        dashArray: '10, 10'
+      }).addTo(map);
+    }
+
+    document.getElementById('mapStatus').innerHTML =
+      count > 0
+        ? '<div style="font-size:0.55rem;">📍 已顯示 ' + count + ' 個有 GPS 嘅記錄</div>'
+          + '<div style="font-size:0.45rem;color:#888;margin-top:0.2rem;">'
+          + '<span style="color:#4a8a5a;">🟢</span> 山徑 · '
+          + '<span style="color:#4080c0;">🔵</span> 水道 · '
+          + '<span style="color:#4a8a5a;">- - -</span> 山徑路線 · '
+          + '<span style="color:#4080c0;">- - -</span> 水道路線'
+          + '</div>'
+        : '📌 暫無 GPS 記錄 — 填寫時系統會自動記錄位置';
+
+  };
+  document.body.appendChild(script);
+}
+
+function editRecord(id) {
+  state.editId = id;
+  state.photos = [];
+  const rec = state.records.find(r => r.id === id);
+  if (rec) state.activityType = rec.activityType;
+  renderForm();
+}
+
+function deleteRecord(id) {
+  if (!confirm('確定刪除此記錄？')) return;
+  // Find the record to get the correct Firestore document ID
+  var rec = state.records.find(function(r) { return r.id === id || r._firestoreId === id; });
+  var docId = rec ? (rec._firestoreId || id) : id;
+  state.records = state.records.filter(r => r.id !== id && r._firestoreId !== id);
+  db.collection('records').doc(docId).delete().catch(function(e) { console.log("🔥", e); });
+  renderList();
+}
+
+// ══════════════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════════════
+function renderAdmin() {
+  if (state.user.role !== 'admin') {
+    document.getElementById('tabContent').innerHTML = '<p style="text-align:center;color:#c06060;margin-top:3rem;">⚠️ 僅限 Admin</p>';
+    return;
+  }
+  var total = state.records.length;
+  var trails = [...new Set(state.records.filter(function(r){return r.trail;}).map(function(r){return r.trail;}))];
+  if (trails.length === 0) trails = TRAILS;
+  var html = '<h2 style="font-size:0.8rem;color:#60c080;margin-bottom:0.5rem;">⚙️ Admin 管理</h2>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin:0.5rem 0;">';
+  html += '<div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;"><div style="font-size:1.2rem;color:#60c080;">'+total+'</div><div style="font-size:0.45rem;color:#888;">總記錄</div></div>';
+  html += '<div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;"><div style="font-size:1.2rem;color:#c0a060;">'+state.records.filter(function(r){return r.activityType==="trail";}).length+'</div><div style="font-size:0.45rem;color:#888;">山徑</div></div>';
+  html += '<div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;"><div style="font-size:1.2rem;color:#40a0c0;">'+state.records.filter(function(r){return r.activityType==="water";}).length+'</div><div style="font-size:0.45rem;color:#888;">水道</div></div>';
+  html += '<div style="background:#10181a;border-radius:8px;padding:0.5rem;text-align:center;"><div style="font-size:1.2rem;color:#c08080;">'+([...new Set(state.records.map(function(r){return r.recorder;}))].filter(Boolean).length)+'</div><div style="font-size:0.45rem;color:#888;">人員</div></div></div>';
+  
+  html += '<div style="background:#0a1520;border-radius:10px;padding:0.6rem;margin:0.6rem 0;border:1px solid #1a3a5a;">';
+  html += '<div style="font-size:0.65rem;color:#60a0c0;margin-bottom:0.4rem;font-weight:600;">📊 一鍵生成報告</div>';
+  html += '<div class="form-group" style="margin-bottom:0.4rem;"><label style="font-size:0.55rem;color:#80a0b0;">📍 路線</label>';
+  html += '<select id="reportTrailSelect" style="background:#0c0c14;color:#e0e0e0;border:1px solid #1a3a5a;border-radius:8px;padding:0.5rem;width:100%;font-size:0.6rem;">';
+  trails.forEach(function(t){ html += '<option value="'+t+'">'+t+'</option>'; });
+  html += '</select></div>';
+  html += '<div style="display:flex;gap:0.4rem;">';
+  html += '<button class="btn btn-sm" onclick="generateReport(\'html\')" style="flex:1;background:#1a3a2a;color:#60c080;padding:0.6rem;font-size:0.55rem;">📄 HTML 報告</button>';
+  html += '<button class="btn btn-sm" onclick="generateReport(\'pdf\')" style="flex:1;background:#2a1a3a;color:#c080e0;padding:0.6rem;font-size:0.55rem;">📕 PDF 報告</button>';
+  html += '</div>';
+  html += '<div id="reportStatus" style="font-size:0.45rem;color:#888;margin-top:0.3rem;text-align:center;"></div></div>';
+  html += '<div style="margin-top:0.8rem;display:flex;gap:0.3rem;">';
+  html += '<button class="btn btn-sm" onclick="exportCSV()" style="flex:1;background:#1a2a1a;color:#80c080;">📥 CSV</button>';
+  html += '<button class="btn btn-sm" onclick="clearAllRecords()" style="flex:1;background:#2a1a1a;color:#c06060;">🗑️ 清除</button></div>';
+  document.getElementById('tabContent').innerHTML = html;
+}
+
+function generateReport(type) {
+  var trail = (document.getElementById("reportTrailSelect")||{}).value || "馬鞍山郊遊徑";
+  var st = document.getElementById("reportStatus");
+  if (!st) return;
+  var count = state.records.filter(function(r){return r.trail===trail && r.activityType==="water";}).length;
+  st.innerHTML = "⏳ 選擇路線: "+trail+" ("+count+"條水道記錄)<br>📤 mvmv 正在生成 "+type.toUpperCase()+" 報告...";
+  db.collection("report_requests").add({
+    trail: trail, type: type, count: count,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    status: "pending"
+  }).then(function(ref) {
+    st.innerHTML = "✅ 請求已提交！<br>📎 報告準備好後會顯示係度";
+  }).catch(function(e) {
+    st.innerHTML = "❌ 錯誤: "+e.message;
+  });
+}
+function clearAllRecords() {
+  if (!confirm('確定清除所有記錄？此操作不可復原！')) return;
+  if (!confirm(`再次確認：清除全部 ${state.records.length} 項記錄？`)) return;
+  const batch = db.batch();
+  state.records.forEach(r => batch.delete(db.collection('records').doc(r.id)));
+  batch.commit().catch(e => console.log("🔥", e));
+  state.records = [];
+  renderAdmin();
+}
+
+// ══════════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════════
+function exportCSV() {
+  let csv = "日期,記錄人員,山徑名稱,類別,問題,建議處理方法,備註,相片數\n";
+  state.records.forEach(r => {
+    const issues = (r.issues||[]).join(';');
+    const pc = (r.photoKeys && r.photoKeys.length) || (r.photos && r.photos.length) || 0;
+    csv += `"${r.date}","${r.recorder||''}","${r.trail}","${r.activityType==='trail'?'山徑':'水道'}","${issues}","${r.solution||''}","${r.note||''}","${pc}"\n`;
+  });
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `巡查記錄_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+}
+
+// ══════════════════════════════════════════════
+// AUTO-TRAIL OTHER FIELD
+// ══════════════════════════════════════════════
+document.addEventListener('change', function(e) {
+  if (e.target && e.target.id === 'fTrail') {
+    const otherInput = document.getElementById('fTrailOther');
+    if (otherInput) otherInput.style.display = e.target.value === '其他' ? 'block' : 'none';
+  }
+});
+</script>
+
+</body>
+</html>
