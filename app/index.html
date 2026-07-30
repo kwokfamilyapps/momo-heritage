@@ -414,21 +414,13 @@ function completeLogin(role) {
 }
 
 function exitApp() {
-  if (confirm('確定退出 App？')) {
+  if (confirm('確定退出？')) {
     logout();
   }
 }
 
 function exitLogin() {
-  if (confirm('確定離開？')) {
-    // Show a message that they can close the tab
-    document.getElementById('screenLogin').innerHTML = `
-      <div class="login-box" style="text-align:center;">
-        <h2>👋 感謝使用</h2>
-        <p style="color:#888;margin:1rem 0;">你可以關閉此分頁</p>
-        <button class="login-btn vol" onclick="location.reload()">🔄 重新啟動</button>
-      </div>`;
-  }
+  document.getElementById('screenLogin').innerHTML = '<div class="login-box" style="text-align:center;"><h2>👋 已退出</h2><p style="color:#888;margin:1rem 0;">👤 已登出</p><p style="color:#666;font-size:0.55rem;">你可以關閉此分頁或重新登入</p><button class="login-btn vol" onclick="location.reload()" style="margin-top:0.5rem;">🔄 重新啟動</button></div>';
 }
 
 // ══════════════════════════════════════════════
