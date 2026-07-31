@@ -1396,9 +1396,142 @@ function generateReport(type) {
   if (recs.length === 0) { st.innerHTML = "⚠️ 無記錄"; return; }
   st.innerHTML = "⏳ 生成 " + type.toUpperCase() + " 報告...(" + recs.length + "條)";
   if (type === "html") { genHTML(trail, recs, st); }
-  else { st.innerHTML = "📕 用瀏覽器列印功能存做 PDF<br>先㩒 HTML 下載"; genHTML(trail, recs, st); }
+  else { genPDF(trail, recs, st); }
 }
-function genHTML(trail, recs, st) {
+function genPDF(trail, recs, st) {
+  var h = buildPDFReport(trail, recs);
+  var blob = new Blob([h], {type:"text/html;charset=utf-8"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a"); a.href = url; a.download = trail + "_正式報告_" + new Date().toISOString().split("T")[0] + ".html";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  st.innerHTML = "📕 已生成正式報告 HTML！<br>請喺瀏覽器開啟後，用<b>列印 → 另存為 PDF</b> 存做 PDF 檔案";
+}
+function buildPDFReport(trail, recs) {
+  var dates = {}; recs.forEach(function(r){ dates[r.date]=1; });
+  var dateList = Object.keys(dates).sort();
+  var chSet = {}; recs.forEach(function(r){ chSet[r.waterChannel||"?"]=1; });
+  var channels = Object.keys(chSet).sort(function(a,b){ return (a.split("-")[0]-b.split("-")[0]) || (a.split("-")[1]||a)- (b.split("-")[1]||b); });
+  var L = [];
+  L.push("<!DOCTYPE html><html><head><meta charset=utf-8><title>" + trail + " 巡查報告</title><style>");
+  L.push("@page{size:A4;margin:14mm 12mm}");
+  L.push("body{font:12pt 'PMingLiU','MingLiU','Noto Sans TC',serif;color:#1a1a16;line-height:1.7}");
+  L.push("h1{font-size:24pt;text-align:center;color:#2d5a27;margin:0}");
+  L.push("h2{font-size:16pt;color:#2d5a27;border-bottom:2px solid #2d5a27;padding-bottom:4px;margin:30px 0 12px}");
+  L.push("h3{font-size:13pt;color:#333;margin:16px 0 8px}");
+  L.push(".cover{text-align:center;padding:80px 0 40px;page-break-after:always}");
+  L.push(".cover .logo{width:100px;height:100px;border-radius:50%;background:#2d5a27;color:#fff;font-size:34px;line-height:100px;margin:0 auto 24px}");
+  L.push(".cover .sub{font-size:14pt;color:#666;margin-top:20px}");
+  L.push(".cover .meta{margin-top:80px;font-size:12pt;color:#555}");
+  L.push(".cover .line{width:240px;height:2px;background:#2d5a27;margin:18px auto}");
+  L.push("table{width:100%;border-collapse:collapse;margin:12px 0}");
+  L.push("th,td{border:1px solid #aaa;padding:8px;text-align:left;vertical-align:middle}");
+  L.push("th{background:#2d5a27;color:#fff;font-weight:bold}");
+  L.push("td{background:#fff}");
+  L.push(".compare{display:flex;gap:6px;page-break-inside:avoid;margin:8px 0}");
+  L.push(".compare .col{flex:1;border:1px solid #aaa;border-radius:4px;padding:6px;text-align:center;background:#faf7ec}");
+  L.push(".compare .col .cap{font-size:11pt;font-weight:bold;color:#2d5a27;padding:4px}");
+  L.push(".compare img{width:100%;max-height:200px;object-fit:cover;border-radius:3px}");
+  L.push(".fullimg{text-align:center;margin:8px 0}");
+  L.push(".fullimg img{max-width:100%;max-height:220px;object-fit:contain;border:1px solid #ccc;border-radius:3px}");
+  L.push(".mapwrap{background:#fff;border:2px solid #2d5a27;border-radius:8px;padding:8px;margin:12px 0;text-align:center}");
+  L.push(".mapwrap svg{width:100%;max-height:400px}");
+  L.push(".note{font-size:10pt;color:#666;text-align:center;margin-top:20px}");
+  L.push(".stat{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}");
+  L.push(".stat>div{flex:1;min-width:120px;background:#f5f0e0;border:1px solid #c4b89a;border-radius:6px;padding:10px;text-align:center}");
+  L.push(".stat .n{font-size:22pt;font-weight:bold;color:#2d5a27}");
+  L.push(".stat .l{font-size:10pt;color:#666;margin-top:4px}");
+  L.push("@media print{.compare{page-break-inside:avoid}}");
+  L.push("</style></head><body>");
+
+  // ═══ COVER PAGE ═══
+  L.push("<div class=cover>");
+  L.push("<div class=logo>🏞️</div>");
+  L.push("<h1>鞍山探索館</h1>");
+  L.push("<div class=line></div>");
+  L.push("<h2 style='border:none'>山徑保育工作報告</h2>");
+  L.push("<p class=sub>" + trail + " 巡查記錄</p>");
+  L.push("<div class=meta>");
+  L.push("報告期間：" + dateList[0] + " 至 " + dateList[dateList.length-1] + "<br>");
+  L.push("報告日期：" + new Date().toISOString().split("T")[0] + "<br>");
+  L.push("策劃：鞍山探索館 山徑保育組</div>");
+  L.push("</div>");
+
+  // ═══ SUMMARY ═══
+  L.push("<h2>活動摘要</h2>");
+  L.push("<p>本報告總結「" + trail + "」於 " + dateList.join("、") + " 期間之山徑及水道巡查工作。義工隊共進行 " + dateList.length + " 次巡查，清理 " + channels.length + " 處水道及石籃位置，確保山徑排水系統暢通，減低水土流失風險。</p>");
+  L.push("<div class=stat>");
+  L.push("<div><div class=n>" + dateList.length + "</div><div class=l>巡查次數</div></div>");
+  L.push("<div><div class=n>" + channels.length + "</div><div class=l>清理位置</div></div>");
+  L.push("<div><div class=n>" + recs.length + "</div><div class=l>巡查記錄</div></div>");
+  var withPhoto = 0; recs.forEach(function(r){ if(r.photosData && Object.keys(r.photosData).length>0) withPhoto++; });
+  L.push("<div><div class=n>" + withPhoto + "</div><div class=l>相片記錄</div></div>");
+  L.push("</div>");
+
+  // ═══ PATROL RECORDS SUMMARY ═══
+  L.push("<h2>巡查記錄概要</h2>");
+  L.push("<table><tr><th>日期</th><th>記錄數</th><th>涵蓋水道</th><th>巡查性質</th></tr>");
+  dateList.forEach(function(d){
+    var dr = recs.filter(function(r){ return r.date===d; });
+    var dch = {}; dr.forEach(function(r){ dch[r.waterChannel||"?"]=1; });
+    var chs = Object.keys(dch).sort();
+    var nature = dr.length >= 10 ? "全面巡查" : dr.length >= 5 ? "重點巡查" : "局部巡查";
+    L.push("<tr><td>" + d + "</td><td style=text-align:center>" + dr.length + "</td><td>" + (chs.length>6 ? chs.slice(0,6).join("、") + " 等" : chs.join("、")) + "</td><td>" + nature + "</td></tr>");
+  });
+  L.push("</table>");
+
+  // ═══ BEFORE/AFTER COMPARISON ═══
+  L.push("<h2>清理前後對比</h2>");
+  channels.forEach(function(ch){
+    var chRecs = recs.filter(function(r){ return (r.waterChannel||"?")===ch; });
+    var before = chRecs.find(function(r){ return r.cleaningType==="before" && r.photosData; });
+    var after = chRecs.find(function(r){ return r.cleaningType==="after" && r.photosData; });
+    var anyPhoto = chRecs.find(function(r){ return r.photosData; });
+    L.push("<h3>" + ch + " 號位置</h3>");
+    if (before || after) {
+      L.push("<div class=compare>");
+      L.push("<div class=col>" + (before ? "<div class=cap>清理前</div><img src='" + before.photosData[Object.keys(before.photosData)[0]] + "'/>" : "<div class=cap>清理前</div><p style=color:#aaa;padding:40px 0>（無相片）</p>") + "</div>");
+      L.push("<div class=col>" + (after ? "<div class=cap>清理後</div><img src='" + after.photosData[Object.keys(after.photosData)[0]] + "'/>" : "<div class=cap>清理後</div><p style=color:#aaa;padding:40px 0>（無相片）</p>") + "</div>");
+      L.push("</div>");
+    } else if (anyPhoto) {
+      L.push("<div class=fullimg>");
+      Object.keys(anyPhoto.photosData).forEach(function(k){ L.push("<img src='" + anyPhoto.photosData[k] + "'/>"); });
+      L.push("</div>");
+    } else {
+      L.push("<p style=color:#999>（此位置無相片記錄）</p>");
+    }
+    // Status line
+    var hasClean = chRecs.some(function(r){ return r.cleaningType==="after"; });
+    L.push("<p style='font-size:10pt;color:#555'>巡查次數：" + chRecs.length + " 次" + (hasClean ? " ｜ 狀態：已清理" : " ｜ 狀態：已視察") + "</p>");
+  });
+
+  // ═══ MAP ═══
+  var gpsRecs = recs.filter(function(r){ return r.gpsLat && r.gpsLng; });
+  if (gpsRecs.length >= 2) {
+    var lats = gpsRecs.map(function(r){return r.gpsLat;}), lngs = gpsRecs.map(function(r){return r.gpsLng;});
+    var minLat = Math.min.apply(null,lats), maxLat = Math.max.apply(null,lats);
+    var minLng = Math.min.apply(null,lngs), maxLng = Math.max.apply(null,lngs);
+    if (maxLat-minLat < 0.0008) { minLat -= 0.0004; maxLat += 0.0004; }
+    if (maxLng-minLng < 0.0008) { minLng -= 0.0004; maxLng += 0.0004; }
+    var W=640, H=380;
+    function px(r){ return W - ((r.gpsLng-minLng)/(maxLng-minLng))*W + 15; }
+    function py(r){ return H - ((r.gpsLat-minLat)/(maxLat-minLat))*H + 15; }
+    L.push("<h2>位置圖</h2><div class=mapwrap><svg viewBox='0 0 " + (W+30) + " " + (H+30) + "' xmlns='http://www.w3.org/2000/svg'>");
+    L.push("<rect x=0 y=0 width='" + (W+30) + "' height='" + (H+30) + "' fill='#f0f4e8' stroke='#2d5a27' stroke-width='2' rx=8/>");
+    L.push("<polyline points='");
+    gpsRecs.forEach(function(r){ L.push(px(r) + "," + py(r) + " "); });
+    L.push("' fill='none' stroke='#d08030' stroke-width='2' stroke-dasharray='5,3'/>");
+    gpsRecs.forEach(function(r){
+      var x = px(r), y = py(r);
+      L.push("<circle cx='" + x + "' cy='" + y + "' r='6' fill='#c03030' stroke='#fff' stroke-width='1.5'/>");
+      L.push("<text x='" + (x+9) + "' y='" + (y+3) + "' fill='#333' font-size='10'>" + (r.waterChannel||"") + "</text>");
+    });
+    L.push("</svg><p style='font-size:9pt;color:#666'>位置圖：黑點為巡查位置（數字為水道編號）</p></div>");
+  }
+
+  L.push("<p class=note>本報告由 鞍山探索館山徑與水道巡查記錄 App 自動生成</p>");
+  L.push("</body></html>");
+  return L.join("\n");
+}function genHTML(trail, recs, st) {
   var h = buildReport(trail, recs);
   var blob = new Blob([h], {type:"text/html;charset=utf-8"});
   var url = URL.createObjectURL(blob);
@@ -1410,115 +1543,36 @@ function buildReport(trail, recs) {
   var fm = {}; recs.forEach(function(r){ var ch = r.waterChannel || "other"; fm[ch] = (fm[ch]||0)+1; });
   var sc = Object.keys(fm).sort(function(a,b){ return fm[b]-fm[a]; });
   var dt = {}; recs.forEach(function(r){ dt[r.date] = 1; });
-  var dates = Object.keys(dt).sort();
   var ds = new Date().toISOString().split("T")[0];
   var L = [];
   L.push("<!DOCTYPE html><html><head><meta charset=utf-8><title>" + trail + " 報告</title><style>");
-  L.push("@page{size:A4;margin:12mm}");
-  L.push("body{font:13px/1.6 sans-serif;background:#f0e8d8;color:#1a1a16;padding:15px;max-width:820px;margin:0 auto}");
-  L.push("h1{font-size:22px;color:#2d5a27;border-bottom:3px solid #2d5a27;padding-bottom:6px;margin-bottom:4px}");
-  L.push("h2{font-size:16px;color:#3a7a33;margin:20px 0 8px;border-bottom:1px solid #c4b89a}");
-  L.push(".sub{color:#666;font-size:11px;margin-bottom:14px}");
+  L.push("body{font:13px/1.5 sans-serif;background:#f0e8d8;color:#1a1a16;padding:15px;max-width:800px;margin:0 auto}");
+  L.push("h1{font-size:20px;color:#2d5a27;border-bottom:2px solid #2d5a27;padding-bottom:5px}");
+  L.push("h2{font-size:15px;color:#3a7a33;margin:18px 0 8px;border-bottom:1px solid #c4b89a}");
   L.push(".sg{display:flex;flex-wrap:wrap;gap:6px;}.sg>div{flex:1;min-width:80px;background:#fff;border:1px solid #d4c8aa;border-radius:5px;padding:8px;text-align:center}");
-  L.push(".sg .n{font-size:24px;font-weight:700;color:#2d5a27}.sg .l{font-size:10px;color:#666;margin-top:2px}");
-  L.push("table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12px}");
-  L.push("th,td{border:1px solid #998;padding:5px;text-align:left}");
-  L.push("th{background:#2d5a27;color:#fff}");
-  L.push("td{background:rgba(255,255,240,0.5)}");
-  L.push(".bx{background:#fff8e0;border:1px solid #e8d8a0;border-radius:5px;padding:10px;margin:12px 0;line-height:1.7}");
-  L.push(".photobox{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}");
-  L.push(".photobox img{width:180px;height:135px;object-fit:cover;border-radius:5px;border:2px solid #d4c8aa}");
-  L.push(".mapwrap{background:#1a1a2e;border-radius:8px;padding:8px;margin:12px 0;border:2px solid #d4c8aa}");
-  L.push(".mapwrap svg{width:100%;height:auto}");
-  L.push(".legend{display:flex;gap:12px;justify-content:center;font-size:11px;color:#ddd;padding:4px}");
-  L.push(".dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}");
-  L.push("@media print{.mapwrap{background:#fff!important}body{background:#fff!important}.photobox img{width:150px;height:110px}}");
+  L.push(".sg .n{font-size:22px;font-weight:700;color:#2d5a27}.sg .l{font-size:9px;color:#666;margin-top:2px}");
+  L.push("table{width:100%;border-collapse:collapse;margin:8px 0}th,td{border:1px solid #998;padding:4px;text-align:left}");
+  L.push("th{background:#2d5a27;color:#fff}td{background:rgba(255,255,240,0.5)}");
+  L.push(".bx{background:#fff8e0;border:1px solid #e8d8a0;border-radius:5px;padding:8px;margin:10px 0;line-height:1.6}");
   L.push("</style></head><body>");
   L.push("<h1>" + trail + " 巡查分析報告</h1>");
-  L.push("<p class=sub>生成日期: " + ds + " | 資料來源: 鞍山探索館山徑與水道巡查記錄 App | 分析範圍: " + dates.join("、") + "</p>");
-
-  // Summary stats
+  L.push("<p style=color:#666>生成: " + ds + " | 由 鞍山探索館 App V1.2 自動生成</p>");
   L.push("<div class=sg>");
   L.push("<div><div class=n>" + recs.length + "</div><div class=l>巡查記錄</div></div>");
   L.push("<div><div class=n>" + sc.length + "</div><div class=l>水道檢查點</div></div>");
-  L.push("<div><div class=n>" + dates.length + "</div><div class=l>巡查次數</div></div>");
-  var maxF = 0; Object.values(fm).forEach(function(v){ if(v>maxF)maxF=v; });
-  L.push("<div><div class=n>" + maxF + "</div><div class=l>最高清理頻率</div></div>");
-  var withGps = 0; recs.forEach(function(r){ if(r.gpsLat) withGps++; });
-  L.push("<div><div class=n>" + withGps + "</div><div class=l>GPS 記錄</div></div>");
-  L.push("</div>");
-
-  // Map (SVG schematic with checkpoints)
-  var gpsRecs = recs.filter(function(r){ return r.gpsLat && r.gpsLng; });
-  if (gpsRecs.length >= 2) {
-    var lats = gpsRecs.map(function(r){return r.gpsLat;}), lngs = gpsRecs.map(function(r){return r.gpsLng;});
-    var minLat = Math.min.apply(null,lats), maxLat = Math.max.apply(null,lats);
-    var minLng = Math.min.apply(null,lngs), maxLng = Math.max.apply(null,lngs);
-    var pad = 0.0008, W=720, H=440;
-    if (maxLat-minLat < 0.0008) { minLat -= 0.0004; maxLat += 0.0004; }
-    if (maxLng-minLng < 0.0008) { minLng -= 0.0004; maxLng += 0.0004; }
-    function px(r){ return W - ((r.gpsLng-minLng)/(maxLng-minLng))*W + 15; }
-    function py(r){ return H - ((r.gpsLat-minLat)/(maxLat-minLat))*H + 15; }
-    L.push("<h2>🗺️ 巡查位置地圖</h2><div class=mapwrap><svg viewBox='0 0 " + (W+30) + " " + (H+30) + "' xmlns='http://www.w3.org/2000/svg'>");
-    L.push("<rect x=0 y=0 width='" + (W+30) + "' height='" + (H+30) + "' fill='#1a1a2e' rx=8/>");
-    // Route polyline
-    L.push("<polyline points='");
-    gpsRecs.forEach(function(r){ L.push(px(r) + "," + py(r) + " "); });
-    L.push("' fill='none' stroke='#e0a040' stroke-width='2' stroke-dasharray='5,3'/>");
-    // Points
-    var seen = {};
-    gpsRecs.forEach(function(r){
-      var key = r.waterChannel || "?";
-      var x = px(r), y = py(r);
-      L.push("<circle cx='" + x + "' cy='" + y + "' r='7' fill='#e04040' stroke='#fff' stroke-width='1.5'/>");
-      L.push("<text x='" + (x+10) + "' y='" + (y+4) + "' fill='#fff' font-size='10'>" + key + "</text>");
-    });
-    L.push("</svg><div class=legend><span><span class=dot style='background:#e04040'></span>檢查點</span><span>↗ 上北下南</span></div></div>");
-  }
-
-  // Cleaning frequency table
+  L.push("<div><div class=n>" + Object.keys(dt).length + "</div><div class=l>巡查次數</div></div>");
+  L.push("<div><div class=n>" + Math.max.apply(null,Object.values(fm)) + "</div><div class=l>最高頻率</div></div></div>");
   L.push("<h2>清理頻率分析</h2><table><tr><th>水道</th><th>次數</th><th>評估</th></tr>");
-  sc.forEach(function(ch){ var c = fm[ch]; L.push("<tr><td>" + ch + "</td><td style=text-align:center>" + c + "</td><td>" + (c>=4?"🔴 高頻":c>=3?"🟡 中頻":"🟢 低頻") + "</td></tr>"); });
-  L.push("</table>");
-
-  // Seasonal comparison
-  L.push("<h2>🌦️ 季節變化比較</h2><table><tr><th>日期</th><th>記錄數</th><th>檢查點</th><th>備註</th></tr>");
-  dates.forEach(function(d){
-    var dr = recs.filter(function(r){ return r.date === d; });
-    var dch = {}; dr.forEach(function(r){ dch[r.waterChannel||"?"]=1; });
-    var note = dr.length >= 10 ? "全面巡查" : dr.length >= 5 ? "重點巡查" : "局部巡查";
-    L.push("<tr><td>" + d + "</td><td style=text-align:center>" + dr.length + "</td><td style=text-align:center>" + Object.keys(dch).length + "</td><td>" + note + "</td></tr>");
-  });
-  L.push("</table>");
-
-  // Before/after photos
-  var photoRecs = recs.filter(function(r){ return r.photosData && Object.keys(r.photosData).length > 0; });
-  if (photoRecs.length > 0) {
-    L.push("<h2>📸 清理前後相片記錄</h2>");
-    photoRecs.forEach(function(r){
-      L.push("<div class=bx><b>水道 " + (r.waterChannel||"?") + "</b> (" + (r.date||"") + " · " + (r.cleaningType||"") + ")<div class=photobox>");
-      Object.keys(r.photosData).forEach(function(k){ L.push("<img src='" + r.photosData[k] + "' alt='相片" + k + "'/>"); });
-      L.push("</div></div>");
-    });
-  }
-
-  // Recommendations
-  L.push("<div class=bx><b>📋 建議</b><br>");
+  sc.forEach(function(ch){ var c = fm[ch]; L.push("<tr><td>" + ch + "</td><td style=text-align:center>" + c + "</td><td>" + (c>=4?"🔴高頻":c>=3?"🟡中頻":"🟢低頻") + "</td></tr>"); });
+  L.push("</table><div class=bx><b>📋 建議</b><br>");
   var hf = sc.filter(function(ch){ return fm[ch] >= 4; });
-  if (hf.length) L.push("🔴 高頻清理點 (" + hf.join(", ") + ")：建議加設攔沙設施或定期疏導<br>");
+  if (hf.length) L.push("🔴 高頻點 (" + hf.join(", ") + ")：建議加設攔沙設施<br>");
   var mf = sc.filter(function(ch){ return fm[ch] >= 3 && fm[ch] < 4; });
   if (mf.length) L.push("🟡 中頻點 (" + mf.join(", ") + ")：雨季後特別留意<br>");
-  L.push("📌 建議每年3月進行結構檢查，5月/10月進行全面清理，雨季前後重點巡查高頻位置</div>");
-
-  // Full records table
-  L.push("<h2>巡查記錄明細</h2><table><tr><th>日期</th><th>水道</th><th>類型</th><th>GPS</th><th>相片</th></tr>");
-  recs.forEach(function(r){
-    var nph = (r.photosData && Object.keys(r.photosData).length) || 0;
-    L.push("<tr><td>" + (r.date||"") + "</td><td>" + (r.waterChannel||"") + "</td><td>" + (r.cleaningType||"") + "</td><td>" + (r.gpsLat?r.gpsLat.toFixed(4):"") + "," + (r.gpsLng?r.gpsLng.toFixed(4):"") + "</td><td>" + (nph>0?nph+"張":"") + "</td></tr>");
-  });
-  L.push("</table>");
-  L.push("<p style=color:#888;font-size:10px;text-align:center>由 鞍山探索館巡查記錄 App V1.2 自動生成 | " + ds + "</p>");
-  L.push("</body></html>");
+  L.push("📌 建議每年3月結構檢查，5月/10月全面清理</div>");
+  L.push("<h2>巡查記錄</h2><table><tr><th>日期</th><th>水道</th><th>類型</th><th>GPS</th></tr>");
+  recs.forEach(function(r){ L.push("<tr><td>" + (r.date||"") + "</td><td>" + (r.waterChannel||"") + "</td><td>" + (r.cleaningType||"") + "</td><td>" + (r.gpsLat?r.gpsLat.toFixed(4):"") + "," + (r.gpsLng?r.gpsLng.toFixed(4):"") + "</td></tr>"); });
+  L.push("</table><p style=color:#888;font-size:10px;" + "text-align:center>由 鞍山探索館 App V1.2 自動生成 | " + ds + "</p></body></html>");
   return L.join("\n");
 }</script>
 
