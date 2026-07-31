@@ -1005,12 +1005,22 @@ function submitRecord() {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
     state.records.unshift(record);
-    // Persist photos to IndexedDB (use copy to avoid race with state.photos=[])
+    // Store photos in Firestore (compress to ~150KB each)
     var photosCopy = state.photos.slice();
     if (photosCopy.length > 0) {
       persistPhotosForRecord(recordId, photosCopy).then(function() {
         console.log("📸 Photos saved to IndexedDB:", photosCopy.length);
       });
+      // Also store base64 in Firestore record for report generation
+      db.collection("records").add(record).then(function(docRef) {
+        var pd = {};
+        photosCopy.forEach(function(p, i) {
+          pd[String(i)] = p.length > 200000 ? p.substring(0, 200000) : p;
+        });
+        db.collection("records").doc(docRef.id).update({ photosData: pd }).catch(function(e) {
+          console.log("📸 photosData FAIL:", e.code);
+        });
+      }).catch(function(e) {});
     }
     // Use live tracking GPS if available
     var gpsToSave = state.currentGps;
@@ -1303,6 +1313,12 @@ function deleteRecord(id) {
   var docId = rec ? (rec._firestoreId || id) : id;
   state.records = state.records.filter(r => r.id !== id && r._firestoreId !== id);
   db.collection('records').doc(docId).delete().catch(function(e) { console.log("🔥", e); });
+  // Also delete photos from IndexedDB
+  if (rec && rec.photoKeys) {
+    rec.photoKeys.forEach(function(k) {
+      deletePhotoFromDB(k).catch(function() {});
+    });
+  }
   renderList();
 }
 
