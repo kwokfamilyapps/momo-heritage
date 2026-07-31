@@ -267,6 +267,7 @@ const firebaseConfig = {
     var data = { id: doc.id, ...doc.data() };
     // Ensure _firestoreId is preserved (for delete operations)
     data._firestoreId = doc.id;
+    if (data.gpsLat && !data.gps) data.gps = {lat: data.gpsLat, lng: data.gpsLng};
     if (data.id !== doc.id) {
       data._localId = data.id;
       data.id = doc.id;
@@ -1004,7 +1005,8 @@ function submitRecord() {
         last.trail === record.trail && JSON.stringify(last.issues) === JSON.stringify(record.issues)) {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
-    state.records.unshift(record);
+      if (record.gpsLat && !record.gps) record.gps = {lat: record.gpsLat, lng: record.gpsLng};
+  state.records.unshift(record);
     // Store photos in Firestore (compress to ~150KB each)
     var photosCopy = state.photos.slice();
     if (photosCopy.length > 0) {
@@ -1109,8 +1111,28 @@ function renderList() {
 
 // ── MAP VIEW ──
 function renderMap() {
+  // Collect trails and dates from records
+  var trails = {};
+  var dates = {};
+  state.records.forEach(function(r) {
+    if (r.trail) trails[r.trail] = 1;
+    if (r.date) dates[r.date] = 1;
+  });
+  var trailList = Object.keys(trails).sort();
+  var dateList = Object.keys(dates).sort().reverse(); // newest first
+  trailList.unshift("所有路線");
+  dateList.unshift("所有日期");
+
   let html = `<h2 style="font-size:0.8rem;color:#60c080;margin-bottom:0.5rem;">🗺️ 巡查地圖</h2>
-  <div id="mapContainer" style="height:55vh;border-radius:12px;overflow:hidden;border:1px solid #2a3a2a;background:#0c0c14;"></div>
+  <div style="display:flex;gap:0.4rem;margin-bottom:0.4rem;flex-wrap:wrap;">
+    <select id="mapTrailFilter" style="flex:1;min-width:120px;background:#1a2a1a;color:#e0e8e0;border:1px solid #3a5a3a;border-radius:8px;padding:0.45rem;font-size:0.6rem;">
+      ${trailList.map(function(t){ return "<option value='" + t + "'>" + t + "</option>"; }).join("")}
+    </select>
+    <select id="mapDateFilter" style="flex:1;min-width:120px;background:#1a2a1a;color:#e0e8e0;border:1px solid #3a5a3a;border-radius:8px;padding:0.45rem;font-size:0.6rem;">
+      ${dateList.map(function(d){ return "<option value='" + d + "'>" + d + "</option>"; }).join("")}
+    </select>
+  </div>
+  <div id="mapContainer" style="height:52vh;border-radius:12px;overflow:hidden;border:1px solid #2a3a2a;background:#0c0c14;"></div>
   <div style="margin-top:0.5rem;font-size:0.55rem;color:#888;" id="mapStatus">載入地圖中…</div>`;
   document.getElementById('tabContent').innerHTML = html;
 
@@ -1123,7 +1145,6 @@ function renderMap() {
   const script = document.createElement('script');
   script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
   script.onload = function() {
-    // Determine initial map view
     var initLat = 22.403, initLng = 114.245, initZoom = 14;
     if (state.lastMapCenter) {
       initLat = state.lastMapCenter.lat;
@@ -1135,169 +1156,87 @@ function renderMap() {
       initZoom = 15;
     }
     const map = L.map('mapContainer').setView([initLat, initLng], initZoom);
-    window._map = map; // save for mapClickRecord
-    
-    // Save map view whenever user moves/zooms
+    window._map = map;
+    window._mapMarkers = L.layerGroup().addTo(map);
+    window._mapLines = L.layerGroup().addTo(map);
+
     map.on('moveend', function() {
       var c = map.getCenter();
       state.lastMapCenter = { lat: c.lat, lng: c.lng, zoom: map.getZoom() };
     });
-    
-    // One-time GPS capture on first map open
+
     if (!state.userLocation && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(pos) {
         state.userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        // Only center if user hasn't moved map yet
         if (!state.lastMapCenter) {
           map.setView([state.userLocation.lat, state.userLocation.lng], 15);
         }
       }, function() {}, { enableHighAccuracy: true, timeout: 10000 });
     }
-    
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap',
       maxZoom: 18
     }).addTo(map);
 
-    // Add markers and route lines
-    let count = 0;
-    const trailPoints = [];
-    const waterPoints = [];
+    function applyFilters() {
+      var selTrail = document.getElementById('mapTrailFilter').value;
+      var selDate = document.getElementById('mapDateFilter').value;
+      window._mapMarkers.clearLayers();
+      window._mapLines.clearLayers();
 
-    state.records.forEach(r => {
-      if (r.gps && r.gps.lat && r.gps.lng) {
-        const color = r.activityType === 'trail' ? '#4a8a5a' : '#4080c0';
-        const latlng = [r.gps.lat, r.gps.lng];
-        if (r.activityType === 'trail') {
-          trailPoints.push(latlng);
-        } else {
-          waterPoints.push(latlng);
-        }
+      var trailPoints = [];
+      var waterPoints = [];
+      var count = 0;
 
-        // Build popup content
+      state.records.forEach(function(r) {
+        if (selTrail !== "所有路線" && r.trail !== selTrail) return;
+        if (selDate !== "所有日期" && r.date !== selDate) return;
+        var gpsLat = (r.gps && r.gps.lat) ? r.gps.lat : r.gpsLat;
+        var gpsLng = (r.gps && r.gps.lng) ? r.gps.lng : r.gpsLng;
+        if (!gpsLat || !gpsLng) return;
+
+        var latlng = [gpsLat, gpsLng];
+        var color = r.activityType === 'trail' ? '#4a8a5a' : '#4080c0';
+        if (r.activityType === 'trail') trailPoints.push(latlng);
+        else waterPoints.push(latlng);
+
         var sol = r.solution || '';
         var note = r.note || '';
-        var pc = (r.photoKeys && r.photoKeys.length) || (r.photos && r.photos.length) || 0;
-        let popupHtml = '<div style="font-size:0.45rem;line-height:1.6;">';
-        popupHtml += '<b>' + r.trail + '</b><br>';
-        popupHtml += (r.issues||[]).join('、') + '<br>';
-        popupHtml += '<span style="color:#888;">📅 ' + r.date + ' · ' + (r.recorder||'') + '</span>';
-        if (sol) popupHtml += '<br>🔧 ' + sol;
-        if (note) popupHtml += '<br>📝 ' + note;
-        if (pc > 0) {
-          popupHtml += '<br><span style="color:#888;">📸 ';
-          // Check if photos are stored in Firestore (recovered) or IndexedDB
-          if (r.photosData) {
-            for (var pi in r.photosData) {
-              if (r.photosData.hasOwnProperty(pi)) {
-                popupHtml += '<a onclick="viewPhotoData(\'' + r.photosData[pi] + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
-              }
-            }
-          } else if (r.photoKeys && r.photoKeys.length) {
-            r.photoKeys.forEach(function(k) {
-              popupHtml += '<a onclick="viewPhoto(\'' + k + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
-            });
-          } else {
-            popupHtml += pc + ' 張';
-          }
-          popupHtml += '</span>';
-        }
-        popupHtml += '</div>';
-
-        L.circleMarker(latlng, {
-          radius: 14, color: color, fillColor: color, fillOpacity: 0.7
-        }).addTo(map)
-          .on('click', function(e) {
-            // Find nearby records (within 30m)
-            var nearby = state.records.filter(function(nr) {
-              if (!nr.gps || !nr.gps.lat || nr.id === r.id) return false;
-              var dLat = (nr.gps.lat - r.gps.lat) * 111320;
-              var dLng = (nr.gps.lng - r.gps.lng) * 111320 * Math.cos(r.gps.lat * Math.PI / 180);
-              return Math.sqrt(dLat*dLat + dLng*dLng) < 30;
-            });
-            var allNearby = [r].concat(nearby);
-            var popupHtml = '';
-            // Check how many records to prevent header on single
-            if (allNearby.length > 1) {
-              popupHtml += '<div style="font-size:0.45rem;color:#888;margin-bottom:0.2rem;">📍 附近 ' + allNearby.length + ' 個記錄</div>';
-            }
-            allNearby.forEach(function(nr, i) {
-              var nc = nr.activityType === 'trail' ? '#4a8a5a' : '#4080c0';
-              if (i > 0) popupHtml += '<div style="border-top:1px solid #2a3a2a;margin:0.15rem 0;"></div>';
-              // Single record: show full details
-              if (allNearby.length === 1) {
-                popupHtml += '<div style="font-size:0.45rem;line-height:1.5;">';
-                popupHtml += '<b>' + nr.trail + '</b><br>';
-                popupHtml += (nr.issues||[]).join('、') + '<br>';
-                popupHtml += '<span style="color:#888;">📅 ' + nr.date + ' · ' + (nr.recorder||'') + '</span>';
-                if (nr.solution) popupHtml += '<br>🔧 ' + nr.solution;
-                var pc = (nr.photoKeys && nr.photoKeys.length) || (nr.photos && nr.photos.length) || 0;
-                if (pc > 0) {
-                  popupHtml += '<br><span style="color:#888;">📸 ';
-                  if (nr.photosData) {
-                    for (var pi in nr.photosData) {
-                      if (nr.photosData.hasOwnProperty(pi))
-                        popupHtml += '<a onclick="viewPhotoData(\'' + nr.photosData[pi] + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
-                    }
-                  } else if (nr.photoKeys && nr.photoKeys.length) {
-                    nr.photoKeys.forEach(function(k) {
-                      popupHtml += '<a onclick="viewPhoto(\'' + k + '\')" style="color:#80c0ff;cursor:pointer;">🖼️</a> ';
-                    });
-                  } else { popupHtml += pc + ' 張'; }
-                  popupHtml += '</span>';
-                }
-                popupHtml += '</div>';
-              } else {
-                // Multiple records: compact format
-                var icon = nr.activityType === 'trail' ? '🪨' : '💧';
-                popupHtml += '<div style="font-size:0.45rem;line-height:1.4;border-left:3px solid ' + nc + ';padding-left:0.3rem;cursor:pointer;" onclick="mapClickRecord(\'' + nr.id + '\')">';
-                popupHtml += icon + ' <b>' + nr.trail + '</b> · ' + nr.date + ' · ' + nr.recorder;
-                var pc2 = (nr.photoKeys && nr.photoKeys.length) || (nr.photos && nr.photos.length) || 0;
-                if (pc2 > 0) popupHtml += ' 📸' + pc2;
-                popupHtml += '</div>';
-              }
-            });
-            this.bindPopup(popupHtml).openPopup();
-          });
+        var pc = (r.photoKeys && r.photoKeys.length) || 0;
+        var pop = "<b>" + (r.date || "") + " · " + (r.waterChannel || "") + "</b><br>"
+          + (r.activityType === 'trail' ? "山徑" : "水道") + " · " + (r.cleaningType || "") + "<br>"
+          + (note ? note + "<br>" : "") + (sol ? sol + "<br>" : "")
+          + (r.gpsLat ? "GPS: " + r.gpsLat.toFixed(4) + ", " + r.gpsLng.toFixed(4) : "");
+        L.circleMarker(latlng, { radius: 7, color: '#fff', weight: 1, fillColor: color, fillOpacity: 0.9 })
+          .addTo(window._mapMarkers).bindPopup(pop);
         count++;
+      });
+
+      // Route lines
+      if (trailPoints.length >= 2) L.polyline(trailPoints, { color: '#4a8a5a', weight: 2, dashArray: '5,3' }).addTo(window._mapLines);
+      if (waterPoints.length >= 2) L.polyline(waterPoints, { color: '#4080c0', weight: 2, dashArray: '3,3' }).addTo(window._mapLines);
+
+      var status = document.getElementById('mapStatus');
+      status.innerHTML = "📍 已顯示 " + count + " 個有 GPS 嘅記錄" + (selTrail !== "所有路線" || selDate !== "所有日期" ? "（已篩選）" : "")
+        + "🟢 山徑 · 🔵 水道 · - - - 山徑路線 · - - - 水道路線";
+      if (count > 0 && !state.lastMapCenter) {
+        var first = state.records[0];
+        var fLat = (first.gps && first.gps.lat) ? first.gps.lat : first.gpsLat;
+        var fLng = (first.gps && first.gps.lng) ? first.gps.lng : first.gpsLng;
+        if (fLat) map.setView([fLat, fLng], 14);
       }
-    });
-
-    // Draw trail route — green dashed line
-    if (trailPoints.length >= 2) {
-      L.polyline(trailPoints.reverse(), {
-        color: '#4a8a5a',
-        weight: 5,
-        opacity: 0.7,
-        dashArray: '10, 10'
-      }).addTo(map);
     }
 
-    // Draw water route — blue dashed line
-    if (waterPoints.length >= 2) {
-      L.polyline(waterPoints.reverse(), {
-        color: '#4080c0',
-        weight: 5,
-        opacity: 0.7,
-        dashArray: '10, 10'
-      }).addTo(map);
-    }
-
-    document.getElementById('mapStatus').innerHTML =
-      count > 0
-        ? '<div style="font-size:0.55rem;">📍 已顯示 ' + count + ' 個有 GPS 嘅記錄</div>'
-          + '<div style="font-size:0.45rem;color:#888;margin-top:0.2rem;">'
-          + '<span style="color:#4a8a5a;">🟢</span> 山徑 · '
-          + '<span style="color:#4080c0;">🔵</span> 水道 · '
-          + '<span style="color:#4a8a5a;">- - -</span> 山徑路線 · '
-          + '<span style="color:#4080c0;">- - -</span> 水道路線'
-          + '</div>'
-        : '📌 暫無 GPS 記錄 — 填寫時系統會自動記錄位置';
-
+    document.getElementById('mapTrailFilter').addEventListener('change', applyFilters);
+    document.getElementById('mapDateFilter').addEventListener('change', applyFilters);
+    applyFilters();
   };
-  document.body.appendChild(script);
+  script.onerror = function() {
+    var status = document.getElementById('mapStatus');
+    status.innerHTML = "⚠️ 地圖載入失敗（網絡問題）";
+  };
 }
-
 function editRecord(id) {
   state.editId = id;
   state.photos = [];
