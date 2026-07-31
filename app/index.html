@@ -271,6 +271,8 @@ const firebaseConfig = {
       data._localId = data.id;
       data.id = doc.id;
     }
+    // Normalize GPS: support both gpsLat/gpsLng and gps={lat,lng}
+    if (data.gpsLat && !data.gps) data.gps = {lat: data.gpsLat, lng: data.gpsLng};
     state.records.push(data);
   });
       }
@@ -1004,7 +1006,8 @@ function submitRecord() {
         last.trail === record.trail && JSON.stringify(last.issues) === JSON.stringify(record.issues)) {
       if (!confirm('⚠️ 同上一筆記錄相似，確定要重複提交？')) return;
     }
-    state.records.unshift(record);
+    if (record.gpsLat && !record.gps) record.gps = {lat: record.gpsLat, lng: record.gpsLng};
+  state.records.unshift(record);
     // Store photos in Firestore (compress to ~150KB each)
     var photosCopy = state.photos.slice();
     if (photosCopy.length > 0) {
